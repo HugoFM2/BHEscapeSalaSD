@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HOME - ESCAPE BH</title>
+	<meta http-equiv="refresh" content="4.7"> <!--A pagina atualiza a cada 4s-->
+    <style>
+        body {
+            background-color: lightblue;
+			font-family: verdana;
+        }
+        
+        h1 {
+            color: white;
+        }
+        
+        p {
+            font-size: 12px;
+        }
+
+        form {
+            font-size: 12px;
+        }
+        legend {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pagina Inicial - ESCAPE BH</h1>
+    <p><a href="/iniciarjogo">Iniciar Jogo</a></p>
+
+    <h3>Logica 1</h3>
+    <p>Leitura Sensor Magnetico 1 = {{ logica1_sensor_1 }}</p>
+    <p>Leitura Sensor Magnetico 2 = {{ logica1_sensor_2 }}</p>
+    <p>Leitura Sensor Magnetico 3 = {{ logica1_sensor_3 }}</p>
+
+    <h3>Logica 2</h3>
+    <p>Leitura Sensor Magnetico 1 = {{ logica2_sensor_1 }}</p>
+    <p>Leitura Sensor Magnetico 2 = {{ logica2_sensor_2 }}</p>
+    <p>Leitura Sensor Magnetico 3 = {{ logica2_sensor_3 }}</p>
+    <p>Leitura Sensor Magnetico 4 = {{ logica2_sensor_4 }}</p>
+
+    <h3>Logica 3</h3>
+    <p>Leitura Sensor Magnetico 1 = {{ logica3_sensor_1 }}</p>
+    <p>Leitura Sensor Magnetico 2 = {{ logica3_sensor_2 }}</p>
+    <p>Leitura Sensor Magnetico 3 = {{ logica3_sensor_3 }}</p>
+
+    <h3>Logica 4</h3>
+    <p>Leitura Sensor Magnetico 1 = {{ logica4_sensor_1 }}</p>
+    <p>Leitura Sensor Magnetico 2 = {{ logica4_sensor_2 }}</p>
+    <p>Leitura Sensor Magnetico 3 = {{ logica4_sensor_3 }}</p>
+    <p>Leitura Sensor Magnetico 4 = {{ logica4_sensor_4 }}</p>
+    
+    <form method='POST'>{% csrf_token %}
+            <fieldset>
+            <legend>Trava logica 1: Trava</legend>
+              
+              <input type="radio" name="trava" value="True">Forçar Abertura 
+              <input type="radio" name="trava" value="False" checked>Não Forçar Abertura 
+              <input type="submit" value="Enviar Comando">
+              </fieldset>
+    </form>
+
+    <form method='POST'>{% csrf_token %}
+            <fieldset>
+            <legend>Trava logica 2: Mala</legend>
+              
+              <input type="radio" name="mala" value="True">Forçar Abertura 
+              <input type="radio" name="mala" value="False" checked>Não Forçar Abertura 
+              <input type="submit" value="Enviar Comando">
+              </fieldset>
+    </form>
+
+    <form method='POST'>{% csrf_token %}
+            <fieldset>
+            <legend>Trava logica 3: Motor</legend>
+              
+              <input type="radio" name="motor" value="True">Forçar Acionamento 
+              <input type="radio" name="motor" value="False" checked>Não Forçar Acionamento 
+              <input type="submit" value="Enviar Comando">
+              </fieldset>
+    </form>
+
+    <form method='POST'>{% csrf_token %}
+            <fieldset>
+            <legend>Trava logica 4: Fechaduras</legend>
+              
+              <input type="radio" name="fechadura" value="True">Forçar Abrir Fechaduras 
+              <input type="radio" name="fechadura" value="False" checked>Não Forçar Abrir Fechaduras 
+              <input type="submit" value="Enviar Comando">
+              </fieldset>
+    </form>
+
+</body>
+</html>
