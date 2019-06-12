@@ -1,0 +1,6 @@
+*.pyc
+*~
+__pycache__
+escapebhvenv
+/static
+.DS_Store
