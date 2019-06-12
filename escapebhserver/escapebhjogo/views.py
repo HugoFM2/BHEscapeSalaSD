@@ -105,6 +105,10 @@ def iniciar_jogo(request):
 def escape_debug(request): # VIEW DE DEBUG
     #d = debug()
     #debug.mensagem()
+    Logica_1.iniciarThread()
     print(Logica_1.getLeituraSensores())
+    print(Logica_1.thread_isAlive())
+    print(Logica_1.getDuracaoLogica())
+
     from django.http import HttpResponse
     return HttpResponse('')
