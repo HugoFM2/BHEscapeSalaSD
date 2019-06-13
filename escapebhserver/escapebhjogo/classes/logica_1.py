@@ -1,35 +1,32 @@
 import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
+from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 
 """ CLASSE LOGICA 1
 Esta classe faz todo o controle dos itens relacionados a Logica 1
 """
 class Logica_1(object):
     # ATRIBUTOS DA CLASSE
-    contador = 0 #DEBUG
     concluida = False # Atributo que guarda se a logica foi concluida
     leituraSensores = [] # Atributo que armazena leitura dos sensores
     tempo_inicial = None # Marca o tempo de inicio da Logica
-
-    pinsensor = [3 , 5, 7] # Pinos dos sensores magneticos
-    pinfechadura = 11 # Pino fechadura
-
+    duracao_total = None # Guarda o tempo total da logica
     t = None # Variavel que ira armazenar a Thread da classe
 
     @classmethod
     def setup(cls):
-        GPIO.setmode(GPIO.BOARD) # Modo BOARD (0 a 40)
-        GPIO.setwarnings(False) # Desativa avisos
+        # Esta Logica nao usa GPIOS do raspberry, somente extensor
+        # GPB2 e GPB3 do 0x22 - (invencao 2 e Invencao 1)
+        # ADDRESS1 e o 0x22 (ADDRESS1)
+        # CONFIGURAS SENSORES COMO INPUT
+        mcp.setup(2, mcp.GPB, mcp.IN, mcp.ADDRESS1)
+        mcp.setup(3, mcp.GPB, mcp.IN, mcp.ADDRESS1) 
 
-        # Loop para configurar os pinos dos sensores como entrada
-        for i in range(0 , len(cls.pinsensor) ):
-            GPIO.setup(cls.pinsensor[i], GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-            #print("Pino: " + str(cls.pinsensor[i]) + " = INPUT")
-        
-        # Pino Fechadura como OUT e inicialmente em nivel baixo
-        GPIO.setup(cls.pinfechadura,GPIO.OUT)
-        GPIO.output(cls.pinfechadura, GPIO.LOW)
+        # GPA3 do 0x24 (ADDRESS2) - Abre a maleta
+        # GAVETA COMO OUT e inicialmente em nivel baixo
+        #mcp.setup(3, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        #mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
     
     @classmethod
     def getLeituraSensores(cls):
@@ -44,29 +41,30 @@ class Logica_1(object):
 
     @classmethod
     def forcarAbrirTrava(cls):
-        GPIO.output(cls.pinfechadura, GPIO.HIGH)
+        #mcp.output(3, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        #time.sleep(4)
+        #mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        pass
 
     @classmethod
     def iniciarThread(cls):
-        cls.setup()
-        if cls.t == None: # Se o atributo t é Vazio
+        cls.setup() # Executa on metodo setup
+        time.sleep(1) # Delay de 1 segundo
+        # Se o atributo t é Vazio cria uma tread
+        if cls.t == None:
             cls.t = threading.Thread(target=cls.threadLogica)
-        if cls.t.isAlive() == False and cls.concluida == False: # Verifica se a tread esta em execucao
+        # Verifica se a tread não esta em execucao e se ainda nao foi concluida
+        if cls.t.isAlive() == False and cls.concluida == False:
+            cls.leituraSensores = [] # Limpa a variavel de leituras
+            cls.duracao_total = None # Limpa a varivel de contagem
             cls.tempo_inicial = time.time() # Defini o tempo incial da logica
             cls.t.start()
-        elif cls.t.isAlive() == False and cls.concluida == True: # Verifica se a tread ja foi concluida alguma vez
-            # CHECAR SE ESSA FUNCAO E NECESSARIA
-            cls.t = threading.Thread(target=cls.threadLogica) # NOVA THREAD
-            cls.tempo_inicial = time.time() # Defini o tempo incial da logica
-            cls.contador = 0 #DEBUG
-            cls.concluida = False
-            cls.t.start()
-
+        else:
+            print('Logica 1 ja concluida, é necessario reicia-la para executar novamente.')
 
     @classmethod
     def reiniciarThread(cls):
         cls.concluida = False
-        cls.contador = 0 #DEBUG
         cls.t = threading.Thread(target=cls.threadLogica) # NOVA THREAD
         cls.iniciarThread()
 
@@ -81,30 +79,19 @@ class Logica_1(object):
     def threadLogica(cls):
         while cls.concluida == False:
             leituraSensor = []
-            leituraSensor.append( GPIO.input(cls.pinsensor[0]) )
-            leituraSensor.append( GPIO.input(cls.pinsensor[1]) )
-            leituraSensor.append( GPIO.input(cls.pinsensor[2]) )
+            leituraSensor.append( mcp.input(2, mcp.GPB, mcp.ADDRESS1) )
+            leituraSensor.append( mcp.input(3, mcp.GPB, mcp.ADDRESS1) )
             cls.leituraSensores = leituraSensor
+            print(cls.leituraSensores)
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
-            if(leituraSensor == [1,1,1]):
-                # Envia um pulso de 1 segundo para a fechadura
-                GPIO.output(cls.pinfechadura, GPIO.HIGH)
-                time.sleep(1)
-                GPIO.output(cls.pinfechadura, GPIO.LOW)
-                cls.concluida == True
-                print('Logica 1 - Finalizada')
-
-            #print('\tLogica 1 - Rodando')
-            time.sleep(0.5) # Delay do loop
-            print(cls.getDuracaoLogica())
-            
-            print(cls.contador)
-            cls.contador += 1
-            if cls.contador >= 30:
-                print('Logica 1 - Finalizada')
-                cls.leituraSensores = []
+            if leituraSensor == [1,1]:
+                # chama o metodo para abrir a gaveta
+                cls.forcarAbrirTrava()
                 cls.concluida = True
-
+                cls.duracao_total = time.time() - cls.tempo_inicial
+                print('Logica 1 - Finalizada - Tempo: ' + str(cls.duracao_total) + 'segundos')
+            
+            time.sleep(1)
 
 # ------ FIM DA LOGICA 1 ---------

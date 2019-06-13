@@ -8,8 +8,11 @@ from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 
 # Create your views here.
 
-# Metodo da pagina inicial
+# Metodo da pagina inicial - Antigo
 def pagina_inicial(request):
+    return render(request, 'escapebhhtml/pagina_inicial.html', {} )
+
+def pagina_inicial_OLD(request):
     # Dicionario de valores que serao passados para a pagina HTML
     dicionario = {
         'logica1_sensor_1': None,
@@ -86,29 +89,20 @@ def pagina_inicial(request):
 def iniciar_jogo(request):
     # imprime uma mensagem no terminal
     print('Iniciando Jogo')
-    
-    # Limpa o conteudo dos arquivos de comunicacao
-    Logica_1().limparArquivoTemporario()
-    Logica_2().limparArquivoTemporario()
-    Logica_3().limparArquivoTemporario()
-    Logica_4().limparArquivoTemporario()
-
     # Inicia as verificações dos sensores
-    Logica_1().iniciarThread()
-    Logica_2().iniciarThread()
-    Logica_3().iniciarThread()
-    Logica_4().iniciarThread()
-
+    Logica_1.iniciarThread()
     return render(request, 'escapebhhtml/iniciar_jogo.html',{})
 
 # url .../escapedebug 
 def escape_debug(request): # VIEW DE DEBUG
     #d = debug()
     #debug.mensagem()
-    Logica_1.iniciarThread()
-    print(Logica_1.getLeituraSensores())
-    print(Logica_1.thread_isAlive())
-    print(Logica_1.getDuracaoLogica())
+    #Logica_1.iniciarThread()
+    #print(Logica_1.getLeituraSensores())
+    #print(Logica_1.thread_isAlive())
+    #print(Logica_1.getDuracaoLogica())
+
+    debug.mcp23017debug()
 
     #from django.http import HttpResponse
     #return HttpResponse('')
