@@ -87,23 +87,17 @@ def pagina_inicial_OLD(request):
         return render(request, 'escapebhhtml/pagina_inicial.html', dicionario )
 
 def iniciar_jogo(request):
-    # imprime uma mensagem no terminal
-    print('Iniciando Jogo')
+    print('Iniciando Jogo...') # imprime uma mensagem no terminal
     # Inicia as verificações dos sensores
     Logica_1.iniciarThread()
+    Logica_2.iniciarThread()
+    Logica_3.iniciarThread()
+    Logica_4.iniciarThread()
     return render(request, 'escapebhhtml/iniciar_jogo.html',{})
 
 # url .../escapedebug 
 def escape_debug(request): # VIEW DE DEBUG
-    #d = debug()
-    #debug.mensagem()
-    #Logica_1.iniciarThread()
-    #print(Logica_1.getLeituraSensores())
-    #print(Logica_1.thread_isAlive())
-    #print(Logica_1.getDuracaoLogica())
-
     debug.mcp23017debug()
-
     #from django.http import HttpResponse
     #return HttpResponse('')
     return render(request, 'escapebhhtml/escape_debug.html',{})

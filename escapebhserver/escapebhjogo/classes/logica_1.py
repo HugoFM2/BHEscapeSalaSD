@@ -1,4 +1,3 @@
-import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
@@ -17,13 +16,12 @@ class Logica_1(object):
     @classmethod
     def setup(cls):
         # Esta Logica nao usa GPIOS do raspberry, somente extensor
-        # GPB2 e GPB3 do 0x22 - (invencao 2 e Invencao 1)
-        # ADDRESS1 e o 0x22 (ADDRESS1)
+        # GPB2 e GPB3 do 0x22(ADDRESS1) - (invencao 2 e Invencao 1)
         # CONFIGURAS SENSORES COMO INPUT
         mcp.setup(2, mcp.GPB, mcp.IN, mcp.ADDRESS1)
         mcp.setup(3, mcp.GPB, mcp.IN, mcp.ADDRESS1) 
 
-        # GPA3 do 0x24 (ADDRESS2) - Abre a maleta
+        # GPA3 do 0x24 (ADDRESS2) - Abre a gaveta
         # GAVETA COMO OUT e inicialmente em nivel baixo
         #mcp.setup(3, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         #mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
@@ -40,7 +38,7 @@ class Logica_1(object):
         return duracao
 
     @classmethod
-    def forcarAbrirTrava(cls):
+    def forcarAbrirGaveta(cls):
         #mcp.output(3, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         #time.sleep(4)
         #mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
@@ -82,12 +80,12 @@ class Logica_1(object):
             leituraSensor.append( mcp.input(2, mcp.GPB, mcp.ADDRESS1) )
             leituraSensor.append( mcp.input(3, mcp.GPB, mcp.ADDRESS1) )
             cls.leituraSensores = leituraSensor
-            print(cls.leituraSensores)
+            print('Logica 1 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
             if leituraSensor == [1,1]:
                 # chama o metodo para abrir a gaveta
-                cls.forcarAbrirTrava()
+                cls.forcarAbrirGaveta()
                 cls.concluida = True
                 cls.duracao_total = time.time() - cls.tempo_inicial
                 print('Logica 1 - Finalizada - Tempo: ' + str(cls.duracao_total) + 'segundos')

@@ -1,93 +1,106 @@
-
 import RPi.GPIO as GPIO # Modulo de controle da GPIOs
-import time # Modulo para delays
+import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
+from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 
-# Classe Logica 4
+""" CLASSE LOGICA 4
+Esta classe faz todo o controle dos itens relacionados a Logica 4
+"""
 class Logica_4(object):
-    def __init__(self):
-        # Diretorio do arquivo de trocas de informacoes
-        self.dir_logica = '/home/pi/escapebh/escapebhserver/escapebhjogo/tmp/logica' + '4'
+    # ATRIBUTOS DA CLASSE
+    concluida = False # Atributo que guarda se a logica foi concluida
+    leituraSensores = [] # Atributo que armazena leitura dos sensores
+    tempo_inicial = None # Marca o tempo de inicio da Logica
+    duracao_total = None # Guarda o tempo total da logica
+    t = None # Variavel que ira armazenar a Thread da classe
 
-        # Pinos dos sensores magneticos
-        self.pinsensor_1 = 8
-        self.pinsensor_2 = 10
-        self.pinsensor_3 = 12
-        self.pinsensor_4 = 16
-        self.pinTrava_1 = 18 # Pino da fechadura 1
-        self.pinTrava_2 = 22 # Pino da fechadura 2
+    @classmethod
+    def setup(cls):
+        # Esta Logica usa GPIOS do raspberry para leitura das chaves(alavancas)
+        # MAPEAMENTO
+        # 1ª Chave - Pino 15 Raspberry
+        # 2ª Chave - Pino 16 Raspberry
+        # 3ª Chave - Pino 37 Raspberry
+        # 4ª Chave - Pino 13 Raspberry
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+        # Configurando SENSORES como INPUT em Pull_Down
+        GPIO.setup(15, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(16, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(37, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(13, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
-        GPIO.setmode(GPIO.BOARD)
-        GPIO.setwarnings(False)
-        # Configurando Pinos como INPUT em Pull_Down
-        GPIO.setup(self.pinsensor_1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(self.pinsensor_2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(self.pinsensor_3, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(self.pinsensor_4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(self.pinTrava_1,GPIO.OUT)
-        GPIO.setup(self.pinTrava_2,GPIO.OUT)
+        # GPA4 - 0x24(ADDRESS2) -> Teto
+        # Pino TETO COMO OUT e inicialmente em nivel baixo
+        #mcp.setup(4, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        #mcp.output(4, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+    
+    @classmethod
+    def getLeituraSensores(cls):
+        return cls.leituraSensores
 
-        GPIO.output(self.pinTrava_1, GPIO.LOW) # Fechadura 1 em nivel baixo
-        GPIO.output(self.pinTrava_2, GPIO.LOW) # Fechadura 1 em nivel baixo
+    @classmethod
+    def getDuracaoLogica(cls):
+        duracao = 0
+        if not cls.tempo_inicial == None:
+            duracao = time.time() - cls.tempo_inicial
+        return duracao
 
-    # Metodo para leitura do arquivo onde estao gravadas as leituras dos sensores
-    def getStatusSensores(self):
-        leituraSensores = []
-        arq = open(self.dir_logica, 'r')
-        leitura = arq.readlines()
+    @classmethod
+    def forcarAbrirTeto(cls):
+        #mcp.output(4, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        #time.sleep(2)
+        #mcp.output(4, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        pass
 
-        if len(leitura) > 0:
-            leituraSensores = leitura[0].split(',')
-            leituraSensores.remove('\n')
-            print(leituraSensores)
-        
-        return leituraSensores
+    @classmethod
+    def iniciarThread(cls):
+        cls.setup() # Executa on metodo setup
+        time.sleep(1) # Delay de 1 segundo
+        # Se o atributo t é Vazio cria uma tread
+        if cls.t == None:
+            cls.t = threading.Thread(target=cls.threadLogica)
+        # Verifica se a tread não esta em execucao e se ainda nao foi concluida
+        if cls.t.isAlive() == False and cls.concluida == False:
+            cls.leituraSensores = [] # Limpa a variavel de leituras
+            cls.duracao_total = None # Limpa a varivel de contagem
+            cls.tempo_inicial = time.time() # Defini o tempo incial da logica
+            cls.t.start()
+        else:
+            print('Logica 4 ja concluida, é necessario reicia-la para executar novamente.')
 
-    # Metodo para iniciar a thread
-    def iniciarThread(self):
-        threading.Thread(target=self.threadLogica).start()
+    @classmethod
+    def reiniciarThread(cls):
+        cls.concluida = False
+        cls.t = threading.Thread(target=cls.threadLogica) # NOVA THREAD
+        cls.iniciarThread()
 
-    # Metodo para apagar o conteudo do arquivo de leituras do sensor
-    def limparArquivoTemporario(self):
-            arq = open(self.dir_logica, 'w')
-            arq.write('') # Escrever uma string vazia no arquivo
-            arq.close()
+    @classmethod
+    def thread_isAlive(cls):
+        status = None
+        if not cls.t == None: # Se o atributo t é diferente de Vazio
+            status = cls.t.isAlive()
+        return status
 
-    # Metodo para forcar a abertura da mala
-    def forcarAbrirFechaduras(self):
-        GPIO.output(self.pinTrava_1, GPIO.HIGH)
-        GPIO.output(self.pinTrava_2, GPIO.HIGH)
-
-    # Thread que verifica os sensores magneticos
-    def threadLogica(self):
-        concluida = False
-        while concluida == False:
-            leituraSensor_1 = GPIO.input(self.pinsensor_1)
-            leituraSensor_2 = GPIO.input(self.pinsensor_2)
-            leituraSensor_3 = GPIO.input(self.pinsensor_3)
-            leituraSensor_4 = GPIO.input(self.pinsensor_4)
-            
-            # Escrevendo no arquivo de informacoes
-            arq = open(self.dir_logica, 'w')
-            texto = []
-            texto.append(str(leituraSensor_1))
-            texto.append(',')
-            texto.append(str(leituraSensor_2))
-            texto.append(',')
-            texto.append(str(leituraSensor_3))
-            texto.append(',')
-            texto.append(str(leituraSensor_4))
-            texto.append(',\n') # Ultimo caracter
-            arq.writelines(texto)
+    @classmethod
+    def threadLogica(cls):
+        while cls.concluida == False:
+            leituraSensor = []
+            leituraSensor.append( GPIO.input(15) )
+            leituraSensor.append( GPIO.input(16) )
+            leituraSensor.append( GPIO.input(37) )
+            leituraSensor.append( GPIO.input(13) )
+            cls.leituraSensores = leituraSensor
+            print('Logica 4 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
-            if(leituraSensor_1 == 1 and leituraSensor_2 == 1 and leituraSensor_3 == 1 and leituraSensor_4 == 1):
-                GPIO.output(self.pinTrava_1, GPIO.HIGH)
-                GPIO.output(self.pinTrava_2, GPIO.HIGH)
-                time.sleep(1)
-                concluida == True
-                print('Logica 4 - Finalizada')
-            #print('\tLogica 4 - Rodando')
-            time.sleep(0.5)
+            if leituraSensor == [1,1,1,1]:
+                # chama o metodo para abrir a gaveta
+                cls.forcarAbrirTeto()
+                cls.concluida = True
+                cls.duracao_total = time.time() - cls.tempo_inicial
+                print('Logica 4 - Finalizada - Tempo: ' + str(cls.duracao_total) + 'segundos')
+            
+            time.sleep(1)
 
 # ------ FIM DA LOGICA 4 ---------
