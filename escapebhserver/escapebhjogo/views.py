@@ -110,5 +110,6 @@ def escape_debug(request): # VIEW DE DEBUG
     print(Logica_1.thread_isAlive())
     print(Logica_1.getDuracaoLogica())
 
-    from django.http import HttpResponse
-    return HttpResponse('')
+    #from django.http import HttpResponse
+    #return HttpResponse('')
+    return render(request, 'escapebhhtml/escape_debug.html',{})
