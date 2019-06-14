@@ -70,6 +70,7 @@ class MCP23017(object):
     # O metodo setup que chama ele
     @classmethod
     def setup_out(cls, gpio, GPA_B, address):
+        cls.instanciarBarramento()
         # Verifica qual registrador usar
         if GPA_B == 'GPA':
             registrador = cls.IODIRA
@@ -97,6 +98,7 @@ class MCP23017(object):
     # O metodo setup que chama ele
     @classmethod
     def setup_in(cls, gpio, GPA_B, address):
+        cls.instanciarBarramento()
         # Verifica qual registrador usar
         if GPA_B == 'GPA':
             registrador = cls.IODIRA
@@ -124,6 +126,7 @@ class MCP23017(object):
     # Chamada: MCP23017.output(7, MCP23017.GPA, MCP23017.HIGH, MCP23017.ADDRESS1)
     @classmethod
     def output(cls, gpio, GPA_B, LOW_HIGH, address):
+        cls.instanciarBarramento()
         # Verifica qual registrador usar
         if GPA_B == 'GPA':
             registrador = cls.OLATA
@@ -150,6 +153,7 @@ class MCP23017(object):
     # Este metodo le o valor do BIT referente a GPIO recebida como argumento
     @classmethod
     def input(cls, gpio, GPA_B,address):
+        cls.instanciarBarramento()
         # Verifica qual registrador usar
         if GPA_B == 'GPA':
             registrador = cls.GPIOA
@@ -175,7 +179,32 @@ class MCP23017(object):
         return status_gpio
 
     @classmethod
-    def msg(cls):
-        print('Importacao OK!')
+    def confRegistradoresComZero(cls):
+        print('Escrevendo 0x00 em todos os registradores...')
+        cls.instanciarBarramento()
+        # Extensor 0x22
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IODIRA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IODIRB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPPUA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPPUB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IPOLA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IPOLB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.OLATA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.OLATB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPIOA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPIOB, 0x00)
+        # Extensor 0x24
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.IODIRA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.IODIRB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.GPPUA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.GPPUB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.IPOLA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.IPOLB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.OLATA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.OLATB, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.GPIOA, 0x00)
+        cls.barramento.write_byte_data(cls.ADDRESS2, cls.GPIOB, 0x00)
+        print('Escrita concluida!')
+
 
 # ------ FIM DO MCP23017 ---------

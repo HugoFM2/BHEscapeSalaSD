@@ -4,100 +4,94 @@ from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logic
 from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
 from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
-from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE 
+from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
+from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
+from . import views # Importa os metodos existentes neste arquivo
 
 # Create your views here.
 
-# Metodo da pagina inicial - Antigo
+# View da pagina inicial
 def pagina_inicial(request):
-    return render(request, 'escapebhhtml/pagina_inicial.html', {} )
-
-def pagina_inicial_OLD(request):
-    # Dicionario de valores que serao passados para a pagina HTML
-    dicionario = {
-        'logica1_sensor_1': None,
-        'logica1_sensor_2': None,
-        'logica1_sensor_3': None,
-        'logica2_sensor_1': None,
-        'logica2_sensor_2': None,
-        'logica2_sensor_3': None,
-        'logica2_sensor_4': None,
-        'logica3_sensor_1': None,
-        'logica3_sensor_2': None,
-        'logica3_sensor_3': None,
-        'logica4_sensor_1': None,
-        'logica4_sensor_2': None,
-        'logica4_sensor_3': None,
-        'logica4_sensor_4': None,
+    # DICIONARIO PARA ENVIO DE INFORMAÇÕES DO PROGRAMA PARA A PAGINA HTML
+    dicionario_para_html = {
+        'logica1_duracao': views.conversaoDuracao(Logica_1.getDuracaoLogica()),
+        'logica2_duracao': views.conversaoDuracao(Logica_2.getDuracaoLogica()),
+        'logica3_duracao': views.conversaoDuracao(Logica_3.getDuracaoLogica()),
+        'logica4_duracao': views.conversaoDuracao(Logica_4.getDuracaoLogica()),
+        'logica1_status': Logica_1.concluida,
+        'logica2_status': Logica_2.concluida,
+        'logica3_status': Logica_3.concluida,
+        'logica4_status': Logica_4.concluida,
     }
 
-     # Se receber um formulario
-    if request.method == "POST":
-        leituraPostTrava = request.POST.get("trava", "")
-        leituraPostMala = request.POST.get("mala", "")
-        leituraPostMotor = request.POST.get("motor", "")
-        leituraPostFechadura = request.POST.get("fechadura", "")
+    # SE RECEBER UM FORMULARIO POST
+    if request.method == 'POST':
+        #print(request.POST) # DEBUG
+        acao = request.POST.get('acao')
+        forcar_logica1 = request.POST.get('forcar_logica1')
+        forcar_logica2 = request.POST.get('forcar_logica2')
+        forcar_logica3 = request.POST.get('forcar_logica3')
+        forcar_logica4 = request.POST.get('forcar_logica4')
 
-        if leituraPostTrava == "True":
-            print('--> Trava Forcada a abrir')
-            Logica_1().forcarAbrirTrava()
-        if leituraPostMala == "True":
-            print('--> Mala Forcada a abrir')
-            Logica_2().forcarAbrirMala()
-        if leituraPostMotor == "True":
-            print('--> Motor Forcado a acionar')
-            Logica_3().forcarAcionarMotor()
-        if leituraPostFechadura == "True":
-            print('--> Fechaduras Forcadas a abrir')
-            Logica_4().forcarAbrirFechaduras()
+        if acao != None and acao == 'Iniciar Jogo':
+            views.iniciar_jogo()
+        elif acao != None and acao == 'Reiniciar Jogo':
+            views.reiniciar_jogo() # EM TESTES AINDA
 
-        return render(request, 'escapebhhtml/pagina_inicial.html', dicionario)
+        if forcar_logica1 != None and forcar_logica1 == 'Forcar Abrir Gaveta':
+            Logica_1.forcarAbrirGaveta()
 
-    # Caso seja uma requisicao comum
-    else:
-        # Recebe as leituras do sensores
-        leituraLogica_1 = Logica_1.getStatusSensores()
-        leituraLogica_2 = Logica_2().getStatusSensores()
-        leituraLogica_3 = Logica_3().getStatusSensores()
-        leituraLogica_4 = Logica_4().getStatusSensores()
-        
-        # Se ha leituras, armazena em uma chave do dicionario
-        if len(leituraLogica_1) > 0:
-            dicionario['logica1_sensor_1'] = leituraLogica_1[0]
-            dicionario['logica1_sensor_2'] = leituraLogica_1[1]
-            dicionario['logica1_sensor_3'] = leituraLogica_1[2]
+        if forcar_logica2 != None and forcar_logica2 == 'Forcar Abrir Maleta':
+            Logica_2.forcarAbrirMaleta()
 
-        if len(leituraLogica_2) > 0:
-            dicionario['logica2_sensor_1'] = leituraLogica_2[0]
-            dicionario['logica2_sensor_2'] = leituraLogica_2[1]
-            dicionario['logica2_sensor_3'] = leituraLogica_2[2]
-            dicionario['logica2_sensor_4'] = leituraLogica_2[3]
+        if forcar_logica3 != None and forcar_logica3 == 'Forcar Descer Aviao':
+            Logica_3.forcarDescerAviao()
+        elif forcar_logica3 != None and forcar_logica3 == 'Forcar Subir Aviao':
+            Logica_3.forcarSubirAviao()
 
-        if len(leituraLogica_3) > 0:
-            dicionario['logica3_sensor_1'] = leituraLogica_3[0]
-            dicionario['logica3_sensor_2'] = leituraLogica_3[1]
-            dicionario['logica3_sensor_3'] = leituraLogica_3[2]
+        if forcar_logica4 != None and forcar_logica4 == 'Forcar Descer Teto':
+            Logica_4.forcarAbrirTeto()
+    
+    return render(request, 'escapebhhtml/pagina_inicial.html', dicionario_para_html )
 
-        if len(leituraLogica_4) > 0:
-            dicionario['logica4_sensor_1'] = leituraLogica_4[0]
-            dicionario['logica4_sensor_2'] = leituraLogica_4[1]
-            dicionario['logica4_sensor_3'] = leituraLogica_4[2]
-            dicionario['logica4_sensor_4'] = leituraLogica_4[3]
+# url .../escapedebug 
+def escape_debug(request): # VIEW DE DEBUG
+    debug.mcp23017debug()
+    from django.http import HttpResponse
+    return HttpResponse('')
 
-        return render(request, 'escapebhhtml/pagina_inicial.html', dicionario )
 
-def iniciar_jogo(request):
+# -------- METODOS PARA AUXILIAR A VIEWS -----------
+def iniciar_jogo():
     print('Iniciando Jogo...') # imprime uma mensagem no terminal
+    mcp.confRegistradoresComZero() # Escrevendo 0x00 nos registradores dos extensores de portas
     # Inicia as verificações dos sensores
     Logica_1.iniciarThread()
     Logica_2.iniciarThread()
     Logica_3.iniciarThread()
     Logica_4.iniciarThread()
-    return render(request, 'escapebhhtml/iniciar_jogo.html',{})
 
-# url .../escapedebug 
-def escape_debug(request): # VIEW DE DEBUG
-    debug.mcp23017debug()
-    #from django.http import HttpResponse
-    #return HttpResponse('')
-    return render(request, 'escapebhhtml/escape_debug.html',{})
+def reiniciar_jogo(): # IMPLEMENTAR
+    print('Reiniciando Jogo...') # imprime uma mensagem no terminal
+    mcp.confRegistradoresComZero() # Escrevendo 0x00 nos registradores dos extensores de portas
+    # Reinicia as verificações dos sensores
+    Logica_1.reiniciarThread()
+    Logica_2.reiniciarThread()
+    Logica_3.reiniciarThread()
+    Logica_4.reiniciarThread()
+
+def conversaoDuracao(duracao_segundos): # Este metodo converte os segundos passados pela logica em uma string HH:MM:SS
+    horas = duracao_segundos // 3600 # Retorna somente a parte inteira
+    minutos = (duracao_segundos % 3600) // 60
+    segundos = (duracao_segundos % 3600) % 60
+    # Defini como sera montada a string de duracao
+    if horas < 10 and minutos < 10 and segundos < 10:
+        texto = '0{}:0{}:0{}'.format(round(horas), round(minutos), round(segundos) )
+    elif horas < 10 and minutos < 10:
+        texto = '0{}:0{}:{}'.format(round(horas), round(minutos), round(segundos) )
+    elif horas < 10:
+        texto = '0{}:{}:{}'.format(round(horas), round(minutos), round(segundos) )
+    else:
+        texto = '{}:{}:{}'.format(round(horas), round(minutos), round(segundos) )
+    return texto
+# ----------- FIM dos METODOS -----

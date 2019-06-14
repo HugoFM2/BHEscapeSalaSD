@@ -25,10 +25,10 @@ class Logica_3(object):
 
         # GPB2 e GPB3 - 0x24(ADDRESS2) -> Aviao
         # Pinos Aviao COMO OUT e inicialmente em nivel baixo
-        #mcp.setup(2, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
-        #mcp.setup(3, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
-        #mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        #mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        mcp.setup(2, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(3, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
     
     @classmethod
     def getLeituraSensores(cls):
@@ -37,31 +37,33 @@ class Logica_3(object):
     @classmethod
     def getDuracaoLogica(cls):
         duracao = 0
-        if not cls.tempo_inicial == None:
-            duracao = time.time() - cls.tempo_inicial
+        if cls.tempo_inicial != None and cls.duracao_total == None:
+            duracao = round(time.time() - cls.tempo_inicial , 2) # Arredonda para duas casa decimais
+        elif cls.duracao_total != None:
+            duracao = round(cls.duracao_total,2) # Arredonda para duas casa decimais
+        else:
+            duracao = 0
         return duracao
 
     @classmethod
     def forcarDescerAviao(cls):
         # GPB2 = 1 e GPB3 = 0 - 0x24(ADDRESS2) -> Sobe Aviao
         # GPB2 = 0 e GPB3 = 1 - 0x24(ADDRESS2) -> Desce Aviao
-        #mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        #mcp.output(3, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
-        #time.sleep(2)
-        #mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        #mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        pass
+        mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(3, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        time.sleep(2)
+        mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
 
     @classmethod
     def forcarSubirAviao(cls):
         # GPB2 = 1 e GPB3 = 0 - 0x24(ADDRESS2) -> Sobe Aviao
         # GPB2 = 0 e GPB3 = 1 - 0x24(ADDRESS2) -> Desce Aviao
-        #mcp.output(2, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
-        #mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        #time.sleep(2)
-        #mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        #mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        pass
+        mcp.output(2, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(2)
+        mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
 
     @classmethod
     def iniciarThread(cls):
@@ -81,7 +83,14 @@ class Logica_3(object):
 
     @classmethod
     def reiniciarThread(cls):
+        if cls.t != None:
+            if cls.t.isAlive() == True:
+                cls.concluida = True # Finaliza a tread em execucao
+                time.sleep(2)
         cls.concluida = False
+        cls.leituraSensores = [] # Limpa a variavel de leituras
+        cls.duracao_total = None # Limpa a varivel de contagem
+        cls.tempo_inicial = time.time() # Defini o tempo incial da logica
         cls.t = threading.Thread(target=cls.threadLogica) # NOVA THREAD
         cls.iniciarThread()
 

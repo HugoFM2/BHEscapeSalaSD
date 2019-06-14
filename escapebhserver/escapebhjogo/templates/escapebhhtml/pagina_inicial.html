@@ -1,95 +1,76 @@
-<!DOCTYPE html>
+{% load staticfiles %}
 <html>
-<head>
-    <title>HOME - ESCAPE BH</title>
-	<meta http-equiv="refresh" content="4.7"> <!--A pagina atualiza a cada 4s-->
-    <style>
-        body {
-            background-color: lightblue;
-			font-family: verdana;
-        }
-        
-        h1 {
-            color: white;
-        }
-        
-        p {
-            font-size: 12px;
-        }
-
-        form {
-            font-size: 12px;
-        }
-        legend {
-            font-weight: bold;
-        }
-    </style>
-</head>
-<body>
-    <h1>Pagina Inicial - ESCAPE BH</h1>
-    <p><a href="/iniciarjogo">Iniciar Jogo</a></p>
-
-    <h3>Logica 1</h3>
-    <p>Leitura Sensor Magnetico 1 = {{ logica1_sensor_1 }}</p>
-    <p>Leitura Sensor Magnetico 2 = {{ logica1_sensor_2 }}</p>
-    <p>Leitura Sensor Magnetico 3 = {{ logica1_sensor_3 }}</p>
-
-    <h3>Logica 2</h3>
-    <p>Leitura Sensor Magnetico 1 = {{ logica2_sensor_1 }}</p>
-    <p>Leitura Sensor Magnetico 2 = {{ logica2_sensor_2 }}</p>
-    <p>Leitura Sensor Magnetico 3 = {{ logica2_sensor_3 }}</p>
-    <p>Leitura Sensor Magnetico 4 = {{ logica2_sensor_4 }}</p>
-
-    <h3>Logica 3</h3>
-    <p>Leitura Sensor Magnetico 1 = {{ logica3_sensor_1 }}</p>
-    <p>Leitura Sensor Magnetico 2 = {{ logica3_sensor_2 }}</p>
-    <p>Leitura Sensor Magnetico 3 = {{ logica3_sensor_3 }}</p>
-
-    <h3>Logica 4</h3>
-    <p>Leitura Sensor Magnetico 1 = {{ logica4_sensor_1 }}</p>
-    <p>Leitura Sensor Magnetico 2 = {{ logica4_sensor_2 }}</p>
-    <p>Leitura Sensor Magnetico 3 = {{ logica4_sensor_3 }}</p>
-    <p>Leitura Sensor Magnetico 4 = {{ logica4_sensor_4 }}</p>
-    
-    <form method='POST'>{% csrf_token %}
-            <fieldset>
-            <legend>Trava logica 1: Trava</legend>
-              
-              <input type="radio" name="trava" value="True">Forçar Abertura 
-              <input type="radio" name="trava" value="False" checked>Não Forçar Abertura 
-              <input type="submit" value="Enviar Comando">
-              </fieldset>
-    </form>
-
-    <form method='POST'>{% csrf_token %}
-            <fieldset>
-            <legend>Trava logica 2: Mala</legend>
-              
-              <input type="radio" name="mala" value="True">Forçar Abertura 
-              <input type="radio" name="mala" value="False" checked>Não Forçar Abertura 
-              <input type="submit" value="Enviar Comando">
-              </fieldset>
-    </form>
-
-    <form method='POST'>{% csrf_token %}
-            <fieldset>
-            <legend>Trava logica 3: Motor</legend>
-              
-              <input type="radio" name="motor" value="True">Forçar Acionamento 
-              <input type="radio" name="motor" value="False" checked>Não Forçar Acionamento 
-              <input type="submit" value="Enviar Comando">
-              </fieldset>
-    </form>
-
-    <form method='POST'>{% csrf_token %}
-            <fieldset>
-            <legend>Trava logica 4: Fechaduras</legend>
-              
-              <input type="radio" name="fechadura" value="True">Forçar Abrir Fechaduras 
-              <input type="radio" name="fechadura" value="False" checked>Não Forçar Abrir Fechaduras 
-              <input type="submit" value="Enviar Comando">
-              </fieldset>
-    </form>
-
-</body>
-</html>
+    <head>
+        <title>BH Escape - Painel de Controle</title>
+        <meta http-equiv="refresh" content="4"> <!-- A pagina atualiza a cada 4s-->
+        <link rel="stylesheet" href="{% static 'css/css_padrao.css' %}">
+        <link rel="icon" href="{% static 'imagens/favicon32x32.png' %}" sizes="32x32">
+    </head>
+    <body>
+        <div class="divTitulo">
+            <h1>Painel de Controle</h1>
+            <img src="{% static 'imagens/logo.png' %}" alt="BH Escape - Logo" style="width:110px;height:130px;">
+        </div>
+        <!-- DIV com form e botoes de Iniciar e Reiniciar o Jogo-->
+        <div class="divBotoesSuperior">
+            <form method='POST'>{% csrf_token %}
+                <input class="inputButton" type="submit" name = "acao" value="Iniciar Jogo" style="background-color: seagreen;">
+                <input class="inputButton" type="submit" name = "acao" value="Reiniciar Jogo" style="background-color: tomato;">
+            </form>
+            <a href="/"><button class="button" style="background-color: gold;">Atualizar Pagina</button></a>
+        </div>
+        <!-- DIV Com a tabela de Informações -->
+        <div class="divTable" style="border: 1px solid #000;" >
+                <div class="divTableBody">
+                <div class="divTableRow">
+                <div class="divTableCell"><h2>LÓGICA</h2></div>
+                <div class="divTableCell"><h2>DURAÇÃO&#13;&#10;hh:mm:ss</h2></div>
+                <div class="divTableCell"><h2>STATUS</h2></div>
+                <div class="divTableCell"><h2>BOTÕES DE AÇÃO</h2></div>
+                </div>
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 1</div>
+                    <div class="divTableCell">{{ logica1_duracao }}</div>
+                    <div class="divTableCell">{% if logica1_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Gaveta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica1" value="Forcar Abrir Gaveta">
+                        </form>
+                    </div>
+                </div>
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 2</div>
+                    <div class="divTableCell">{{ logica2_duracao }}</div>
+                    <div class="divTableCell">{% if logica2_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica2" value="Forcar Abrir Maleta">
+                        </form>
+                    </div>
+                </div>
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 3</div>
+                    <div class="divTableCell">{{ logica3_duracao }}</div>
+                    <div class="divTableCell">{% if logica3_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Gaveta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Descer Aviao">
+                        <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Subir Aviao" style="background-color: #024073;" >
+                        </form>
+                    </div>
+                </div>
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 4</div>
+                    <div class="divTableCell">{{ logica4_duracao }}</div>
+                    <div class="divTableCell">{% if logica4_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        </form>
+                    </div>
+                </div>
+                </div>
+        </div>
+        <!-- Site usado para criar tabela div: DivTable.com -->
+    </body>
+    </html>
