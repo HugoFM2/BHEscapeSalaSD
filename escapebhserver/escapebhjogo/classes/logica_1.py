@@ -44,6 +44,7 @@ class Logica_1(object):
     @classmethod
     def forcarAbrirGaveta(cls):
         cls.concluida = True
+        cls.duracao_total = time.time() - cls.tempo_inicial
         mcp.setup(3, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(3, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(2)

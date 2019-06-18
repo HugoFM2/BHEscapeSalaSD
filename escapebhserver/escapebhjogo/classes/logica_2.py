@@ -1,6 +1,7 @@
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
+from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
 
 """ CLASSE LOGICA 2
 Esta classe faz todo o controle dos itens relacionados a Logica 2
@@ -51,6 +52,7 @@ class Logica_2(object):
     @classmethod
     def forcarAbrirMaleta(cls):
         cls.concluida = True
+        cls.duracao_total = time.time() - cls.tempo_inicial
         mcp.setup(2, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(2, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(4)
@@ -104,7 +106,8 @@ class Logica_2(object):
             #print('Logica 2 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
-            if leituraSensor == [1,1,1,1]:
+            # e se as logicas anteriores foram concluidas
+            if leituraSensor == [1,1,1,1] and Logica_1.concluida == True:
                 # chama o metodo para abrir a gaveta
                 cls.forcarAbrirMaleta()
                 cls.concluida = True

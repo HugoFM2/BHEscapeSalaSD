@@ -2,6 +2,9 @@ import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
+from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
+from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
+from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
 
 """ CLASSE LOGICA 4
 Esta classe faz todo o controle dos itens relacionados a Logica 4
@@ -55,6 +58,7 @@ class Logica_4(object):
     @classmethod
     def forcarAbrirTeto(cls):
         cls.concluida = True
+        cls.duracao_total = time.time() - cls.tempo_inicial
         mcp.setup(4, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(5, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(4, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
@@ -111,7 +115,8 @@ class Logica_4(object):
             #print('Logica 4 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
-            if leituraSensor == [1,1,1,1]:
+            # e se as logicas anteriores foram concluidas
+            if leituraSensor == [1,1,1,1] and Logica_1.concluida == True and Logica_2.concluida == True and Logica_3.concluida == True:
                 # chama o metodo para abrir a gaveta
                 cls.forcarAbrirTeto()
                 cls.concluida = True

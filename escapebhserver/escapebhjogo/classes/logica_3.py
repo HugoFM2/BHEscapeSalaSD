@@ -1,6 +1,8 @@
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
+from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
+from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 
 """ CLASSE LOGICA 3
 Esta classe faz todo o controle dos itens relacionados a Logica 3
@@ -48,13 +50,15 @@ class Logica_3(object):
     @classmethod
     def forcarDescerAviao(cls):
         cls.concluida = True
+        cls.duracao_total = time.time() - cls.tempo_inicial
         # GPB2 = 1 e GPB3 = 0 - 0x24(ADDRESS2) -> Sobe Aviao
         # GPB2 = 0 e GPB3 = 1 - 0x24(ADDRESS2) -> Desce Aviao
         mcp.setup(2, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(3, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        time.sleep(0.25)
         mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         mcp.output(3, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(2)
+        time.sleep(4)
         mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
 
@@ -64,6 +68,7 @@ class Logica_3(object):
         # GPB2 = 0 e GPB3 = 1 - 0x24(ADDRESS2) -> Desce Aviao
         mcp.setup(2, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(3, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        time.sleep(0.25)
         mcp.output(2, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
         mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(2)
@@ -116,7 +121,8 @@ class Logica_3(object):
             #print('Logica 3 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
-            if leituraSensor == [1,1]:
+            # e se as logicas anteriores foram concluidas
+            if leituraSensor == [1,1] and Logica_1.concluida == True and Logica_2.concluida == True:
                 # chama o metodo para abrir a gaveta
                 cls.forcarDescerAviao()
                 cls.concluida = True
