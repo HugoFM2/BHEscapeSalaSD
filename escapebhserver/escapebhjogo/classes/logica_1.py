@@ -43,6 +43,8 @@ class Logica_1(object):
 
     @classmethod
     def forcarAbrirGaveta(cls):
+        cls.concluida = True
+        mcp.setup(3, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(3, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(2)
         mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
@@ -90,7 +92,7 @@ class Logica_1(object):
             leituraSensor.append( mcp.input(2, mcp.GPB, mcp.ADDRESS1) )
             leituraSensor.append( mcp.input(3, mcp.GPB, mcp.ADDRESS1) )
             cls.leituraSensores = leituraSensor
-            print('Logica 1 Sensores: ' + str(cls.leituraSensores))
+            #print('Logica 1 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
             if leituraSensor == [1,1]:

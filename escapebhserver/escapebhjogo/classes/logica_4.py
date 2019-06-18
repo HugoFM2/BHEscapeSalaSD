@@ -33,7 +33,9 @@ class Logica_4(object):
         # GPA4 - 0x24(ADDRESS2) -> Teto
         # Pino TETO COMO OUT e inicialmente em nivel baixo
         mcp.setup(4, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(5, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(4, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(5, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
     
     @classmethod
     def getLeituraSensores(cls):
@@ -52,9 +54,14 @@ class Logica_4(object):
 
     @classmethod
     def forcarAbrirTeto(cls):
+        cls.concluida = True
+        mcp.setup(4, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(5, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(4, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(5, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(2)
         mcp.output(4, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(5, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
 
     @classmethod
     def iniciarThread(cls):
@@ -101,7 +108,7 @@ class Logica_4(object):
             leituraSensor.append( GPIO.input(37) )
             leituraSensor.append( GPIO.input(13) )
             cls.leituraSensores = leituraSensor
-            print('Logica 4 Sensores: ' + str(cls.leituraSensores))
+            #print('Logica 4 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
             if leituraSensor == [1,1,1,1]:

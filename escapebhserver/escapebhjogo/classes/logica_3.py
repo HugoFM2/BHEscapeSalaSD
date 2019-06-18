@@ -47,8 +47,11 @@ class Logica_3(object):
 
     @classmethod
     def forcarDescerAviao(cls):
+        cls.concluida = True
         # GPB2 = 1 e GPB3 = 0 - 0x24(ADDRESS2) -> Sobe Aviao
         # GPB2 = 0 e GPB3 = 1 - 0x24(ADDRESS2) -> Desce Aviao
+        mcp.setup(2, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(3, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(2, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         mcp.output(3, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(2)
@@ -59,6 +62,8 @@ class Logica_3(object):
     def forcarSubirAviao(cls):
         # GPB2 = 1 e GPB3 = 0 - 0x24(ADDRESS2) -> Sobe Aviao
         # GPB2 = 0 e GPB3 = 1 - 0x24(ADDRESS2) -> Desce Aviao
+        mcp.setup(2, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(3, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(2, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
         mcp.output(3, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(2)
@@ -108,7 +113,7 @@ class Logica_3(object):
             leituraSensor.append( mcp.input(0, mcp.GPB, mcp.ADDRESS1) )
             leituraSensor.append( mcp.input(7, mcp.GPA, mcp.ADDRESS1) )
             cls.leituraSensores = leituraSensor
-            print('Logica 3 Sensores: ' + str(cls.leituraSensores))
+            #print('Logica 3 Sensores: ' + str(cls.leituraSensores))
 
             # Checa se as condicoes dos sensores magneticos foi satisfeita
             if leituraSensor == [1,1]:
