@@ -56,7 +56,8 @@ def pagina_inicial(request):
 
 # url .../escapedebug 
 def escape_debug(request): # VIEW DE DEBUG
-    debug.logica_debug()
+    #debug.logica_debug()
+    debug.cronometro_debug()
     from django.http import HttpResponse
     return HttpResponse('')
 
