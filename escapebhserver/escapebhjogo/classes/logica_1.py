@@ -1,108 +1,72 @@
+import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
+from .logica_geral import Logica_geral
 
 """ CLASSE LOGICA 1
 Esta classe faz todo o controle dos itens relacionados a Logica 1
+
+Vermelho -> Dentro do móvel do mezanino terá um botão. Apertando-o vai liberar um laser.
+Direcionando o laser da forma correta para a gaveta na parte de baixo do palco vai abri-la.
 """
-class Logica_1(object):
-    # ATRIBUTOS DA CLASSE
-    concluida = False # Atributo que guarda se a logica foi concluida
-    leituraSensores = [] # Atributo que armazena leitura dos sensores
-    tempo_inicial = None # Marca o tempo de inicio da Logica
-    duracao_total = None # Guarda o tempo total da logica
-    t = None # Variavel que ira armazenar a Thread da classe
+class Logica_1(Logica_geral):
 
+    # GPIO's
+    gpio_botao = 0 # Botao mezanino (Raspberry)
+    gpio_ldr = 0 # Sensor ldr (Raspberry)
+    gp_laser = 0 # Rele Laser (Extensor 0x)s
+    gp_gaveta = 0 # Rele Gaveta (Extensor)
+
+    # Sobreescrevendo metodo setup() da classe pai
     @classmethod
-    def setup(cls):
-        # Esta Logica nao usa GPIOS do raspberry, somente extensor
-        # GPB2 e GPB3 do 0x22(ADDRESS1) - (invencao 2 e Invencao 1)
-        # CONFIGURAS SENSORES COMO INPUT
-        mcp.setup(2, mcp.GPB, mcp.IN, mcp.ADDRESS1)
-        mcp.setup(3, mcp.GPB, mcp.IN, mcp.ADDRESS1) 
+    def setup(cls): 
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
 
-        # GPA3 do 0x24 (ADDRESS2) - Abre a gaveta
-        # GAVETA COMO OUT e inicialmente em nivel baixo
-        mcp.setup(3, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        # Configurado GPIO's do raspberry
+        GPIO.setup(cls.gpio_botao, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(cls.gpio_ldr, GPIO.IN)
+
+        # Configurando GPIO's do Extensor
+        mcp.setup(cls.gp_laser, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        
+        # Inicialmente em nivel baixo
+        mcp.output(cls.gp_laser, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
     
+    # Metodo para abrir gaveta
     @classmethod
-    def getLeituraSensores(cls):
-        return cls.leituraSensores
-
-    @classmethod
-    def getDuracaoLogica(cls):
-        duracao = 0
-        if cls.tempo_inicial != None and cls.duracao_total == None:
-            duracao = round(time.time() - cls.tempo_inicial , 2) # Arredonda para duas casa decimais
-        elif cls.duracao_total != None:
-            duracao = round(cls.duracao_total,2) # Arredonda para duas casa decimais
-        else:
-            duracao = 0
-        return duracao
-
-    @classmethod
-    def forcarAbrirGaveta(cls):
+    def abrirGaveta(cls):
         cls.concluida = True
-        cls.duracao_total = time.time() - cls.tempo_inicial
-        mcp.setup(3, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(3, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(2)
-        mcp.output(3, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        time.sleep(30)
+        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
 
+    # Metodo para acionar o lasers
     @classmethod
-    def iniciarThread(cls):
-        cls.setup() # Executa on metodo setup
-        time.sleep(1) # Delay de 1 segundo
-        # Se o atributo t é Vazio cria uma tread
-        if cls.t == None:
-            cls.t = threading.Thread(target=cls.threadLogica)
-        # Verifica se a tread não esta em execucao e se ainda nao foi concluida
-        if cls.t.isAlive() == False and cls.concluida == False:
-            cls.leituraSensores = [] # Limpa a variavel de leituras
-            cls.duracao_total = None # Limpa a varivel de contagem
-            cls.tempo_inicial = time.time() # Defini o tempo incial da logica
-            cls.t.start()
-        else:
-            print('Logica 1 ja concluida, é necessario reicia-la para executar novamente.')
+    def ligarLaser(cls):
+        mcp.setup(cls.gp_laser, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_laser, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
-    @classmethod
-    def reiniciarThread(cls):
-        if cls.t != None:
-            if cls.t.isAlive() == True:
-                cls.concluida = True # Finaliza a tread em execucao
-                time.sleep(2)
-        cls.concluida = False
-        cls.leituraSensores = [] # Limpa a variavel de leituras
-        cls.duracao_total = None # Limpa a varivel de contagem
-        cls.tempo_inicial = time.time() # Defini o tempo incial da logica
-        cls.t = threading.Thread(target=cls.threadLogica) # NOVA THREAD
-        cls.iniciarThread()
-
-    @classmethod
-    def thread_isAlive(cls):
-        status = None
-        if not cls.t == None: # Se o atributo t é diferente de Vazio
-            status = cls.t.isAlive()
-        return status
-
+    # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
         while cls.concluida == False:
-            leituraSensor = []
-            leituraSensor.append( mcp.input(2, mcp.GPB, mcp.ADDRESS1) )
-            leituraSensor.append( mcp.input(3, mcp.GPB, mcp.ADDRESS1) )
-            cls.leituraSensores = leituraSensor
-            #print('Logica 1 Sensores: ' + str(cls.leituraSensores))
+            # Se o botao for pressionado ativa o Laser
+            if GPIO.input(cls.gpio_botao) == GPIO.HIGH :
+                cls.ligarLaser()
 
-            # Checa se as condicoes dos sensores magneticos foi satisfeita
-            if leituraSensor == [1,1]:
-                # chama o metodo para abrir a gaveta
-                cls.forcarAbrirGaveta()
-                cls.concluida = True
-                cls.duracao_total = time.time() - cls.tempo_inicial
-                print('Logica 1 - Finalizada - Tempo: ' + str(cls.duracao_total) + 'segundos')
+            # Se o ldr detectar a luz do laser abre a gaveta
+            if GPIO.input(cls.gpio_ldr) == GPIO.HIGH:
+                cls.abrirGaveta() # Abre a gaveta e marca a logica como concluidas
+                
+            time.sleep(1) # Delay de 1 segundo entre checagens
             
-            time.sleep(1)
+        else:
+            print('Logica 1 - Finalizada')
+
 
 # ------ FIM DA LOGICA 1 ---------
