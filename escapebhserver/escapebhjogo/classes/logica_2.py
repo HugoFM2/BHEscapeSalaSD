@@ -10,7 +10,7 @@ Esta classe faz todo o controle dos itens relacionados a Logica 2
 
 Verde -> Colocando as alavancas na sequência certa vai fazer o teto cair.
 """
-class Logica_2(object):
+class Logica_2(Logica_geral):
     
     # GPIO's
     gpio_chave1 = 0 # Primeira chave (raspberry)
@@ -58,7 +58,7 @@ class Logica_2(object):
             cls.leituraSensores = leituraSensor
 
             # Checa se as chaves estão na posição correta e se a logica 1 foi concluida
-            if leituraSensor == [1,1,1,1] and Logica_1.concluida == True:
+            if leituraSensor == [1,1,1,1] and Logica_1._concluida == True:
                 cls.cairTeto()
 
             time.sleep(1)
