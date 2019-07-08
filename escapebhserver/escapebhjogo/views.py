@@ -1,11 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
-from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
-from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
-from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
-from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
-from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
+# from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
+# from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
+# from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
+# from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
+# from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
+# from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
 
 # Create your views here.
@@ -14,43 +14,77 @@ from . import views # Importa os metodos existentes neste arquivo
 def pagina_inicial(request):
     # DICIONARIO PARA ENVIO DE INFORMAÇÕES DO PROGRAMA PARA A PAGINA HTML
     dicionario_para_html = {
-        'logica1_duracao': views.conversaoDuracao(Logica_1.getDuracaoLogica()),
-        'logica2_duracao': views.conversaoDuracao(Logica_2.getDuracaoLogica()),
-        'logica3_duracao': views.conversaoDuracao(Logica_3.getDuracaoLogica()),
-        'logica4_duracao': views.conversaoDuracao(Logica_4.getDuracaoLogica()),
-        'logica1_status': Logica_1.concluida,
-        'logica2_status': Logica_2.concluida,
-        'logica3_status': Logica_3.concluida,
-        'logica4_status': Logica_4.concluida,
+        'logica1_status': True,
+        'logica2_status': True,
+        'logica3_status': True,
+        'logica4_status': True,
+        'logica5_status': False,
+        'logica6_status': False,
+        'logica7_status': True,
+        'logica8_status': True,
     }
 
     # SE RECEBER UM FORMULARIO POST
     if request.method == 'POST':
         #print(request.POST) # DEBUG
+        # Armazena o valor das query recebidas, se não houver armazena None
         acao = request.POST.get('acao')
         forcar_logica1 = request.POST.get('forcar_logica1')
         forcar_logica2 = request.POST.get('forcar_logica2')
         forcar_logica3 = request.POST.get('forcar_logica3')
         forcar_logica4 = request.POST.get('forcar_logica4')
+        forcar_logica5 = request.POST.get('forcar_logica5')
+        forcar_logica6 = request.POST.get('forcar_logica6')
+        forcar_logica7 = request.POST.get('forcar_logica7')
+        forcar_logica8 = request.POST.get('forcar_logica8')
 
+        # Checagem dos botoes de Ação
         if acao != None and acao == 'Iniciar Jogo':
-            views.iniciar_jogo()
+            #views.iniciar_jogo()
+            pass
         elif acao != None and acao == 'Reiniciar Jogo':
-            views.reiniciar_jogo() # EM TESTES AINDA
+            #views.reiniciar_jogo() # EM TESTES AINDA
+            pass
 
-        if forcar_logica1 != None and forcar_logica1 == 'Forcar Abrir Gaveta':
-            Logica_1.forcarAbrirGaveta()
+        # Checagem dos botoes da logica 1
+        if forcar_logica1 != None and forcar_logica1 == 'Forcar Ligar Laser':
+            pass
+        elif forcar_logica1 != None and forcar_logica1 == 'Forcar Abrir Gaveta':
+            pass
 
-        if forcar_logica2 != None and forcar_logica2 == 'Forcar Abrir Maleta':
-            Logica_2.forcarAbrirMaleta()
+        # Checagem dos botoes da logica 2
+        if forcar_logica2 != None and forcar_logica2 == 'Forcar Cair Teto':
+            pass
 
-        if forcar_logica3 != None and forcar_logica3 == 'Forcar Descer Aviao':
-            Logica_3.forcarDescerAviao()
-        elif forcar_logica3 != None and forcar_logica3 == 'Forcar Subir Aviao':
-            Logica_3.forcarSubirAviao()
+        # Checagem dos botoes da logica 3
+        if forcar_logica3 != None and forcar_logica3 == 'Forcar Abrir Alcapao':
+            pass
 
-        if forcar_logica4 != None and forcar_logica4 == 'Forcar Descer Teto':
-            Logica_4.forcarAbrirTeto()
+        # Checagem dos botoes da logica 4
+        if forcar_logica4 != None and forcar_logica4 == 'Forcar Giro Busto':
+            pass
+        elif forcar_logica4 != None and forcar_logica4 == 'Forcar Abrir Porta':
+            pass
+        elif forcar_logica4 != None and forcar_logica4 == 'Voltar Busto':
+            pass
+
+        # Checagem dos botoes da logica 5
+        if forcar_logica5 != None and forcar_logica5 == 'Forcar Abrir Bau':
+            pass
+
+        # Checagem dos botoes da logica 6
+        if forcar_logica6 != None and forcar_logica6 == 'Forcar Descer Chave':
+            pass
+        elif forcar_logica5 != None and forcar_logica5 == 'Subir Chave':
+            pass
+
+        # Checagem dos botoes da logica 7
+        if forcar_logica7 != None and forcar_logica7 == 'Forcar Destravar Gaveta':
+            pass
+
+        # Checagem dos botoes da logica 8
+        if forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Brasao':
+            pass
     
     return render(request, 'escapebhhtml/pagina_inicial.html', dicionario_para_html )
 
@@ -64,35 +98,29 @@ def escape_debug(request): # VIEW DE DEBUG
 
 # -------- METODOS PARA AUXILIAR A VIEWS -----------
 def iniciar_jogo():
-    print('Iniciando Jogo...') # imprime uma mensagem no terminal
+    print('Iniciando Jogo...')
     mcp.confRegistradoresComZero() # Escrevendo 0x00 nos registradores dos extensores de portas
-    # Inicia as verificações dos sensores
+    # Inicia as threads das logicas
     Logica_1.iniciarThread()
     Logica_2.iniciarThread()
     Logica_3.iniciarThread()
     Logica_4.iniciarThread()
+    Logica_5.iniciarThread()
+    Logica_6.iniciarThread()
+    Logica_7.iniciarThread()
+    Logica_8.iniciarThread()
 
-def reiniciar_jogo(): # IMPLEMENTAR
-    print('Reiniciando Jogo...') # imprime uma mensagem no terminal
+def reiniciar_jogo(): # EM TESTES
+    print('Reiniciando Jogo...')
     mcp.confRegistradoresComZero() # Escrevendo 0x00 nos registradores dos extensores de portas
-    # Reinicia as verificações dos sensores
+    # Reinicia as threads das logicas
     Logica_1.reiniciarThread()
     Logica_2.reiniciarThread()
     Logica_3.reiniciarThread()
     Logica_4.reiniciarThread()
+    Logica_5.reiniciarThread()
+    Logica_6.reiniciarThread()
+    Logica_7.reiniciarThread()
+    Logica_8.reiniciarThread()
 
-def conversaoDuracao(duracao_segundos): # Este metodo converte os segundos passados pela logica em uma string HH:MM:SS
-    horas = duracao_segundos // 3600 # Retorna somente a parte inteira
-    minutos = (duracao_segundos % 3600) // 60
-    segundos = (duracao_segundos % 3600) % 60
-    # Defini como sera montada a string de duracao
-    if horas < 10 and minutos < 10 and segundos < 10:
-        texto = '0{}:0{}:0{}'.format(round(horas), round(minutos), round(segundos) )
-    elif horas < 10 and minutos < 10:
-        texto = '0{}:0{}:{}'.format(round(horas), round(minutos), round(segundos) )
-    elif horas < 10:
-        texto = '0{}:{}:{}'.format(round(horas), round(minutos), round(segundos) )
-    else:
-        texto = '{}:{}:{}'.format(round(horas), round(minutos), round(segundos) )
-    return texto
 # ----------- FIM dos METODOS -----
