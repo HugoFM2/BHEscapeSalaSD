@@ -1,14 +1,14 @@
 {% load staticfiles %}
 <html>
     <head>
-        <title>BH Escape - Painel de Controle</title>
+        <title>BH Escape SD - Painel de Controle</title>
         <meta http-equiv="refresh" content="4">  <!-- A pagina atualiza a cada 4s-->
         <link rel="stylesheet" href="{% static 'css/css_padrao.css' %}">
         <link rel="icon" href="{% static 'imagens/favicon32x32.png' %}" sizes="32x32">
     </head>
     <body>
         <div class="divTitulo">
-            <h1>Painel de Controle</h1>
+            <h1>SALA SANTOS DUMONT</h1>
             <img src="{% static 'imagens/logo.png' %}" alt="BH Escape - Logo" style="width:110px;height:130px;">
         </div>
         <!-- DIV com form e botoes de Iniciar e Reiniciar o Jogo-->
@@ -38,7 +38,8 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Gaveta -->
                         <form method='POST'>{% csrf_token %}
-                            <input class="inputButton" type="submit" name = "forcar_logica1" value="Forcar Abrir Gaveta">
+                            <input class="inputButton" type="submit" name="forcar_logica1" value="Forcar Ligar Laser">
+                            <input class="inputButton" type="submit" name="forcar_logica1" value="Forcar Abrir Gaveta" style="background-color: #0057ba;">
                         </form>
                     </div>
                 </div>
@@ -52,7 +53,7 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica2" value="Forcar Abrir Maleta">
+                        <input class="inputButton" type="submit" name="forcar_logica2" value="Forcar Cair Teto">
                         </form>
                     </div>
                 </div>
@@ -66,8 +67,7 @@
                     </div>
                     <div class="divTableCell"> <!-- Botões Forcar Descer Aviao e Forcar Subir Aviao -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Descer Aviao">
-                        <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Subir Aviao" style="background-color: #0057ba;" >
+                        <input class="inputButton" type="submit" name="forcar_logica3" value="Forcar Abrir Alcapao">
                         </form>
                     </div>
                 </div>
@@ -81,7 +81,9 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        <input class="inputButton" type="submit" name="forcar_logica4" value="Forcar Giro Busto">
+                        <input class="inputButton" type="submit" name="forcar_logica4" value="Forcar Abrir Porta" style="background-color: #0057ba;">
+                        <input class="inputButton" type="submit" name="forcar_logica4" value="Voltar Busto">
                         </form>
                     </div>
                 </div>
@@ -95,7 +97,7 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        <input class="inputButton" type="submit" name="forcar_logica5" value="Forcar Abrir Bau">
                         </form>
                     </div>
                 </div>
@@ -109,7 +111,8 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        <input class="inputButton" type="submit" name="forcar_logica6" value="Forcar Descer Chave">
+                        <input class="inputButton" type="submit" name="forcar_logica6" value="Subir Chave">
                         </form>
                     </div>
                 </div>
@@ -123,7 +126,7 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        <input class="inputButton" type="submit" name="forcar_logica7" value="Forcar Destravar Gaveta">
                         </form>
                     </div>
                 </div>
@@ -137,7 +140,7 @@
                     </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        <input class="inputButton" type="submit" name="forcar_logica8" value="Forcar Liberar Brasao">
                         </form>
                     </div>
                 </div>
