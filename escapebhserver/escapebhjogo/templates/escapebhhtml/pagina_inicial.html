@@ -21,55 +21,127 @@
         </div>
         <!-- DIV Com a tabela de Informações -->
         <div class="divTable" style="border: 1px solid #000;" >
-                <div class="divTableBody">
+            <div class="divTableBody">
+                <!-- Linha de Titulo da Tabela -->
                 <div class="divTableRow">
-                <div class="divTableCell"><h2>LÓGICA</h2></div>
-                <div class="divTableCell"><h2>DURAÇÃO&#13;&#10;hh:mm:ss</h2></div>
-                <div class="divTableCell"><h2>STATUS</h2></div>
-                <div class="divTableCell"><h2>BOTÕES DE AÇÃO</h2></div>
+                    <div class="divTableCell"><h2>LÓGICA</h2></div>
+                    <div class="divTableCell"><h2>STATUS</h2></div>
+                    <div class="divTableCell"><h2>BOTÕES DE AÇÃO</h2></div>
                 </div>
+                <!-- Linha da Logica 1 -->
                 <div class="divTableRow">
                     <div class="divTableCell">Lógica 1</div>
-                    <div class="divTableCell">{{ logica1_duracao }}</div>
-                    <div class="divTableCell">{% if logica1_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica1_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Gaveta -->
                         <form method='POST'>{% csrf_token %}
-                        <input class="inputButton" type="submit" name = "forcar_logica1" value="Forcar Abrir Gaveta">
+                            <input class="inputButton" type="submit" name = "forcar_logica1" value="Forcar Abrir Gaveta">
                         </form>
                     </div>
                 </div>
+                <!-- Linha da Logica 2 -->
                 <div class="divTableRow">
                     <div class="divTableCell">Lógica 2</div>
-                    <div class="divTableCell">{{ logica2_duracao }}</div>
-                    <div class="divTableCell">{% if logica2_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica2_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
                         <input class="inputButton" type="submit" name = "forcar_logica2" value="Forcar Abrir Maleta">
                         </form>
                     </div>
                 </div>
+                <!-- Linha da Logica 3 -->
                 <div class="divTableRow">
                     <div class="divTableCell">Lógica 3</div>
-                    <div class="divTableCell">{{ logica3_duracao }}</div>
-                    <div class="divTableCell">{% if logica3_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
-                    <div class="divTableCell"> <!-- Botao Forcar Abrir Gaveta -->
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica3_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
+                    <div class="divTableCell"> <!-- Botões Forcar Descer Aviao e Forcar Subir Aviao -->
                         <form method='POST'>{% csrf_token %}
                         <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Descer Aviao">
-                        <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Subir Aviao" style="background-color: #024073;" >
+                        <input class="inputButton" type="submit" name = "forcar_logica3" value="Forcar Subir Aviao" style="background-color: #0057ba;" >
                         </form>
                     </div>
                 </div>
+                <!-- Linha da Logica 4 -->
                 <div class="divTableRow">
                     <div class="divTableCell">Lógica 4</div>
-                    <div class="divTableCell">{{ logica4_duracao }}</div>
-                    <div class="divTableCell">{% if logica4_status == True %} <span class="dot dotVerde"></span> {% else %} <span class="dot dotCinza"></span> {% endif %}</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica4_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
                         <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
                         </form>
                     </div>
                 </div>
+                <!-- Linha da Logica 5 -->
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 5</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica5_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        </form>
+                    </div>
                 </div>
+                <!-- Linha da Logica 6 -->
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 6</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica6_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        </form>
+                    </div>
+                </div>
+                <!-- Linha da Logica 7 -->
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 7</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica7_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        </form>
+                    </div>
+                </div>
+                <!-- Linha da Logica 8 -->
+                <div class="divTableRow">
+                    <div class="divTableCell">Lógica 8</div>
+                    <div class="divTableCell"> <!-- Indicador do status da logica -->
+                        {% if logica8_status == True %} <span class="dot dotVerde"></span>
+                        {% else %} <span class="dot dotCinza"></span>
+                        {% endif %}
+                    </div>
+                    <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
+                        <form method='POST'>{% csrf_token %}
+                        <input class="inputButton" type="submit" name = "forcar_logica4" value="Forcar Descer Teto">
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- Site usado para criar tabela div: DivTable.com -->
     </body>
