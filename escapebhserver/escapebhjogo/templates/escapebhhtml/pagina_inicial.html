@@ -10,6 +10,7 @@
         <div class="divTitulo">
             <h1>SALA SANTOS DUMONT</h1>
             <img src="{% static 'imagens/logo.png' %}" alt="BH Escape - Logo" style="width:110px;height:130px;">
+            <!-- <span id="cronometro">Tempo: 00:00:00</span> -->
         </div>
         <!-- DIV com form e botoes de Iniciar e Reiniciar o Jogo-->
         <div class="divBotoesSuperior">
@@ -112,7 +113,7 @@
                     <div class="divTableCell"> <!-- Botao Forcar Abrir Maleta -->
                         <form method='POST'>{% csrf_token %}
                         <input class="inputButton" type="submit" name="forcar_logica6" value="Forcar Descer Chave">
-                        <input class="inputButton" type="submit" name="forcar_logica6" value="Subir Chave">
+                        <input class="inputButton" type="submit" name="forcar_logica6" value="Subir Chave" style="background-color: #0057ba;">
                         </form>
                     </div>
                 </div>
