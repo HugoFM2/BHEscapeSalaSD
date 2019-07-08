@@ -18,7 +18,7 @@ class Logica_4(Logica_geral):
     gpio_chave1 = 0 # Primeira chave (raspberry)
     gpio_chave2 = 0 # Segunda chave (raspberry)
     gpio_botao = 0 # Botao no busto (raspberry)
-    gpio_servo = 0 # Servo motor do busto
+    gpio_servo = 0 # Servo motor do busto (raspberry)
     gp_porta = 0 # Rele da trava do alçapão (extensor)
 
     # Sobreescrevendo metodo setup() da classe pai
@@ -30,12 +30,13 @@ class Logica_4(Logica_geral):
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_chave1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_chave2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        # GPIO SERVO ?
+        GPIO.setup(cls.gpio_servo, GPIO.OUT)
 
         # Configurando GPIO's do Extensor
         mcp.setup(cls.gp_porta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel baixo
+        GPIO.output(cls.gpio_servo, GPIO.LOW)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
 
     # Metodo para destravar alcapao no chao
@@ -49,8 +50,14 @@ class Logica_4(Logica_geral):
 
     @classmethod
     def abrirBusto(cls):
-        # Implementar
-        pass
+        # https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
+        # https://www.embarcados.com.br/pwm-na-raspberry-pi-com-python/
+        pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
+        pwmServo.start(2.5) # Inicio com DutyCycle em 2.5%
+        pwmServo.ChangeDutyCycle(7.5) # 7.5% = 90º - DutyCycle de 2.5% a 12.5% (ou 5% a 10%) *TESTAR
+        time.sleep(10)
+        #pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
+        pwmServo.stop()
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
