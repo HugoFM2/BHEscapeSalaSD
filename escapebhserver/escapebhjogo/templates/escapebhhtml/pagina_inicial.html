@@ -14,11 +14,10 @@
         <!-- DIV com form e botoes de Iniciar e Reiniciar o Jogo-->
         <div class="divBotoesSuperior">
             <form method='POST'>{% csrf_token %}
-                <input class="inputButton" type="submit" name = "acao" value="Iniciar Jogo" style="background-color: seagreen;">
-                <input class="inputButton" type="submit" name = "acao" value="Reiniciar Jogo" style="background-color: tomato;">
+                <input class="inputButton" type="submit" name="acao" value="Iniciar Jogo" style="background-color: seagreen;">
+                <input class="inputButton" type="submit" name="acao" value="Reiniciar Jogo" style="background-color: tomato;">
             </form>
             <a href="/"><button class="button" style="background-color: gold;">Atualizar Pagina</button></a>
-            <a href="/"><button class="button" style="background-color: grey; width: 100px; font-size: 10px; padding: 10px;">192.168....</button></a>
         </div>
         <!-- DIV Com a tabela de Informações -->
         <div class="divTable" style="border: 1px solid #000;" >
