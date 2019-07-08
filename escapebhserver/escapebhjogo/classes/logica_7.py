@@ -42,7 +42,7 @@ class Logica_7(Logica_geral):
     # Metodo para destravar o bau
     @classmethod
     def abrirGaveta(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(30)
@@ -51,7 +51,7 @@ class Logica_7(Logica_geral):
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
-        while cls.concluida == False:
+        while cls._concluida == False:
             # Checa se a logica 4 já foi concluida
             if Logica_6._concluida == True:
 

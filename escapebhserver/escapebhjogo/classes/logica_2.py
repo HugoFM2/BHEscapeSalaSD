@@ -40,7 +40,7 @@ class Logica_2(Logica_geral):
     # Metodo para destravar teto e fazer com que ele caia
     @classmethod
     def cairTeto(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(30)
@@ -49,7 +49,7 @@ class Logica_2(Logica_geral):
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
-        while cls.concluida == False:
+        while cls._concluida == False:
             leituraSensor = []
             leituraSensor.append( GPIO.input(cls.gpio_chave1) )
             leituraSensor.append( GPIO.input(cls.gpio_chave2) )

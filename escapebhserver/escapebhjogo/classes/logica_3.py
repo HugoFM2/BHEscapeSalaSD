@@ -41,7 +41,7 @@ class Logica_3(Logica_geral):
     # Metodo para destravar alcapao no chao
     @classmethod
     def abrirAlcapao(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(30)
@@ -54,7 +54,7 @@ class Logica_3(Logica_geral):
         ORDEM_CORRETA = [4,3,2,1]
         ordem_degrau = []
 
-        while cls.concluida == False:
+        while cls._concluida == False:
             # Checa se a logica 2 já foi concluida
             if Logica_2._concluida == True:
 

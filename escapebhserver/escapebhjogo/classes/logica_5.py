@@ -39,7 +39,7 @@ class Logica_5(Logica_geral):
     # Metodo para destravar o bau
     @classmethod
     def abrirBau(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_bau, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_bau, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(30)
@@ -48,7 +48,7 @@ class Logica_5(Logica_geral):
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
-        while cls.concluida == False:
+        while cls._concluida == False:
             # Checa se a logica 4 já foi concluida
             if Logica_4._concluida == True:
 

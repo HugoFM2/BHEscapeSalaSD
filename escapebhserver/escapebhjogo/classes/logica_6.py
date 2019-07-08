@@ -67,7 +67,7 @@ class Logica_6(Logica_geral):
     # Metodo para acionar o motor no sentindo de descer a "gaveta"
     @classmethod
     def descerMotor(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_motorDescer, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(30)
@@ -100,7 +100,7 @@ class Logica_6(Logica_geral):
 
         print('Leitura Inciada! Aproxime seu cartão RFID')
 
-        while cls.concluida == False:
+        while cls._concluida == False:
             # Checa se a logica 5 já foi concluida
             if Logica_5._concluida == True:
 

@@ -40,7 +40,7 @@ class Logica_8(Logica_geral):
     # Metodo abrir o tubo que contem o brasão
     @classmethod
     def abrirTuboBrasao(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         # --> Barulho de sucção <--
@@ -50,7 +50,7 @@ class Logica_8(Logica_geral):
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
-        while cls.concluida == False:
+        while cls._concluida == False:
             # Checa se a logica 7 já foi concluida
             if Logica_7._concluida == True:
 

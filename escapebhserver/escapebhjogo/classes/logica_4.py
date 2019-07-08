@@ -41,7 +41,7 @@ class Logica_4(Logica_geral):
     # Metodo para destravar alcapao no chao
     @classmethod
     def abrirPorta(cls):
-        cls.concluida = True
+        cls._concluida = True
         mcp.setup(cls.gp_porta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(30)
@@ -55,7 +55,7 @@ class Logica_4(Logica_geral):
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
-        while cls.concluida == False:
+        while cls._concluida == False:
             # Checa se a logica 3 já foi concluida
             if Logica_3._concluida == True:
 
