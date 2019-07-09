@@ -20,13 +20,13 @@ print('Mapeamento 1 Iniciado!')
 mcp.confRegistradoresComZero()
 
 # Sensores do extensor como INPUT
-time.sleep(2)
+time.sleep(1)
 for i in range(0,8):
     mcp.setup(i, mcp.GPA, mcp.IN, mcp.ADDRESS1)
     mcp.setup(i, mcp.GPB, mcp.IN, mcp.ADDRESS1)
 
 # Reles como OUTPUT (Modulo desativa em nivel alto)
-time.sleep(2)
+#time.sleep(1)
 for i in range(0,8):
     mcp.setup(i, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
     mcp.setup(i, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -43,6 +43,7 @@ for gpio in GPIO_RASPBERRY:
     
 # Loop
 while True:
+    print('---------------------')
     leitura = []
     leitura.append('GPA:')
     for i in range(0,8):
@@ -52,34 +53,21 @@ while True:
     for i in range(0,8):
         leitura.append(mcp.input(i,mcp.GPB, mcp.ADDRESS1))
 
-    print('\n Leituras Extensor:')
+    print('Extensor Leituras:')
     print(leitura)
-    time.sleep(1)
 
     leiura_rasp = []
     for gpio in GPIO_RASPBERRY:
         leiura_rasp.append(GPIO.input(gpio)) #
     
-    print('\n Leituras Raspberry:')
-    print(leitura)
+    print('Raspberry Leituras:')
+    print(leiura_rasp)
+    print('=====================\n\n\n\n')
     time.sleep(1)
 
-# # GPIO's
-# gpio_botao = 0 # Botao mezanino (Raspberry)
-# gpio_ldr = 0 # Sensor ldr (Raspberry)
-# gp_laser = 0 # Rele Laser (Extensor 0x)s
-# gp_gaveta = 0 # Rele Gaveta (Extensor)
 
-
-
-# # Configurado GPIO's do raspberry
-# GPIO.setup(cls.gpio_botao, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-# GPIO.setup(cls.gpio_ldr, GPIO.IN)
-
-# # Configurando GPIO's do Extensor
-# mcp.setup(cls.gp_laser, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-# mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-
-# # Inicialmente em nivel baixo
-# mcp.output(cls.gp_laser, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-# mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+# TESTE
+# gp = 5
+# mcp.output(gp, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+# time.sleep(10)
+# mcp.output(gp, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
