@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
 from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
+from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 # from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
@@ -16,7 +17,7 @@ def pagina_inicial(request):
         'logica1_status': Logica_1._concluida,
         'logica2_status': Logica_2._concluida,
         'logica3_status': Logica_3._concluida,
-        'logica4_status': False,
+        'logica4_status': Logica_4._concluida,
         'logica5_status': False,
         'logica6_status': False,
         'logica7_status': False,
@@ -60,11 +61,11 @@ def pagina_inicial(request):
 
         # Checagem dos botoes da logica 4
         if forcar_logica4 != None and forcar_logica4 == 'Forcar Giro Busto':
-            pass
+            Logica_4.abrirBusto()
         elif forcar_logica4 != None and forcar_logica4 == 'Forcar Abrir Porta':
-            pass
+            Logica_4.abrirPorta()
         elif forcar_logica4 != None and forcar_logica4 == 'Voltar Busto':
-            pass
+            Logica_4.voltarBusto()
 
         # Checagem dos botoes da logica 5
         if forcar_logica5 != None and forcar_logica5 == 'Forcar Abrir Bau':
@@ -101,7 +102,7 @@ def iniciar_jogo():
     Logica_1.iniciarThread()
     Logica_2.iniciarThread()
     Logica_3.iniciarThread()
-    #Logica_4.iniciarThread()
+    Logica_4.iniciarThread()
     #Logica_5.iniciarThread()
     #Logica_6.iniciarThread()
     #Logica_7.iniciarThread()
@@ -113,7 +114,7 @@ def reiniciar_jogo(): # EM TESTES
     Logica_1.reiniciarThread()
     Logica_2.reiniciarThread()
     Logica_3.reiniciarThread()
-    #Logica_4.reiniciarThread()
+    Logica_4.reiniciarThread()
     #Logica_5.reiniciarThread()
     #Logica_6.reiniciarThread()
     #Logica_7.reiniciarThread()
