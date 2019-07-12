@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
 from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
+from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 # from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
@@ -12,7 +13,7 @@ def pagina_inicial(request):
     # DICIONARIO PARA ENVIO DE INFORMAÇÕES DO PROGRAMA PARA A PAGINA HTML
     dicionario_para_html = {
         'logica1_status': Logica_1._concluida,
-        'logica2_status': False,
+        'logica2_status': Logica_2._concluida,
         'logica3_status': False,
         'logica4_status': False,
         'logica5_status': False,
@@ -50,7 +51,7 @@ def pagina_inicial(request):
 
         # Checagem dos botoes da logica 2
         if forcar_logica2 != None and forcar_logica2 == 'Forcar Cair Teto':
-            pass
+            Logica_2.cairTeto()
 
         # Checagem dos botoes da logica 3
         if forcar_logica3 != None and forcar_logica3 == 'Forcar Abrir Alcapao':
@@ -97,7 +98,7 @@ def iniciar_jogo():
     print('Iniciando Jogo...')
     # Inicia as threads das logicas
     Logica_1.iniciarThread()
-    #Logica_2.iniciarThread()
+    Logica_2.iniciarThread()
     #Logica_3.iniciarThread()
     #Logica_4.iniciarThread()
     #Logica_5.iniciarThread()
@@ -109,7 +110,7 @@ def reiniciar_jogo(): # EM TESTES
     print('Reiniciando Jogo...')
     # Reinicia as threads das logicas
     Logica_1.reiniciarThread()
-    #Logica_2.reiniciarThread()
+    Logica_2.reiniciarThread()
     #Logica_3.reiniciarThread()
     #Logica_4.reiniciarThread()
     #Logica_5.reiniciarThread()
