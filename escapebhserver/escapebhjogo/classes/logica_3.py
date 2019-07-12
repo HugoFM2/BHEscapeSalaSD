@@ -4,6 +4,7 @@ import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 from .logica_geral import Logica_geral
+from escapebhjogo.classes.reles import Reles
 
 """ CLASSE LOGICA 3
 Esta classe faz todo o controle dos itens relacionados a Logica 3
@@ -14,11 +15,12 @@ caso não tenha como abrir o alçapão).
 class Logica_3(Logica_geral):
     
     # GPIO's
-    gpio_degrau1 = 0 # Primeiro degrau (raspberry)
-    gpio_degrau2 = 0 # Segundo degrau (raspberry)
-    gpio_degrau3 = 0 # Terceiro degrau (raspberry)
-    gpio_degrau4 = 0 # Quarto degrau (raspberry)
-    gp_trava = 0 # Rele da trava do alçapão (extensor)
+    # Degraus contados de baixo para cima
+    gpio_degrau1 = 3 # Primeiro degrau - GPA 3 (Extensor 0x22)
+    gpio_degrau2 = 18 # Segundo degrau (raspberry)
+    gpio_degrau3 = 1 # Terceiro degrau - GPA 1(Extensor 0x22)
+    gpio_degrau4 = 16 # Quarto degrau (raspberry)
+    gp_trava = 3 # Rele da trava do alçapão - GPA 3 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
@@ -27,25 +29,28 @@ class Logica_3(Logica_geral):
         GPIO.setwarnings(False) # Desativa avisos
         
         # Configurado GPIO's do raspberry
-        GPIO.setup(cls.gpio_degrau1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_degrau2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_degrau3, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_degrau4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
-        # Configurando GPIO's do Extensor
+        # Desativar todos os reles
+        Reles.desligarTodosReles()
+
+        # Configurando GPIO's dos Extensores
+        mcp.setup(cls.gpio_degrau1, mcp.GPA, mcp.IN, mcp.ADDRESS1)
+        mcp.setup(cls.gpio_degrau3, mcp.GPA, mcp.IN, mcp.ADDRESS1)
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
-        # Inicialmente em nivel baixo
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        # Inicialmente em nivel alto (Rele desativado)
+        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para destravar alcapao no chao
     @classmethod
     def abrirAlcapao(cls):
         cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(30)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(0.5)
+        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
@@ -59,25 +64,34 @@ class Logica_3(Logica_geral):
             if Logica_2._concluida == True:
 
                 # Se for detectado uma pisada e o se o numero do degrau não estiver na lista, adiciona ele a lista
-                if GPIO.input(cls.gpio_degrau1) == GPIO.HIGH and (1 in ordem_degrau) == False:
+                leitura1 = mcp.input(cls.gpio_degrau1, mcp.GPA, mcp.ADDRESS1)
+                if leitura1 == 1 and (1 in ordem_degrau) == False:
                     ordem_degrau.append(1)
                 
-                if GPIO.input(cls.gpio_degrau2) == GPIO.HIGH and (2 in ordem_degrau) == False:
+                leitura2 = GPIO.input(cls.gpio_degrau2)
+                if leitura2 == GPIO.HIGH and (2 in ordem_degrau) == False:
                     ordem_degrau.append(2)
 
-                if GPIO.input(cls.gpio_degrau3) == GPIO.HIGH and (3 in ordem_degrau) == False:
+                leitura3 = mcp.input(cls.gpio_degrau3, mcp.GPA, mcp.ADDRESS1)
+                if leitura3 == 1 and (3 in ordem_degrau) == False:
                     ordem_degrau.append(3)
 
-                if GPIO.input(cls.gpio_degrau4) == GPIO.HIGH and (4 in ordem_degrau) == False:
+                leitura4 = GPIO.input(cls.gpio_degrau4)
+                if leitura4 == GPIO.HIGH and (4 in ordem_degrau) == False:
                     ordem_degrau.append(4)
+
+                print('Logica 3 - Rodando ' + str(ordem_degrau) ) #DEBUG
 
                 # Checa se todos os degrais já foram pisados e checa se foi na ordem correta.
                 if len(ordem_degrau) == 4 and ordem_degrau == ORDEM_CORRETA :
                     cls.abrirAlcapao()
+                    print('Alçapão Aberto (Logica 3)') #DEBUG
                 elif len(ordem_degrau) == 4 and ordem_degrau != ORDEM_CORRETA :
                     ordem_degrau = []
+                    print('Ordem incorreta (Logica 3)') #DEBUG
+                    time.sleep(3) # Pausa checagem por 3 segundos
 
-            time.sleep(1)
+                time.sleep(0.25)
         
         else:
             print('Logica 3 - Finalizada')
