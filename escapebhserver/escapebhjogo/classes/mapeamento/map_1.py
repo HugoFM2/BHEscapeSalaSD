@@ -17,16 +17,18 @@ GPIO_RASPBERRY = [35,37,40,38,36,32,26,22,18,16,12,10,8]
 print('Mapeamento 1 Iniciado!')
 
 # Extensor
-mcp.confRegistradoresComZero()
+#mcp.confRegistradoresComZero()
 
 # Sensores do extensor como INPUT
 time.sleep(1)
 for i in range(0,8):
+    # mcp.output(i, mcp.GPA, mcp.LOW, mcp.ADDRESS1)
+    # mcp.output(i, mcp.GPB, mcp.LOW, mcp.ADDRESS1)
     mcp.setup(i, mcp.GPA, mcp.IN, mcp.ADDRESS1)
     mcp.setup(i, mcp.GPB, mcp.IN, mcp.ADDRESS1)
 
-# Reles como OUTPUT (Modulo desativa em nivel alto)
-#time.sleep(1)
+#Reles como OUTPUT (Modulo desativa em nivel alto)
+# time.sleep(1)
 for i in range(0,8):
     mcp.setup(i, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
     mcp.setup(i, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -42,8 +44,10 @@ for gpio in GPIO_RASPBERRY:
     GPIO.setup(gpio, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
     
 # Loop
+contador = 0
 while True:
-    print('---------------------')
+    contador += 1
+    print('--------------------- ' + str(contador))
     leitura = []
     leitura.append('GPA:')
     for i in range(0,8):
@@ -52,6 +56,12 @@ while True:
     leitura.append('GPB:')
     for i in range(0,8):
         leitura.append(mcp.input(i,mcp.GPB, mcp.ADDRESS1))
+        if i == 2:
+            if leitura[12] == 1:
+                gp = 2
+                mcp.output(gp, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+                time.sleep(4)
+                mcp.output(gp, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     print('Extensor Leituras:')
     print(leitura)
@@ -64,10 +74,3 @@ while True:
     print(leiura_rasp)
     print('=====================\n\n\n\n')
     time.sleep(1)
-
-
-# TESTE
-# gp = 5
-# mcp.output(gp, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-# time.sleep(10)
-# mcp.output(gp, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
