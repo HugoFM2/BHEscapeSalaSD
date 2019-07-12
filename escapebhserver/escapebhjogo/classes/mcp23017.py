@@ -102,11 +102,11 @@ class MCP23017(object):
         # Verifica qual registrador usar
         if GPA_B == 'GPA':
             registrador = cls.IODIRA
-            registrador_2 = cls.GPPUA
+            #registrador_2 = cls.GPPUA
             #registrador_3 = cls.IPOLA
         elif GPA_B == 'GPB':
             registrador = cls.IODIRB
-            registrador_2 = cls.GPPUB
+            #registrador_2 = cls.GPPUB
             #registrador_3 = cls.IPOLB
         else:
             print('Erro no Mcp23017.setup_in(), GPA_B invalida')
@@ -117,7 +117,7 @@ class MCP23017(object):
             novo_status_registrador = status_registrador | byte_comparador # Realiza uma operacao 'OR'
             # Escreve no registrador do extensor
             cls.barramento.write_byte_data(address, registrador, novo_status_registrador) # IODIR
-            cls.barramento.write_byte_data(address, registrador_2, novo_status_registrador) #GPPU
+            #cls.barramento.write_byte_data(address, registrador_2, novo_status_registrador) #GPPU
         else:
             print('Erro no Mcp23017.setup_in(), gpio invalida')
         pass

@@ -1,9 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-# from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
-# from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
-# from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
-# from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
+from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 # from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
@@ -14,14 +11,14 @@ from . import views # Importa os metodos existentes neste arquivo
 def pagina_inicial(request):
     # DICIONARIO PARA ENVIO DE INFORMAÇÕES DO PROGRAMA PARA A PAGINA HTML
     dicionario_para_html = {
-        'logica1_status': True,
-        'logica2_status': True,
-        'logica3_status': True,
-        'logica4_status': True,
+        'logica1_status': Logica_1._concluida,
+        'logica2_status': False,
+        'logica3_status': False,
+        'logica4_status': False,
         'logica5_status': False,
         'logica6_status': False,
-        'logica7_status': True,
-        'logica8_status': True,
+        'logica7_status': False,
+        'logica8_status': False,
     }
 
     # SE RECEBER UM FORMULARIO POST
@@ -40,17 +37,16 @@ def pagina_inicial(request):
 
         # Checagem dos botoes de Ação
         if acao != None and acao == 'Iniciar Jogo':
-            #views.iniciar_jogo()
-            pass
+            views.iniciar_jogo()
+            
         elif acao != None and acao == 'Reiniciar Jogo':
-            #views.reiniciar_jogo() # EM TESTES AINDA
-            pass
+            views.reiniciar_jogo()
 
         # Checagem dos botoes da logica 1
         if forcar_logica1 != None and forcar_logica1 == 'Forcar Ligar Laser':
-            pass
+            Logica_1.ligarLaser()
         elif forcar_logica1 != None and forcar_logica1 == 'Forcar Abrir Gaveta':
-            pass
+            Logica_1.abrirGaveta()
 
         # Checagem dos botoes da logica 2
         if forcar_logica2 != None and forcar_logica2 == 'Forcar Cair Teto':
@@ -99,28 +95,26 @@ def escape_debug(request): # VIEW DE DEBUG
 # -------- METODOS PARA AUXILIAR A VIEWS -----------
 def iniciar_jogo():
     print('Iniciando Jogo...')
-    mcp.confRegistradoresComZero() # Escrevendo 0x00 nos registradores dos extensores de portas
     # Inicia as threads das logicas
     Logica_1.iniciarThread()
-    Logica_2.iniciarThread()
-    Logica_3.iniciarThread()
-    Logica_4.iniciarThread()
-    Logica_5.iniciarThread()
-    Logica_6.iniciarThread()
-    Logica_7.iniciarThread()
-    Logica_8.iniciarThread()
+    #Logica_2.iniciarThread()
+    #Logica_3.iniciarThread()
+    #Logica_4.iniciarThread()
+    #Logica_5.iniciarThread()
+    #Logica_6.iniciarThread()
+    #Logica_7.iniciarThread()
+    #Logica_8.iniciarThread()
 
 def reiniciar_jogo(): # EM TESTES
     print('Reiniciando Jogo...')
-    mcp.confRegistradoresComZero() # Escrevendo 0x00 nos registradores dos extensores de portas
     # Reinicia as threads das logicas
     Logica_1.reiniciarThread()
-    Logica_2.reiniciarThread()
-    Logica_3.reiniciarThread()
-    Logica_4.reiniciarThread()
-    Logica_5.reiniciarThread()
-    Logica_6.reiniciarThread()
-    Logica_7.reiniciarThread()
-    Logica_8.reiniciarThread()
+    #Logica_2.reiniciarThread()
+    #Logica_3.reiniciarThread()
+    #Logica_4.reiniciarThread()
+    #Logica_5.reiniciarThread()
+    #Logica_6.reiniciarThread()
+    #Logica_7.reiniciarThread()
+    #Logica_8.reiniciarThread()
 
 # ----------- FIM dos METODOS -----

@@ -16,9 +16,6 @@ GPIO_RASPBERRY = [35,37,40,38,36,32,26,22,18,16,12,10,8]
 
 print('Mapeamento 1 Iniciado!')
 
-# Extensor
-#mcp.confRegistradoresComZero()
-
 # Sensores do extensor como INPUT
 time.sleep(1)
 for i in range(0,8):
@@ -56,19 +53,13 @@ while True:
     leitura.append('GPB:')
     for i in range(0,8):
         leitura.append(mcp.input(i,mcp.GPB, mcp.ADDRESS1))
-        if i == 2:
-            if leitura[12] == 1:
-                gp = 2
-                mcp.output(gp, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-                time.sleep(4)
-                mcp.output(gp, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     print('Extensor Leituras:')
     print(leitura)
 
     leiura_rasp = []
     for gpio in GPIO_RASPBERRY:
-        leiura_rasp.append(GPIO.input(gpio)) #
+        leiura_rasp.append(GPIO.input(gpio))
     
     print('Raspberry Leituras:')
     print(leiura_rasp)
