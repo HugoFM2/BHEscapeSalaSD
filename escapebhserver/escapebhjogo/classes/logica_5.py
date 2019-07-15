@@ -62,7 +62,7 @@ class Logica_5(Logica_geral):
 
                 print('Logica 5 - Rodando')
 
-            time.sleep(1)
+            time.sleep(0.25)
         
         else:
             print('Logica 5 - Finalizada')

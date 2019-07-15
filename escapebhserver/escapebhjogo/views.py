@@ -5,6 +5,7 @@ from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logic
 from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
 from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
 from escapebhjogo.classes.logica_5 import Logica_5 # Classe com metodos da logica 5
+from escapebhjogo.classes.logica_6 import Logica_6 # Classe com metodos da logica 6
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 # from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
@@ -20,7 +21,7 @@ def pagina_inicial(request):
         'logica3_status': Logica_3._concluida,
         'logica4_status': Logica_4._concluida,
         'logica5_status': Logica_5._concluida,
-        'logica6_status': False,
+        'logica6_status': Logica_6._concluida,
         'logica7_status': False,
         'logica8_status': False,
     }
@@ -74,9 +75,9 @@ def pagina_inicial(request):
 
         # Checagem dos botoes da logica 6
         if forcar_logica6 != None and forcar_logica6 == 'Forcar Descer Chave':
-            pass
+            Logica_6.descerMotor()
         elif forcar_logica5 != None and forcar_logica5 == 'Subir Chave':
-            pass
+            Logica_6.subirMotor()
 
         # Checagem dos botoes da logica 7
         if forcar_logica7 != None and forcar_logica7 == 'Forcar Destravar Gaveta':
@@ -105,7 +106,7 @@ def iniciar_jogo():
     Logica_3.iniciarThread()
     Logica_4.iniciarThread()
     Logica_5.iniciarThread()
-    #Logica_6.iniciarThread()
+    Logica_6.iniciarThread()
     #Logica_7.iniciarThread()
     #Logica_8.iniciarThread()
 
@@ -117,7 +118,7 @@ def reiniciar_jogo(): # EM TESTES
     Logica_3.reiniciarThread()
     Logica_4.reiniciarThread()
     Logica_5.reiniciarThread()
-    #Logica_6.reiniciarThread()
+    Logica_6.reiniciarThread()
     #Logica_7.reiniciarThread()
     #Logica_8.reiniciarThread()
 

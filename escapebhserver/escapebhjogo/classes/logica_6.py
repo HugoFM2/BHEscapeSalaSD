@@ -20,16 +20,19 @@ pequena gaveta e a chave irá deslizar)
 class Logica_6(Logica_geral):
 
     # GPIO's
-    gpio_rfid = [] # Criar um 'vetor'
-    gpio_rfid[0] = 0 # Primeiro RFID (raspberry)
-    gpio_rfid[1] = 0 # Segundo RFID (raspberry)
-    gpio_rfid[2] = 0 # Terceiro RFID (raspberry)
-    gpio_rfid[3] = 0 # Quarto RFID (raspberry)
-    gpio_rfid[4] = 0 # Quinto RFID (raspberry)
-    gpio_rfid[5] = 0 # Sexto RFID (raspberry)
-    gpio_rfid[6] = 0 # Setimo RFID (raspberry)
-    gp_motorDescer = 0 # Rele da trava do bau (extensor)
-    gp_motorSubir = 0 # Rele da trava do bau (extensor)
+    gpio_rfid = [None,None,None,None,None,None,None] # Criar um 'vetor'
+    gpio_rfid[0] = 7 # Primeiro RFID (raspberry)
+    gpio_rfid[1] = 11 # Segundo RFID (raspberry)
+    gpio_rfid[2] = 13 # Terceiro RFID (raspberry)
+    gpio_rfid[3] = 15 # Quarto RFID (raspberry)
+    gpio_rfid[4] = 29 # Quinto RFID (raspberry)
+    gpio_rfid[5] = 31 # Sexto RFID (raspberry)
+    gpio_rfid[6] = 33 # Setimo RFID (raspberry)
+    gp_motorDescer = 2 # Rele Desce Motor - GPB 2 (extensor 0x24)
+    gp_motorSubir = 5 # Rele Sobe Motor - GPB 5 (extensor 0x24)
+
+    # IMPLEMENTAR RFIDS DA SEGUNDA SALA
+    pass
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
@@ -60,26 +63,26 @@ class Logica_6(Logica_geral):
         mcp.setup(cls.gp_motorDescer, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(cls.gp_motorSubir, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
-        # Inicialmente em nivel baixo
-        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        # Inicialmente em nivel alto (Desativado)
+        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para acionar o motor no sentindo de descer a "gaveta"
     @classmethod
     def descerMotor(cls):
         cls._concluida = True
         mcp.setup(cls.gp_motorDescer, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(30)
         mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(0.5)
+        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para acionar o motor no sentindo de subir a "gaveta"
     @classmethod
     def subirMotor(cls):
         mcp.setup(cls.gp_motorSubir, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(30)
         mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(0.5)
+        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogica() da classe pai
     @classmethod
@@ -152,6 +155,7 @@ class Logica_6(Logica_geral):
 
                         print('Aproxime o cartão RFID ')
 
+                print('Logica 6 - Rodando')
             time.sleep(1)
         
         else:
