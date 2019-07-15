@@ -14,10 +14,10 @@ Azul -> Colocando os livros na ordem correta vai fazer com que o baú abra.
 class Logica_5(Logica_geral):
 
     # GPIO's
-    gpio_livro1 = 0 # Primeiro livro (raspberry)
-    gpio_livro2 = 0 # Segundo livro (raspberry)
-    gpio_livro3 = 0 # Terceiro livro (raspberry)
-    gp_bau = 0 # Rele da trava do bau (extensor)
+    gpio_livro1 = 12 # Primeiro livro (raspberry)
+    gpio_livro2 = 10 # Segundo livro (raspberry)
+    gpio_livro3 = 2 # Terceiro livro - GPA 2 (extensor 0x22)
+    gp_bau = 5 # Rele da trava do bau - GPA 5 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
@@ -28,22 +28,22 @@ class Logica_5(Logica_geral):
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_livro1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_livro2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_livro3, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
         # Configurando GPIO's do Extensor
+        mcp.setup(cls.gpio_livro3, mcp.GPA, mcp.IN, mcp.ADDRESS1)
         mcp.setup(cls.gp_bau, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
-        # Inicialmente em nivel baixo
-        mcp.output(cls.gp_bau, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        # Inicialmente em nivel alto (Desligado)
+        mcp.output(cls.gp_bau, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para destravar o bau
     @classmethod
     def abrirBau(cls):
         cls._concluida = True
         mcp.setup(cls.gp_bau, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_bau, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(30)
         mcp.output(cls.gp_bau, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(0.5)
+        mcp.output(cls.gp_bau, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
@@ -54,13 +54,17 @@ class Logica_5(Logica_geral):
 
                 if (GPIO.input(cls.gpio_livro1) == GPIO.HIGH and
                     GPIO.input(cls.gpio_livro2) == GPIO.HIGH and
-                    GPIO.input(cls.gpio_livro3) == GPIO.HIGH ):
+                    mcp.input(cls.gpio_livro3, mcp.GPA, mcp.ADDRESS1) == 1 ) :
                     
                     cls.abrirBau()
+                    
+                    print('Bau Aberto!')
+
+                print('Logica 5 - Rodando')
 
             time.sleep(1)
         
         else:
-            print('Logica 4 - Finalizada')
+            print('Logica 5 - Finalizada')
 
-# ------ FIM DA LOGICA 4 ---------
+# ------ FIM DA LOGICA 5 ---------

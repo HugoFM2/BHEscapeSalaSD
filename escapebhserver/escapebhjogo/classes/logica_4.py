@@ -74,8 +74,8 @@ class Logica_4(Logica_geral):
         # https://www.embarcados.com.br/pwm-na-raspberry-pi-com-python/
         pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
         pwmServo.start(2.5) # Inicio com DutyCycle em 2.5%
-        pwmServo.ChangeDutyCycle(7.5) # 7.5% = 90º - DutyCycle de 2.5% a 12.5% (ou 5% a 10%) *TESTAR
-        time.sleep(10)
+        pwmServo.ChangeDutyCycle(12.5) # 7.5% = 90º - DutyCycle de 2.5% a 12.5% (ou 5% a 10%) *TESTAR
+        time.sleep(3)
         #pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
         pwmServo.stop()
 
