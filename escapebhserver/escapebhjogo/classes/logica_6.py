@@ -60,29 +60,29 @@ class Logica_6(Logica_geral):
         GPIO.output(cls.gpio_rfid[6], GPIO.LOW)
 
         # Configurando GPIO's do Extensor
-        mcp.setup(cls.gp_motorDescer, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.setup(cls.gp_motorSubir, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(cls.gp_motorSubir, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel alto (Desativado)
-        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorSubir, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para acionar o motor no sentindo de descer a "gaveta"
     @classmethod
     def descerMotor(cls):
         cls._concluida = True
-        mcp.setup(cls.gp_motorDescer, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.5)
-        mcp.output(cls.gp_motorDescer, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para acionar o motor no sentindo de subir a "gaveta"
     @classmethod
     def subirMotor(cls):
-        mcp.setup(cls.gp_motorSubir, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        mcp.setup(cls.gp_motorSubir, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorSubir, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.5)
-        mcp.output(cls.gp_motorSubir, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_motorSubir, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogica() da classe pai
     @classmethod

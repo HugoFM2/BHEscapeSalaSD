@@ -15,54 +15,53 @@ letras) vai fazer com que uma gaveta na própria mesa abra.
 class Logica_7(Logica_geral):
 
     # GPIO's
-    gpio_peca1 = 0 # Primeira peça (raspberry)
-    gpio_peca2 = 0 # Segunda peça (raspberry)
-    gpio_peca3 = 0 # Terceira peça (raspberry)
-    gpio_peca4 = 0 # Quarta peça (raspberry)
-    gp_trava = 0 # Rele da trava da gaveta (extensor)
+    gpio_peca1 = 5 # Primeira peça - GPA 5(extensor 0x22)
+    gpio_peca2 = 7 # Segunda peça - GPA 7 (extensor 0x22)
+    gpio_peca3 = 6 # Terceira peça - GPA 6 (extensor 0x22)
+    gpio_peca4 = 4 # Quarta peça - GPA 4 (extensor 0x22)
+    gp_trava = 6 # Rele da trava da gaveta - GPA 6 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
-        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
-        GPIO.setwarnings(False) # Desativa avisos
-        
-        # Configurado GPIO's do raspberry
-        GPIO.setup(cls.gpio_peca1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_peca2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_peca3, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_peca4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        # Configurado GPIO's do extensor 0x22
+        mcp.setup(cls.gpio_peca1, mcp.GPA, mcp.IN, mcp.ADDRESS1)
+        mcp.setup(cls.gpio_peca2, mcp.GPA, mcp.IN, mcp.ADDRESS1)
+        mcp.setup(cls.gpio_peca3, mcp.GPA, mcp.IN, mcp.ADDRESS1)
+        mcp.setup(cls.gpio_peca4, mcp.GPA, mcp.IN, mcp.ADDRESS1)
 
-        # Configurando GPIO's do Extensor
+        # Configurando GPIO's do Extensor 0x24
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
-        # Inicialmente em nivel baixo
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        # Inicialmente em nivel alto, Desligado
+        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para destravar o bau
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(30)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(0.5)
+        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
         while cls._concluida == False:
-            # Checa se a logica 4 já foi concluida
+            # Checa se a logica 6 já foi concluida
             if Logica_6._concluida == True:
 
-                if (GPIO.input(cls.gpio_peca1) == GPIO.HIGH and
-                    GPIO.input(cls.gpio_peca2) == GPIO.HIGH and
-                    GPIO.input(cls.gpio_peca3) == GPIO.HIGH and
-                    GPIO.input(cls.gpio_peca4) == GPIO.HIGH ):
+                if (mcp.input(cls.gpio_peca1, mcp.GPA, mcp.ADDRESS1) == 1 and
+                    mcp.input(cls.gpio_peca2, mcp.GPA, mcp.ADDRESS1) == 1 and
+                    mcp.input(cls.gpio_peca3, mcp.GPA, mcp.ADDRESS1) == 1 and
+                    mcp.input(cls.gpio_peca4, mcp.GPA, mcp.ADDRESS1) == 1 ):
                     
                     cls.abrirGaveta()
-
-            time.sleep(1)
+                
+                print('Logica 7 - Rodando')
+                
+            time.sleep(0.25)
         
         else:
             print('Logica 7 - Finalizada')

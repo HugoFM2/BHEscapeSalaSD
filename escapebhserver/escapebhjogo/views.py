@@ -6,6 +6,7 @@ from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logic
 from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
 from escapebhjogo.classes.logica_5 import Logica_5 # Classe com metodos da logica 5
 from escapebhjogo.classes.logica_6 import Logica_6 # Classe com metodos da logica 6
+from escapebhjogo.classes.logica_7 import Logica_7 # Classe com metodos da logica 7
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 # from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
@@ -22,7 +23,7 @@ def pagina_inicial(request):
         'logica4_status': Logica_4._concluida,
         'logica5_status': Logica_5._concluida,
         'logica6_status': Logica_6._concluida,
-        'logica7_status': False,
+        'logica7_status': Logica_7._concluida,
         'logica8_status': False,
     }
 
@@ -81,7 +82,7 @@ def pagina_inicial(request):
 
         # Checagem dos botoes da logica 7
         if forcar_logica7 != None and forcar_logica7 == 'Forcar Destravar Gaveta':
-            pass
+            Logica_7.abrirGaveta()
 
         # Checagem dos botoes da logica 8
         if forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Brasao':
@@ -107,7 +108,7 @@ def iniciar_jogo():
     Logica_4.iniciarThread()
     Logica_5.iniciarThread()
     Logica_6.iniciarThread()
-    #Logica_7.iniciarThread()
+    Logica_7.iniciarThread()
     #Logica_8.iniciarThread()
 
 def reiniciar_jogo(): # EM TESTES
@@ -119,7 +120,7 @@ def reiniciar_jogo(): # EM TESTES
     Logica_4.reiniciarThread()
     Logica_5.reiniciarThread()
     Logica_6.reiniciarThread()
-    #Logica_7.reiniciarThread()
+    Logica_7.reiniciarThread()
     #Logica_8.reiniciarThread()
 
 # ----------- FIM dos METODOS -----
