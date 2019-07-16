@@ -156,7 +156,6 @@ class Logica_6(Logica_geral):
                         print('Aproxime o cartão RFID ')
 
                 print('Logica 6 - Rodando')
-                cls._concluida = True #Força a conclusao da logica
             time.sleep(1)
         
         else:
