@@ -57,7 +57,7 @@ class Logica_4(Logica_geral):
         cls._concluida = True
         mcp.setup(cls.gp_porta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
+        time.sleep(0.25)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         cls.busto_girou = False
 
@@ -65,7 +65,7 @@ class Logica_4(Logica_geral):
     def abrirBusto(cls):
         mcp.setup(cls.gp_trava_busto, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
+        time.sleep(0.25)
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(0.5)
 

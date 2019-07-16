@@ -47,7 +47,7 @@ class Logica_2(Logica_geral):
         cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
+        time.sleep(0.25)
         mcp.output(cls.gp_trava, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogicas() da classe pai

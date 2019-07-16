@@ -13,8 +13,8 @@ Direcionando o laser da forma correta para a gaveta na parte de baixo do palco v
 class Logica_1(Logica_geral):
 
     # GPA's e GPB's
-    gp_botao = 4 # Botao mezanino - GPB 4 (Extensor 0x22)
-    gp_ldr = 2 # Sensor ldr - GPB 2 (Extensor 0x22)
+    gp_botao = 1 # Botao mezanino - GPB 1 (Extensor 0x22)
+    gp_ldr = 3 # Sensor ldr - GPB 3 (Extensor 0x22)
     gp_laser = 1 # Rele Laser - GPA 1 (Extensor 0x24)
     gp_gaveta = 2 # Rele Gaveta - GPA 2 (Extensor 0x24)
 
@@ -43,12 +43,15 @@ class Logica_1(Logica_geral):
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
-        mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
-        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
         mcp.output(cls.gp_laser, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele laser
         cls.laser_on = False
+        mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        # Ativa a trava com pulsos durante 20s
+        for i in range(8):
+            mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+            time.sleep(0.25)
+            mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
+            time.sleep(2)
 
     # Metodo para acionar o lasers
     @classmethod

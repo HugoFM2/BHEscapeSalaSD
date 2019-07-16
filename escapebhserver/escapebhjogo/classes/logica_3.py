@@ -48,9 +48,13 @@ class Logica_3(Logica_geral):
     def abrirAlcapao(cls):
         cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        # Trava acionada por pulsos durante 20s
+        for i in range(8):
+            mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+            time.sleep(0.25)
+            mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+            time.sleep(2)
+        print('Fim dos pulsos - Alçapão')
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
