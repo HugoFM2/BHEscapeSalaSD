@@ -88,6 +88,8 @@ def pagina_inicial(request):
         # Checagem dos botoes da logica 8
         if forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Brasao':
             Logica_8.abrirTuboBrasao()
+        elif forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Lampada':
+            Logica_8.abrirCaixa()
     
     return render(request, 'escapebhhtml/pagina_inicial.html', dicionario_para_html )
 

@@ -41,10 +41,10 @@ class Logica_8(Logica_geral):
     # Metodo abrir a caixa que contem a lampada
     @classmethod
     def abrirCaixa(cls):
-        mcp.setup(cls.gp_travaTubo, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
-        mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo abrir o tubo que contem o brasão
     @classmethod
