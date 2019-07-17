@@ -107,6 +107,7 @@ def iniciar_jogo():
     Logica_3.iniciarThread()
     Logica_4.iniciarThread()
     Logica_5.iniciarThread()
+    Logica_6._concluida = True #DEBUG
     #Logica_6.iniciarThread()
     #Logica_7.iniciarThread()
     #Logica_8.iniciarThread()
@@ -119,6 +120,7 @@ def reiniciar_jogo(): # EM TESTES
     Logica_3.reiniciarThread()
     Logica_4.reiniciarThread()
     Logica_5.reiniciarThread()
+    Logica_6._concluida = True #DEBUG
     #Logica_6.reiniciarThread()
     #Logica_7.reiniciarThread()
     #Logica_8.reiniciarThread()
