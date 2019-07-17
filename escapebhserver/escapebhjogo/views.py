@@ -109,7 +109,7 @@ def iniciar_jogo():
     Logica_5.iniciarThread()
     Logica_6._concluida = True #DEBUG
     #Logica_6.iniciarThread()
-    #Logica_7.iniciarThread()
+    Logica_7.iniciarThread()
     #Logica_8.iniciarThread()
 
 def reiniciar_jogo(): # EM TESTES
@@ -122,7 +122,7 @@ def reiniciar_jogo(): # EM TESTES
     Logica_5.reiniciarThread()
     Logica_6._concluida = True #DEBUG
     #Logica_6.reiniciarThread()
-    #Logica_7.reiniciarThread()
+    Logica_7.reiniciarThread()
     #Logica_8.reiniciarThread()
 
 # ----------- FIM dos METODOS -----
