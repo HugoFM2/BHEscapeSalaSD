@@ -62,6 +62,7 @@ class Logica_3(Logica_geral):
         # Ordem correta para pisar nos degraus
         ORDEM_CORRETA = [4,3,2,1]
         ordem_degrau = []
+        tempoAnterior = time.time() # Inicia o tempo de referencia
 
         while cls._concluida == False:
             # Checa se a logica 2 já foi concluida
@@ -93,7 +94,17 @@ class Logica_3(Logica_geral):
                 elif len(ordem_degrau) == 4 and ordem_degrau != ORDEM_CORRETA :
                     ordem_degrau = []
                     print('Ordem incorreta (Logica 3)') #DEBUG
-                    time.sleep(3) # Pausa checagem por 3 segundos
+                    time.sleep(1) # Pausa checagem por 1 segundos
+
+                # Timeout
+                tempoAtual = time.time()
+                tempoDecorrido = tempoAtual - tempoAnterior
+                if tempoDecorrido > 5 and ordem_degrau != []: # Renova o tempo de referencia
+                    print('Timeout Logica 3 - ' + str(tempoDecorrido)) #DEBUG
+                    ordem_degrau = [] # Zera a leitura
+                    tempoAnterior = time.time()
+                elif ordem_degrau == []: # Se estiver vazio sempre zera tempo anterior
+                    tempoAnterior = time.time()
 
                 time.sleep(0.25)
         
