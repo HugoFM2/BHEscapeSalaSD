@@ -25,6 +25,7 @@ class Logica_4(Logica_geral):
 
     # Variaveis
     busto_girou = False
+    pwmServo = None
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
@@ -51,6 +52,8 @@ class Logica_4(Logica_geral):
         mcp.output(cls.gp_porta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
+        cls.busto_girou = False
+
     # Metodo para destravar alcapao no chao
     @classmethod
     def abrirPorta(cls):
@@ -72,21 +75,31 @@ class Logica_4(Logica_geral):
         cls.setup()
         # https://tutorials-raspberrypi.com/raspberry-pi-servo-motor-control/
         # https://www.embarcados.com.br/pwm-na-raspberry-pi-com-python/
-        pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
-        pwmServo.start(2.5) # Inicio com DutyCycle em 2.5%
-        pwmServo.ChangeDutyCycle(12.5) # 7.5% = 90º - DutyCycle de 2.5% a 12.5% (ou 5% a 10%) *TESTAR
-        time.sleep(3)
-        #pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
-        pwmServo.stop()
+        if cls.pwmServo == None:
+            cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
+            cls.pwmServo.start(0) # Inicio com DutyCycle em 0%
+            time.sleep(0.5)
+
+        cls.pwmServo.ChangeDutyCycle(2.0) # DutyCycle de 2% = Aberto 
+        time.sleep(1.5)
+        
+        cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
+        #cls.pwmServo.stop()
 
     @classmethod
     def voltarBusto(cls):
-        pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
-        pwmServo.start(2.5) # Inicio com DutyCycle em 2.5%
-        pwmServo.ChangeDutyCycle(7.5) # 7.5% = 90º - DutyCycle de 2.5% a 12.5% (ou 5% a 10%) *TESTAR
-        time.sleep(10)
-        #pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
-        pwmServo.stop()
+        cls.setup()
+
+        if cls.pwmServo == None:
+            cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
+            cls.pwmServo.start(2.5) # Inicio com DutyCycle em 2.5%
+            time.sleep(0.5)
+        # 12 = Fechado
+        cls.pwmServo.ChangeDutyCycle(12) # DutyCycle de 12% = Travado
+        time.sleep(1.5)
+        cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
+        #cls.pwmServo.stop()
+        cls.busto_girou = False
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
@@ -94,6 +107,8 @@ class Logica_4(Logica_geral):
         while cls._concluida == False:
             # Checa se a logica 3 já foi concluida
             if Logica_3._concluida == True:
+                
+                #leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)]
 
                 if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :
                     cls.abrirBusto()
@@ -106,6 +121,7 @@ class Logica_4(Logica_geral):
                     print('Abrindo Porta') #DEBUG
 
                 time.sleep(0.25)
+                #print(leitura)
                 print('Logica 4 - Rodando') #DEBUG
         
         else:
