@@ -52,9 +52,9 @@ class Logica_5(Logica_geral):
             # Checa se a logica 4 já foi concluida
             if Logica_4._concluida == True:
 
-                if (GPIO.input(cls.gpio_livro1) == GPIO.HIGH and
-                    GPIO.input(cls.gpio_livro2) == GPIO.HIGH and
-                    mcp.input(cls.gpio_livro3, mcp.GPA, mcp.ADDRESS1) == 1 ) :
+                leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), mcp.input(cls.gpio_livro3, mcp.GPA, mcp.ADDRESS1)]
+                print(leitura)
+                if ( leitura[0] == GPIO.HIGH and leitura[1] == GPIO.HIGH and leitura[2] == 1 ) :
                     
                     cls.abrirBau()
                     
