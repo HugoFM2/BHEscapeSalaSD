@@ -51,7 +51,7 @@ class Logica_3(Logica_geral):
         # Trava acionada por pulsos durante 20s
         for i in range(8):
             mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(0.25)
+            time.sleep(1)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
             time.sleep(2)
         print('Fim dos pulsos - Alçapão')
