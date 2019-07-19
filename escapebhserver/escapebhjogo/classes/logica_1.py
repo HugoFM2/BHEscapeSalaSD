@@ -2,6 +2,7 @@ import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from .logica_geral import Logica_geral
+from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 from escapebhjogo.classes.reles import Reles
 
 """ CLASSE LOGICA 1
@@ -65,25 +66,26 @@ class Logica_1(Logica_geral):
     def threadLogica(cls):
         
         while cls._concluida == False:
-            # Se o botao for pressionado ativa o Laser
-            leitura_botao = mcp.input(cls.gp_botao, mcp.GPB, mcp.ADDRESS1)
+            if Logica_2._concluida == True:
+                # Se o botao for pressionado ativa o Laser
+                leitura_botao = mcp.input(cls.gp_botao, mcp.GPB, mcp.ADDRESS1)
 
-            if leitura_botao == 1 and cls.laser_on == False:
-                cls.ligarLaser()
-                print('Laser Acionado (Logica 1)') #DEBUG
+                if leitura_botao == 1 and cls.laser_on == False:
+                    cls.ligarLaser()
+                    print('O laser foi acionado') #DEBUG
 
-            # Se o ldr detectar a luz do laser abre a gaveta
-            leitura_ldr = mcp.input(cls.gp_ldr, mcp.GPB, mcp.ADDRESS1)
+                # Se o ldr detectar a luz do laser abre a gaveta
+                leitura_ldr = mcp.input(cls.gp_ldr, mcp.GPB, mcp.ADDRESS1)
 
-            if leitura_ldr == 1 and cls.laser_on == True:
-                cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
-                print('Gaveta Aberta (Logica 1)') #DEBUG
-                
-            time.sleep(0.25) # Delay de 250ms segundo entre checagens
-            #print('Logica 1 - Rodando') #DEBUG
+                if leitura_ldr == 1 and cls.laser_on == True:
+                    cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
+                    print('A gaveta do chão foi aberta') #DEBUG
+                    
+                time.sleep(0.25) # Delay de 250ms segundo entre checagens
+                print('2ª Logica Rodando (Laser)') #DEBUG
             
         else:
-            print('Logica 1 - Finalizada')
+            print('2ª Logica - Finalizada')
 
 
 # ------ FIM DA LOGICA 1 ---------
