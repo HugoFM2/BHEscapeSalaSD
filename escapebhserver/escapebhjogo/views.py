@@ -78,7 +78,7 @@ def pagina_inicial(request):
         # Checagem dos botoes da logica 6
         if forcar_logica6 != None and forcar_logica6 == 'Forcar Descer Chave':
             Logica_6.descerMotor()
-        elif forcar_logica5 != None and forcar_logica5 == 'Subir Chave':
+        elif forcar_logica6 != None and forcar_logica6 == 'Subir Chave':
             Logica_6.subirMotor()
 
         # Checagem dos botoes da logica 7
@@ -110,8 +110,7 @@ def iniciar_jogo():
     Logica_3.iniciarThread()
     Logica_4.iniciarThread()
     Logica_5.iniciarThread()
-    Logica_6._concluida = True #DEBUG
-    #Logica_6.iniciarThread()
+    Logica_6.iniciarThread()
     Logica_7.iniciarThread()
     Logica_8.iniciarThread()
 
@@ -123,8 +122,7 @@ def reiniciar_jogo(): # EM TESTES
     Logica_3.reiniciarThread()
     Logica_4.reiniciarThread()
     Logica_5.reiniciarThread()
-    Logica_6._concluida = True #DEBUG
-    #Logica_6.reiniciarThread()
+    Logica_6.reiniciarThread()
     Logica_7.reiniciarThread()
     Logica_8.reiniciarThread()
 
