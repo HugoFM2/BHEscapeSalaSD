@@ -47,7 +47,9 @@ def pagina_inicial(request):
             views.iniciar_jogo()
             
         elif acao != None and acao == 'Reiniciar Jogo':
-            views.reiniciar_jogo()
+            #views.reiniciar_jogo()
+            views.desligarRaspberry()
+            #pass
 
         # Checagem dos botoes da logica 1
         if forcar_logica1 != None and forcar_logica1 == 'Forcar Ligar Laser':
@@ -126,4 +128,8 @@ def reiniciar_jogo(): # EM TESTES
     Logica_7.reiniciarThread()
     Logica_8.reiniciarThread()
 
+def desligarRaspberry():
+    # Desliga a raspberry para resetar o jogo
+    import os
+    os.system('sudo shutdown -h now')
 # ----------- FIM dos METODOS -----
