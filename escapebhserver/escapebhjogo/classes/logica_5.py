@@ -3,10 +3,10 @@ import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from .logica_geral import Logica_geral
-from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
+from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
 
 """ CLASSE LOGICA 5
-Esta classe faz todo o controle dos itens relacionados a Logica 4
+Esta classe faz todo o controle dos itens relacionados a Logica 5
 
 Azul -> Colocando os livros na ordem correta vai fazer com que o baú abra.
 """
@@ -50,7 +50,7 @@ class Logica_5(Logica_geral):
     def threadLogica(cls):
         while cls._concluida == False:
             # Checa se a logica 4 já foi concluida
-            if Logica_4._concluida == True:
+            if Logica_3._concluida == True:
 
                 leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), mcp.input(cls.gpio_livro3, mcp.GPA, mcp.ADDRESS1)]
                 print(leitura)
@@ -60,11 +60,11 @@ class Logica_5(Logica_geral):
                     
                     print('Bau Aberto!')
 
-                print('Logica 5 - Rodando')
+                print('6ª Logica - Rodando (Livros)')
 
             time.sleep(0.25)
         
         else:
-            print('Logica 5 - Finalizada')
+            print('6ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 5 ---------

@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
-from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 2
+from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
 from .logica_geral import Logica_geral
 from escapebhjogo.classes.reles import Reles
 
@@ -106,25 +106,25 @@ class Logica_4(Logica_geral):
     def threadLogica(cls):
         while cls._concluida == False:
             # Checa se a logica 3 já foi concluida
-            if Logica_3._concluida == True:
+            if Logica_1._concluida == True:
                 
                 #leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)]
 
                 if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :
                     cls.abrirBusto()
                     cls.busto_girou = True
-                    print('Girando Busto') #DEBUG
+                    print('Girando Busto e liberando botão.') #DEBUG
 
                 leituraBotao = mcp.input(cls.gp_botao, mcp.GPA, mcp.ADDRESS1)
                 if leituraBotao == 1 :
                     cls.abrirPorta()
-                    print('Abrindo Porta') #DEBUG
+                    print('Abrindo a Porta secreta') #DEBUG
 
                 time.sleep(0.25)
                 #print(leitura)
-                print('Logica 4 - Rodando') #DEBUG
+                print('3ª Logica - Rodando (Busto/Porta)') #DEBUG
         
         else:
-            print('Logica 4 - Finalizada')
+            print('3ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 4 ---------

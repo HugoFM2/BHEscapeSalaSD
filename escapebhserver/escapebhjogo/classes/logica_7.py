@@ -3,7 +3,6 @@ import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from .logica_geral import Logica_geral
-from escapebhjogo.classes.logica_6 import Logica_6 # Classe com metodos da logica 6
 from escapebhjogo.classes.logica_5 import Logica_5 # Classe com metodos da logica 5
 
 """ CLASSE LOGICA 7
@@ -41,17 +40,19 @@ class Logica_7(Logica_geral):
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
-        mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.25)
-        mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        for i in range(8):
+            mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+            mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+            time.sleep(1)
+            mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+            time.sleep(2)
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
         while cls._concluida == False:
             # Checa se a logica 6 já foi concluida
-            if Logica_6._concluida == True and Logica_5._concluida == True:
+            if Logica_5._concluida == True:
 
                 leitura = [None, None, None, None]
                 leitura[0] = mcp.input(cls.gpio_peca1, mcp.GPA, mcp.ADDRESS1)
@@ -62,14 +63,14 @@ class Logica_7(Logica_geral):
                 if (leitura == [1,1,1,1]):
                     
                     cls.abrirGaveta()
-                    print('Logica 7 - Gaveta Aberta')
+                    print('Gaveta 2ª Sala Aberta!')
                 
-                print('Logica 7 - Rodando')
+                print('7ª Logica - Rodando (Puzzle 2ª Sala)')
                 print(leitura)
                 
             time.sleep(0.25)
         
         else:
-            print('Logica 7 - Finalizada')
+            print('7ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 7 ---------

@@ -3,7 +3,7 @@ import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from .logica_geral import Logica_geral
-from escapebhjogo.classes.logica_5 import Logica_5 # Classe com metodos da logica 5
+from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
 
 """ CLASSE LOGICA 6
 Esta classe faz todo o controle dos itens relacionados a Logica 6
@@ -55,12 +55,12 @@ class Logica_6(Logica_geral):
         # *A Logica 6 é acionada manualmente
         while cls._concluida == False:
             # Checa se a logica 5 já foi concluida
-            if Logica_5._concluida == True:
-                print('Logica 6 - Rodando')
+            if Logica_4._concluida == True:
+                print('4ª Logica - Rodando (Invenções/Teto 2ª Sala)')
 
-            time.sleep(1)
+            time.sleep(0.25)
         
         else:
-            print('Logica 6 - Finalizada')
+            print('4ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 6 ---------

@@ -2,7 +2,7 @@ import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
-from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
+from escapebhjogo.classes.logica_6 import Logica_6 # Classe com metodos da logica 2
 from .logica_geral import Logica_geral
 from escapebhjogo.classes.reles import Reles
 
@@ -65,8 +65,8 @@ class Logica_3(Logica_geral):
         tempoAnterior = time.time() # Inicia o tempo de referencia
 
         while cls._concluida == False:
-            # Checa se a logica 2 já foi concluida
-            if Logica_2._concluida == True:
+            # Checa se a logica das Invenções já foi concluida
+            if Logica_6._concluida == True:
 
                 # Se for detectado uma pisada e o se o numero do degrau não estiver na lista, adiciona ele a lista
                 leitura1 = mcp.input(cls.gpio_degrau1, mcp.GPA, mcp.ADDRESS1)
@@ -85,15 +85,15 @@ class Logica_3(Logica_geral):
                 if leitura4 == GPIO.HIGH and (4 in ordem_degrau) == False:
                     ordem_degrau.append(4)
 
-                print('Logica 3 - Rodando ' + str(ordem_degrau) ) #DEBUG
+                print('5ª Logica - Rodando (Degraus/Porão)' + str(ordem_degrau) ) #DEBUG
 
                 # Checa se todos os degrais já foram pisados e checa se foi na ordem correta.
                 if len(ordem_degrau) == 4 and ordem_degrau == ORDEM_CORRETA :
                     cls.abrirAlcapao()
-                    print('Alçapão Aberto (Logica 3)') #DEBUG
+                    print('Porão Aberto') #DEBUG
                 elif len(ordem_degrau) == 4 and ordem_degrau != ORDEM_CORRETA :
                     ordem_degrau = []
-                    print('Ordem incorreta (Logica 3)') #DEBUG
+                    print('Ordem incorreta nos degrais') #DEBUG
                     time.sleep(1) # Pausa checagem por 1 segundos
 
                 # Timeout
@@ -109,6 +109,6 @@ class Logica_3(Logica_geral):
                 time.sleep(0.25)
         
         else:
-            print('Logica 3 - Finalizada')
+            print('5ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 3 ---------

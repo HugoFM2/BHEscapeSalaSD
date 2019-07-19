@@ -66,13 +66,13 @@ class Logica_8(Logica_geral):
                 if (leitura == 1):
 
                     cls.abrirTuboBrasao()
-                    print('Logica 8 - Tubo Aberto')
+                    print('Tubo de energia Aberto')
 
-                print('Logica 8 - Rodando, Lampada: ' + str(leitura))
+                print('8ª Logica - Rodando (Arma/Lampada Energia) Lampada: ' + str(leitura))
 
             time.sleep(0.25)
         
         else:
-            print('Logica 8 - Finalizada')
+            print('8ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 8 ---------
