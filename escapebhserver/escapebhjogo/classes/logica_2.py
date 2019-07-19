@@ -2,12 +2,14 @@ import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
-from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
 from .logica_geral import Logica_geral
 from escapebhjogo.classes.reles import Reles
 
 """ CLASSE LOGICA 2
 Esta classe faz todo o controle dos itens relacionados a Logica 2
+* 1ª Logica a ser executada.
+* Não depende de nenhuma logica.
+* Logica que faz o Teto da 1ª Sala cair.
 
 Verde -> Colocando as alavancas na sequência certa vai fazer o teto cair.
 """
@@ -54,22 +56,21 @@ class Logica_2(Logica_geral):
     @classmethod
     def threadLogica(cls):
         while cls._concluida == False:
-            if Logica_1._concluida == True:
-                leituraSensor = []
-                leituraSensor.append( GPIO.input(cls.gpio_chave1) )
-                leituraSensor.append( GPIO.input(cls.gpio_chave2) )
-                leituraSensor.append( GPIO.input(cls.gpio_chave3) )
-                leituraSensor.append( GPIO.input(cls.gpio_chave4) )
+            leituraSensor = []
+            leituraSensor.append( GPIO.input(cls.gpio_chave1) )
+            leituraSensor.append( GPIO.input(cls.gpio_chave2) )
+            leituraSensor.append( GPIO.input(cls.gpio_chave3) )
+            leituraSensor.append( GPIO.input(cls.gpio_chave4) )
 
-                # Checa se as chaves estão na posição correta e se a logica 1 foi concluida
-                if leituraSensor == [1,1,1,1]:
-                    cls.cairTeto()
-                    #print('Teto Aberto (Logica 2)') #DEBUG
+            # Checa se as chaves estão na posição correta e se a logica 1 foi concluida
+            if leituraSensor == [1,1,1,1]:
+                cls.cairTeto()
+                print('Teto da 1ª Sala caiu') #DEBUG
 
-                time.sleep(0.25)
-                #print('Logica 2 Rodando')
+            time.sleep(0.25)
+            print('1ª Logica Rodando (Teto Cair)')
         
         else:
-            print('Logica 2 - Finalizada')
+            print('1ª Logica - Finalizada')
 
 # ------ FIM DA LOGICA 2 ---------
