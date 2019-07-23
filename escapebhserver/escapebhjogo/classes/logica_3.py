@@ -99,7 +99,7 @@ class Logica_3(Logica_geral):
                 # Timeout
                 tempoAtual = time.time()
                 tempoDecorrido = tempoAtual - tempoAnterior
-                if tempoDecorrido > 5 and ordem_degrau != []: # Renova o tempo de referencia
+                if tempoDecorrido > 10 and ordem_degrau != []: # Renova o tempo de referencia
                     print('Timeout Logica 3 - ' + str(tempoDecorrido)) #DEBUG
                     ordem_degrau = [] # Zera a leitura
                     tempoAnterior = time.time()
