@@ -48,10 +48,10 @@ class Logica_3(Logica_geral):
     def abrirAlcapao(cls):
         cls._concluida = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        # Trava acionada por pulsos durante 20s
-        for i in range(8):
+        # Ativa a trava com 3 pulsos de 2s cada
+        for i in range(3):
             mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(1)
+            time.sleep(2)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
             time.sleep(2)
         print('Fim dos pulsos - Alçapão')

@@ -40,10 +40,11 @@ class Logica_7(Logica_geral):
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
-        for i in range(8):
+        # Ativa a trava com 3 pulsos de 2s cada
+        for i in range(3):
             mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(1)
+            time.sleep(2)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
             time.sleep(2)
 

@@ -47,10 +47,10 @@ class Logica_1(Logica_geral):
         mcp.output(cls.gp_laser, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele laser
         cls.laser_on = False
         mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        # Ativa a trava com pulsos durante 20s
-        for i in range(8):
+        # Ativa a trava com 3 pulsos de 2s cada
+        for i in range(3):
             mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(0.25)
+            time.sleep(2)
             mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
             time.sleep(2)
 
