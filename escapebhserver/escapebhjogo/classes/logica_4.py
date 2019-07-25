@@ -72,7 +72,11 @@ class Logica_4(Logica_geral):
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(0.5)
 
-        cls.setup()
+        #cls.setup()
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+        GPIO.setup(cls.gpio_servo, GPIO.OUT)
+
         #Servo MG90: Pulse Cycle -> 20ms (50Hz), Pulse Width: 0.4ms a 2.4ms (2% a 12%)
         if cls.pwmServo == None:
             cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
@@ -87,7 +91,10 @@ class Logica_4(Logica_geral):
 
     @classmethod
     def voltarBusto(cls):
-        cls.setup()
+        #cls.setup()
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+        GPIO.setup(cls.gpio_servo, GPIO.OUT)
 
         if cls.pwmServo == None:
             cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo

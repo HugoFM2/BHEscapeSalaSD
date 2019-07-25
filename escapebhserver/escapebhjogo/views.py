@@ -44,7 +44,8 @@ def pagina_inicial(request):
 
         # Checagem dos botoes de Ação
         if acao != None and acao == 'Iniciar Jogo':
-            views.iniciar_jogo()
+            #views.iniciar_jogo()
+            pass
             
         elif acao != None and acao == 'Reiniciar Jogo':
             #views.reiniciar_jogo()
