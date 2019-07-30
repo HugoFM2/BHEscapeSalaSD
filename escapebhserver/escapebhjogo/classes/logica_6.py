@@ -18,12 +18,19 @@ pequena gaveta e a chave irá deslizar)
 class Logica_6(Logica_geral):
 
     # GPIO's
+    gp_arduinoInvecoes = 7 # GPIO que recebe sinal sobre a leitura das 7 invecoes. (raspberry)
     gp_motorDescer = 2 # Rele Desce Motor - GPB 2 (extensor 0x24)
     gp_motorSubir = 5 # Rele Sobe Motor - GPB 5 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+        
+        # Configurado GPIO's do raspberry
+        GPIO.setup(cls.gp_arduinoInvecoes, GPIO.IN)
+
         # Configurando GPIO's do Extensor
         mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(cls.gp_motorSubir, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -52,10 +59,11 @@ class Logica_6(Logica_geral):
     # Sobreescrevendo metodo threadLogica() da classe pai
     @classmethod
     def threadLogica(cls):
-        # *A Logica 6 é acionada manualmente
         while cls._concluida == False:
-            # Checa se a logica 5 já foi concluida
+            # Checa se a logica 4 já foi concluida
             if Logica_4._concluida == True:
+                if GPIO.input(cls.gp_arduinoInvecoes) == GPIO.HIGH:
+                    cls.descerMotor()
                 print('4ª Logica - Rodando (Invenções/Teto 2ª Sala)')
 
             time.sleep(0.25)
