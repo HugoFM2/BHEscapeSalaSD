@@ -15,20 +15,23 @@ letras) vai fazer com que uma gaveta na própria mesa abra.
 class Logica_7(Logica_geral):
 
     # GPIO's
-    gpio_peca1 = 5 # Primeira peça - GPA 5(extensor 0x22)
-    gpio_peca2 = 7 # Segunda peça - GPA 7 (extensor 0x22)
-    gpio_peca3 = 6 # Terceira peça - GPA 6 (extensor 0x22)
-    gpio_peca4 = 4 # Quarta peça - GPA 4 (extensor 0x22)
+    gpio_peca1 = 23 # Primeira peça (raspberry)
+    gpio_peca2 = 21 # Segunda peça (raspberry)
+    gpio_peca3 = 19 # Terceira peça (raspberry)
+    gpio_peca4 = 15 # Quarta peça (raspberry)
     gp_trava = 6 # Rele da trava da gaveta - GPA 6 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
-        # Configurado GPIO's do extensor 0x22
-        mcp.setup(cls.gpio_peca1, mcp.GPA, mcp.IN, mcp.ADDRESS1)
-        mcp.setup(cls.gpio_peca2, mcp.GPA, mcp.IN, mcp.ADDRESS1)
-        mcp.setup(cls.gpio_peca3, mcp.GPA, mcp.IN, mcp.ADDRESS1)
-        mcp.setup(cls.gpio_peca4, mcp.GPA, mcp.IN, mcp.ADDRESS1)
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+
+        # Configurado GPIO's do raspberry
+        GPIO.setup(cls.gpio_peca1, GPIO.IN)
+        GPIO.setup(cls.gpio_peca2, GPIO.IN)
+        GPIO.setup(cls.gpio_peca3, GPIO.IN)
+        GPIO.setup(cls.gpio_peca4, GPIO.IN)
 
         # Configurando GPIO's do Extensor 0x24
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
@@ -56,10 +59,10 @@ class Logica_7(Logica_geral):
             if Logica_5._concluida == True:
 
                 leitura = [None, None, None, None]
-                leitura[0] = mcp.input(cls.gpio_peca1, mcp.GPA, mcp.ADDRESS1)
-                leitura[1] = mcp.input(cls.gpio_peca2, mcp.GPA, mcp.ADDRESS1)
-                leitura[2] = mcp.input(cls.gpio_peca3, mcp.GPA, mcp.ADDRESS1)
-                leitura[3] = mcp.input(cls.gpio_peca4, mcp.GPA, mcp.ADDRESS1)
+                leitura[0] = GPIO.input(cls.gpio_peca1)
+                leitura[1] = GPIO.input(cls.gpio_peca2)
+                leitura[2] = GPIO.input(cls.gpio_peca3)
+                leitura[3] = GPIO.input(cls.gpio_peca4)
 
                 if (leitura == [1,1,1,1]):
                     

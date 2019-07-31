@@ -16,9 +16,9 @@ class Logica_3(Logica_geral):
     
     # GPIO's
     # Degraus contados de baixo para cima
-    gpio_degrau1 = 3 # Primeiro degrau - GPA 3 (Extensor 0x22)
+    gpio_degrau1 = 24 # Primeiro degrau (raspberry)
     gpio_degrau2 = 18 # Segundo degrau (raspberry)
-    gpio_degrau3 = 1 # Terceiro degrau - GPA 1(Extensor 0x22)
+    gpio_degrau3 = 29 # Terceiro degrau (raspberry)
     gpio_degrau4 = 16 # Quarto degrau (raspberry)
     gp_trava = 3 # Rele da trava do alçapão - GPA 3 (extensor 0x24)
 
@@ -31,13 +31,13 @@ class Logica_3(Logica_geral):
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_degrau2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_degrau4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(cls.gpio_degrau1, GPIO.IN)
+        GPIO.setup(cls.gpio_degrau3, GPIO.IN)
 
         # Desativar todos os reles
         Reles.desligarTodosReles()
 
         # Configurando GPIO's dos Extensores
-        mcp.setup(cls.gpio_degrau1, mcp.GPA, mcp.IN, mcp.ADDRESS1)
-        mcp.setup(cls.gpio_degrau3, mcp.GPA, mcp.IN, mcp.ADDRESS1)
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel alto (Rele desativado)
@@ -69,7 +69,7 @@ class Logica_3(Logica_geral):
             if Logica_6._concluida == True:
 
                 # Se for detectado uma pisada e o se o numero do degrau não estiver na lista, adiciona ele a lista
-                leitura1 = mcp.input(cls.gpio_degrau1, mcp.GPA, mcp.ADDRESS1)
+                leitura1 = GPIO.input(cls.gpio_degrau1)
                 if leitura1 == 1 and (1 in ordem_degrau) == False:
                     ordem_degrau.append(1)
                 
@@ -77,7 +77,7 @@ class Logica_3(Logica_geral):
                 if leitura2 == GPIO.HIGH and (2 in ordem_degrau) == False:
                     ordem_degrau.append(2)
 
-                leitura3 = mcp.input(cls.gpio_degrau3, mcp.GPA, mcp.ADDRESS1)
+                leitura3 = GPIO.input(cls.gpio_degrau3)
                 if leitura3 == 1 and (3 in ordem_degrau) == False:
                     ordem_degrau.append(3)
 

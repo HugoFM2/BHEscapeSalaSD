@@ -10,7 +10,7 @@ Conectados ao barramento I2C do raspberry
 class MCP23017(object):
     # ATRIBUTOS DE CLASSE
     n_barramento = 0x01 # Numero do Barramento I2C do raspberry (No nosso caso é 1)
-    ADDRESS1 = 0x22 # Endereco do primeiro chip MC23017 (Definido pela configuracao A0,A1,A2)
+    #ADDRESS1 = 0x22 # Endereco do primeiro chip MC23017 (Definido pela configuracao A0,A1,A2)
     ADDRESS2 = 0x24 # Endereco do segundo chip MC23017 (Definido pela configuracao A0,A1,A2)
     barramento = None # Atributo que guarda a instancia do barramento
 
@@ -183,16 +183,16 @@ class MCP23017(object):
         print('Escrevendo 0x00 em todos os registradores...')
         cls.instanciarBarramento()
         # Extensor 0x22
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IODIRA, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IODIRB, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPPUA, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPPUB, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IPOLA, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.IPOLB, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.OLATA, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.OLATB, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPIOA, 0x00)
-        cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPIOB, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.IODIRA, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.IODIRB, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPPUA, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPPUB, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.IPOLA, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.IPOLB, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.OLATA, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.OLATB, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPIOA, 0x00)
+        #cls.barramento.write_byte_data(cls.ADDRESS1, cls.GPIOB, 0x00)
         # Extensor 0x24
         cls.barramento.write_byte_data(cls.ADDRESS2, cls.IODIRA, 0x00)
         cls.barramento.write_byte_data(cls.ADDRESS2, cls.IODIRB, 0x00)

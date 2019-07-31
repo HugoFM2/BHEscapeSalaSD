@@ -9,7 +9,6 @@ from escapebhjogo.classes.logica_6 import Logica_6 # Classe com metodos da logic
 from escapebhjogo.classes.logica_7 import Logica_7 # Classe com metodos da logica 7
 from escapebhjogo.classes.logica_8 import Logica_8 # Classe com metodos da logica 8
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
-# from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from . import views # Importa os metodos existentes neste arquivo
 
 # Create your views here.
@@ -44,13 +43,10 @@ def pagina_inicial(request):
 
         # Checagem dos botoes de Ação
         if acao != None and acao == 'Iniciar Jogo':
-            #views.iniciar_jogo()
-            pass
+            views.iniciar_jogo()
             
         elif acao != None and acao == 'Reiniciar Jogo':
-            #views.reiniciar_jogo()
-            views.desligarRaspberry()
-            #pass
+            views.reiniciar_jogo()
 
         # Checagem dos botoes da logica 1
         if forcar_logica1 != None and forcar_logica1 == 'Forcar Ligar Laser':
@@ -108,29 +104,24 @@ def escape_debug(request): # VIEW DE DEBUG
 def iniciar_jogo():
     print('Iniciando Jogo...')
     # Inicia as threads das logicas
-    Logica_1.iniciarThread()
     Logica_2.iniciarThread()
-    Logica_3.iniciarThread()
+    Logica_1.iniciarThread()
     Logica_4.iniciarThread()
-    Logica_5.iniciarThread()
     Logica_6.iniciarThread()
+    Logica_3.iniciarThread()
+    Logica_5.iniciarThread()
     Logica_7.iniciarThread()
-    Logica_8.iniciarThread()
+    #Logica_8.iniciarThread()
 
-def reiniciar_jogo(): # EM TESTES
+def reiniciar_jogo():
+    import os
     print('Reiniciando Jogo...')
-    # Reinicia as threads das logicas
-    Logica_1.reiniciarThread()
-    Logica_2.reiniciarThread()
-    Logica_3.reiniciarThread()
-    Logica_4.reiniciarThread()
-    Logica_5.reiniciarThread()
-    Logica_6.reiniciarThread()
-    Logica_7.reiniciarThread()
-    Logica_8.reiniciarThread()
+    # Matar o server da porta 8000 e 2 segundos depois inicia um novo server
+    os.system('sudo fuser -k 8000/tcp && sleep 2 && . /home/pi/escapebh/escapeiniciar')
 
 def desligarRaspberry():
-    # Desliga a raspberry para resetar o jogo
+    # Desliga a raspberry
     import os
     os.system('sudo shutdown -h now')
+
 # ----------- FIM dos METODOS -----

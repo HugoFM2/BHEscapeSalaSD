@@ -18,7 +18,7 @@ class Logica_4(Logica_geral):
     # GPIO's
     gpio_chave1 = 26 # Primeira chave (Esquerda) (raspberry)
     gpio_chave2 = 22 # Segunda chave (Direita) (raspberry)
-    gp_botao = 0 # Botao no busto - GPA 0 (Extensor 0x22)
+    gpio_botao = 11 # Botao no busto (raspberry)
     gpio_servo = 8 # Servo motor do busto (raspberry)
     gp_trava_busto = 7 # Trava do busto - GPA 7 (Extensor 0x24)
     gp_porta = 0 # Rele da trava da porta - GPA 0(extensor 0x24)
@@ -36,13 +36,13 @@ class Logica_4(Logica_geral):
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_chave1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_chave2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(cls.gpio_botao, GPIO.IN)
         GPIO.setup(cls.gpio_servo, GPIO.OUT)
 
         # Desativar todos os reles
         Reles.desligarTodosReles()
 
         # Configurando GPIO's do Extensor
-        mcp.setup(cls.gp_botao, mcp.GPA, mcp.IN, mcp.ADDRESS1)
         mcp.setup(cls.gp_porta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(cls.gp_trava_busto, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
@@ -121,7 +121,7 @@ class Logica_4(Logica_geral):
                     cls.busto_girou = True
                     print('Girando Busto e liberando botão.') #DEBUG
 
-                leituraBotao = mcp.input(cls.gp_botao, mcp.GPA, mcp.ADDRESS1)
+                leituraBotao = GPIO.input(cls.gpio_botao)
                 if leituraBotao == 1 :
                     cls.abrirPorta()
                     print('Abrindo a Porta secreta') #DEBUG

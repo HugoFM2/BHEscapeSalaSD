@@ -16,7 +16,7 @@ class Logica_5(Logica_geral):
     # GPIO's
     gpio_livro1 = 12 # Primeiro livro (raspberry)
     gpio_livro2 = 10 # Segundo livro (raspberry)
-    gpio_livro3 = 2 # Terceiro livro - GPA 2 (extensor 0x22)
+    gpio_livro3 = 13 # Terceiro livro (raspberry)
     gp_bau = 5 # Rele da trava do bau - GPA 5 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
@@ -28,9 +28,9 @@ class Logica_5(Logica_geral):
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_livro1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_livro2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(cls.gpio_livro3, GPIO.IN)
 
         # Configurando GPIO's do Extensor
-        mcp.setup(cls.gpio_livro3, mcp.GPA, mcp.IN, mcp.ADDRESS1)
         mcp.setup(cls.gp_bau, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel alto (Desligado)
@@ -52,7 +52,7 @@ class Logica_5(Logica_geral):
             # Checa se a logica 4 já foi concluida
             if Logica_3._concluida == True:
 
-                leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), mcp.input(cls.gpio_livro3, mcp.GPA, mcp.ADDRESS1)]
+                leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), GPIO.input(cls.gpio_livro3)]
                 print(leitura)
                 if ( leitura[0] == GPIO.HIGH and leitura[1] == GPIO.HIGH and leitura[2] == 1 ) :
                     

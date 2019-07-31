@@ -1,3 +1,4 @@
+import RPi.GPIO as GPIO # Modulo de controle da GPIOs
 import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
@@ -14,8 +15,8 @@ Direcionando o laser da forma correta para a gaveta na parte de baixo do palco v
 class Logica_1(Logica_geral):
 
     # GPA's e GPB's
-    gp_botao = 1 # Botao mezanino - GPB 1 (Extensor 0x22)
-    gp_ldr = 3 # Sensor ldr - GPB 3 (Extensor 0x22)
+    gpio_botao = 32 # Botao mezanino (raspberry)
+    gpio_ldr = 33 # Sensor ldr (raspberry)
     gp_laser = 1 # Rele Laser - GPA 1 (Extensor 0x24)
     gp_gaveta = 2 # Rele Gaveta - GPA 2 (Extensor 0x24)
 
@@ -24,10 +25,13 @@ class Logica_1(Logica_geral):
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
-    def setup(cls): 
-        # Configurando Sensore, GP's do Extensor 0x22
-        mcp.setup(cls.gp_botao, mcp.GPB, mcp.IN, mcp.ADDRESS1)
-        mcp.setup(cls.gp_ldr, mcp.GPB, mcp.IN, mcp.ADDRESS1)
+    def setup(cls):
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+        
+        # Configurado GPIO's do raspberry
+        GPIO.setup(cls.gpio_botao, GPIO.IN)
+        GPIO.setup(cls.gpio_ldr, GPIO.IN)
         
         # Desativar todos os reles
         Reles.desligarTodosReles()
@@ -68,14 +72,14 @@ class Logica_1(Logica_geral):
         while cls._concluida == False:
             if Logica_2._concluida == True:
                 # Se o botao for pressionado ativa o Laser
-                leitura_botao = mcp.input(cls.gp_botao, mcp.GPB, mcp.ADDRESS1)
+                leitura_botao = GPIO.input(cls.gpio_botao)
 
                 if leitura_botao == 1 and cls.laser_on == False:
                     cls.ligarLaser()
                     print('O laser foi acionado') #DEBUG
 
                 # Se o ldr detectar a luz do laser abre a gaveta
-                leitura_ldr = mcp.input(cls.gp_ldr, mcp.GPB, mcp.ADDRESS1)
+                leitura_ldr = GPIO.input(cls.gpio_ldr)
 
                 if leitura_ldr == 1 and cls.laser_on == True:
                     cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
