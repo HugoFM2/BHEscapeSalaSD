@@ -20,15 +20,18 @@ sensor magnetico abrira um tubo pneumatico que contera uma chave para a caixa qu
 class Logica_8(Logica_geral):
 
     # GPIO's
-    gpio_lampada = 5 # Sensor da mesa que detecta o encaixe da lampada - GPB 5 (extensor 0x22)
+    gpio_lampada = 31 # Sensor da mesa que detecta o encaixe da lampada (raspberry)
     gp_travaCaixa = 7 # Rele da trava da caixa - GPB 7 (extensor 0x24)
     gp_travaTubo = 6 # Rele da trava do tubo - GPB 6 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
-        # Configurando GPIO's do Extensor 0x22
-        mcp.setup(cls.gpio_lampada, mcp.GPB, mcp.IN, mcp.ADDRESS1)
+        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        GPIO.setwarnings(False) # Desativa avisos
+
+        # Configurado GPIO's do raspberry
+        GPIO.setup(cls.gpio_lampada, GPIO.IN)
 
         # Configurando GPIO's do Extensor 0x24
         mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -62,7 +65,7 @@ class Logica_8(Logica_geral):
             # Checa se a logica 7 já foi concluida
             if Logica_7._concluida == True:
 
-                leitura = mcp.input(cls.gpio_lampada, mcp.GPB, mcp.ADDRESS1)
+                leitura = GPIO.input(cls.gpio_lampada)
                 if (leitura == 1):
 
                     cls.abrirTuboBrasao()

@@ -111,13 +111,13 @@ def iniciar_jogo():
     Logica_3.iniciarThread()
     Logica_5.iniciarThread()
     Logica_7.iniciarThread()
-    #Logica_8.iniciarThread()
+    Logica_8.iniciarThread()
 
 def reiniciar_jogo():
     import os
     print('Reiniciando Jogo...')
-    # Matar o server da porta 8000 e 2 segundos depois inicia um novo server
-    os.system('sudo fuser -k 8000/tcp && sleep 2 && . /home/pi/escapebh/escapeiniciar')
+    # Matar o server da porta 8000 e 4 segundos depois inicia um novo server
+    os.system('sudo fuser -k 8000/tcp && sleep 4 && . /home/pi/escapebh/escapeiniciar')
 
 def desligarRaspberry():
     # Desliga a raspberry
