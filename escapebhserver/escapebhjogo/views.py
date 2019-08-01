@@ -10,8 +10,8 @@ from escapebhjogo.classes.logica_7 import Logica_7 # Classe com metodos da logic
 from escapebhjogo.classes.logica_8 import Logica_8 # Classe com metodos da logica 8
 # from escapebhjogo.classes.escapedebug import debug # DEBUG ESCAPE
 from . import views # Importa os metodos existentes neste arquivo
-
-# Create your views here.
+from django.http import HttpResponse
+from escapebhjogo.classes.cronometro import Cronometro
 
 # View da pagina inicial
 def pagina_inicial(request):
@@ -125,3 +125,86 @@ def desligarRaspberry():
     os.system('sudo shutdown -h now')
 
 # ----------- FIM dos METODOS -----
+
+# ----------- AJAX ----------------
+
+def nova_dashboard(request):
+    return render(request, 'escapebhhtml/nova_dashboard.html', {})
+
+def ajaxcronometro(request):
+    #Cronometro.iniciarCronometro()
+    texto = Cronometro.getTempoTotal()
+    return HttpResponse(texto)
+
+def ajaxstatus(request):
+    dicionario_para_html = {
+        'logica1_status': Logica_1._concluida,
+        'logica2_status': Logica_2._concluida,
+        'logica3_status': Logica_3._concluida,
+        'logica4_status': Logica_4._concluida,
+        'logica5_status': Logica_5._concluida,
+        'logica6_status': Logica_6._concluida,
+        'logica7_status': Logica_7._concluida,
+        'logica8_status': Logica_8._concluida,
+    }
+    return JsonResponse(dicionario_para_html)
+
+def ajaxdashboard(request):
+    acao = None
+    # SE RECEBER UM REQUEST GET
+    if request.method == 'GET':
+        acao = request.GET.get('acao', None)
+
+        # Checagem dos botoes de Ação
+        if acao != None and acao == 'iniciarjogo':
+            Cronometro.iniciarCronometro()
+            views.iniciar_jogo()
+        elif acao != None and acao == 'reiniciarjogo':
+            views.reiniciar_jogo()
+        elif acao != None and acao == 'desligarraspberry':
+            views.desligarRaspberry()
+
+        # Checagem dos botoes da logica 1
+        elif acao != None and acao == 'ativarlaser':
+            Logica_1.ligarLaser()
+        elif acao != None and acao == 'abrirgavetalaser':
+            Logica_1.abrirGaveta()
+
+        # Checagem dos botoes da logica 2
+        elif acao != None and acao == 'cairalcapao':
+            Logica_2.cairTeto()
+
+        # Checagem dos botoes da logica 3
+        elif acao != None and acao == 'abrirporao':
+            Logica_3.abrirAlcapao()
+
+        # Checagem dos botoes da logica 4
+        elif acao != None and acao == 'girarbusto':
+            Logica_4.abrirBusto()
+        elif acao != None and acao == 'abrirporta':
+            Logica_4.abrirPorta()
+        elif acao != None and acao == 'voltarbusto':
+            Logica_4.voltarBusto()
+
+        # Checagem dos botoes da logica 5
+        elif acao != None and acao == 'abrirbau':
+            Logica_5.abrirBau()
+
+        # Checagem dos botoes da logica 6
+        elif acao != None and acao == 'descerteto':
+            Logica_6.descerMotor()
+        elif acao != None and acao == 'subirteto':
+            Logica_6.subirMotor()
+
+        # Checagem dos botoes da logica 7
+        elif acao != None and acao == 'abrirgavetamesa':
+            Logica_7.abrirGaveta()
+
+        # Checagem dos botoes da logica 8
+        elif acao != None and acao == 'abrirtubo':
+            Logica_8.abrirTuboBrasao()
+        elif acao != None and acao == 'liberarcilindroenergia':
+            Logica_8.abrirCaixa()
+    
+    texto = acao
+    return HttpResponse(texto)

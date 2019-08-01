@@ -59,7 +59,8 @@ class Logica_7(Logica_geral):
             if Logica_5._concluida == True:
 
                 leitura = [None, None, None, None]
-                leitura[0] = GPIO.input(cls.gpio_peca1)
+                #leitura[0] = GPIO.input(cls.gpio_peca1)
+                leitura[0] = 1 # Ignorando o primeiro sensor
                 leitura[1] = GPIO.input(cls.gpio_peca2)
                 leitura[2] = GPIO.input(cls.gpio_peca3)
                 leitura[3] = GPIO.input(cls.gpio_peca4)

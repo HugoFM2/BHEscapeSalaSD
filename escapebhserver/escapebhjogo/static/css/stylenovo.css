@@ -1,0 +1,43 @@
+#cabecalho {
+    margin-bottom: 32px;
+}
+
+#h1-titulo {
+    font-size: 24pt;
+}
+
+#logo-bhescape {
+    height: 80px;
+    position: absolute;
+    width: 55px;
+    margin-top: 4.5px;
+}
+
+#p-cronometro {
+    font-size: 24pt;
+    margin-bottom: 0px;
+}
+
+#rodape {
+    margin-bottom: 0px;
+}
+
+.btn {
+    margin-top: 0.5px;
+    margin-bottom: 0.5px;
+}
+
+/* Circulos de indicacao de Logica Concluida ou Nao */
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dotCinza {
+    background-color: silver;
+}
+.dotVerde {
+    background-color: springgreen;
+}
