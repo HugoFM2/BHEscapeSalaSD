@@ -52,11 +52,9 @@ class Logica_1(Logica_geral):
         cls.laser_on = False
         mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         # Ativa a trava com 3 pulsos de 2s cada
-        for i in range(3):
-            mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(2)
-            mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
-            time.sleep(2)
+        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(2)
+        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
 
     # Metodo para acionar o lasers
     @classmethod
@@ -70,23 +68,22 @@ class Logica_1(Logica_geral):
     def threadLogica(cls):
         
         while cls._concluida == False:
-            if Logica_2._concluida == True:
-                # Se o botao for pressionado ativa o Laser
-                leitura_botao = GPIO.input(cls.gpio_botao)
+            # Se o botao for pressionado ativa o Laser
+            leitura_botao = GPIO.input(cls.gpio_botao)
 
-                if leitura_botao == 1 and cls.laser_on == False:
-                    cls.ligarLaser()
-                    print('O laser foi acionado') #DEBUG
+            if leitura_botao == 1 and cls.laser_on == False:
+                cls.ligarLaser()
+                print('O laser foi acionado') #DEBUG
 
-                # Se o ldr detectar a luz do laser abre a gaveta
-                leitura_ldr = GPIO.input(cls.gpio_ldr)
+            # Se o ldr detectar a luz do laser abre a gaveta
+            leitura_ldr = GPIO.input(cls.gpio_ldr)
 
-                if leitura_ldr == 1 and cls.laser_on == True:
-                    cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
-                    print('A gaveta do chão foi aberta') #DEBUG
-                    
-                time.sleep(0.25) # Delay de 250ms segundo entre checagens
-                print('2ª Logica Rodando (Laser)') #DEBUG
+            if leitura_ldr == 1 and cls.laser_on == True:
+                cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
+                print('A gaveta do chão foi aberta') #DEBUG
+                
+            time.sleep(0.25) # Delay de 250ms segundo entre checagens
+            print('2ª Logica Rodando (Laser)') #DEBUG
             
         else:
             print('2ª Logica - Finalizada')
