@@ -45,7 +45,7 @@ class Logica_6(Logica_geral):
         cls._concluida = True
         mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.25)
+        time.sleep(10)
         mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo para acionar o motor no sentindo de subir a "gaveta"
@@ -53,7 +53,7 @@ class Logica_6(Logica_geral):
     def subirMotor(cls):
         mcp.setup(cls.gp_motorSubir, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_motorSubir, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.25)
+        time.sleep(10.5)
         mcp.output(cls.gp_motorSubir, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogica() da classe pai
