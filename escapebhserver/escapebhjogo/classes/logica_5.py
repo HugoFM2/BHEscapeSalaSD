@@ -3,7 +3,7 @@ import time # Modulo para delays e contagem de tempo
 import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from .logica_geral import Logica_geral
-from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
+from escapebhjogo.classes.logica_4 import Logica_4 # Classe com metodos da logica 4
 
 """ CLASSE LOGICA 5
 Esta classe faz todo o controle dos itens relacionados a Logica 5
@@ -49,8 +49,8 @@ class Logica_5(Logica_geral):
     @classmethod
     def threadLogica(cls):
         while cls._concluida == False:
-            # Checa se a logica 4 já foi concluida
-            if Logica_3._concluida == True:
+            # Checa se a logica da porta já foi concluida
+            if Logica_4._concluida == True:
 
                 leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), GPIO.input(cls.gpio_livro3)]
                 print(leitura)
