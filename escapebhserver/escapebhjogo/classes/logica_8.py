@@ -21,8 +21,10 @@ class Logica_8(Logica_geral):
 
     # GPIO's
     gpio_lampada = 31 # Sensor da mesa que detecta o encaixe da lampada (raspberry)
+    gpio_arma = 36 # Sensor que detecta o encaixe da arma (raspberry)
     gp_travaCaixa = 7 # Rele da trava da caixa - GPB 7 (extensor 0x24)
     gp_travaTubo = 6 # Rele da trava do tubo - GPB 6 (extensor 0x24)
+    gp_fitaLed = 4 # Rele da fita de led - GPA 4 (extensor 0x24)
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
@@ -32,18 +34,29 @@ class Logica_8(Logica_geral):
 
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_lampada, GPIO.IN)
+        GPIO.setup(cls.gpio_arma, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
         # Configurando GPIO's do Extensor 0x24
         mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(cls.gp_travaTubo, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel alto (Rele desativado)
         mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
         mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo abrir a caixa que contem a lampada
     @classmethod
     def abrirCaixa(cls):
+        for i in range(5):    
+            mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+            mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+            time.sleep(0.15)
+            mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+            time.sleep(0.15)
+        mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+
         mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
@@ -61,12 +74,18 @@ class Logica_8(Logica_geral):
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
+        caixaAberta = False
         while cls._concluida == False:
             # Checa se a logica 7 já foi concluida
             if Logica_7._concluida == True:
 
+                if (GPIO.input(cls.gpio_arma) == 1 and caixaAberta == False):
+                    cls.abrirCaixa()
+                    caixaAberta = True
+                    print('Caixa Aberta!')
+
                 leitura = GPIO.input(cls.gpio_lampada)
-                if (leitura == 1):
+                if (leitura == 1 and caixaAberta == True):
 
                     cls.abrirTuboBrasao()
                     print('Tubo de energia Aberto')
