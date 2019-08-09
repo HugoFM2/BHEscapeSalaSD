@@ -208,3 +208,11 @@ def ajaxdashboard(request):
     
     texto = acao
     return HttpResponse(texto)
+
+# Essa rotina sicroniza o executar do som na sala
+def ajaxsom(request):
+    sinaisSom = {
+        'executarSom1': Logica_8.executarSom1,
+        'executarSom2': Logica_8.executarSom2,
+    }
+    return JsonResponse(sinaisSom)

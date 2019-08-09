@@ -113,7 +113,9 @@
                 <td>Lógica 8</td>
                 <td><span id="status-logica8" class="dot dotCinza"></span></td>
                 <td>
+                    <button id="btnAudio1" type="button" class="btn btn-secondary">Som 1</button>
                     <button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia</button>
+                    <button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
                     <button id="btnTubo" type="button" class="btn btn-primary">Abrir Tubo</button>
                 </td>
               </tr>
@@ -121,6 +123,18 @@
           </table>
         </div>
     </div>
+    <!-- Audio ao abrir a gaveta-->
+    <audio id="myAudio1">
+        <!-- <source src="horse.ogg" type="audio/ogg"> -->
+        <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <!-- Audio ao abrir o tubo-->
+    <audio id="myAudio2">
+        <!-- <source src="horse.ogg" type="audio/ogg"> -->
+        <source src="{% static 'sons/som2.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <!-- RODAPÉ -->
     <div id="rodape" class="jumbotron text-center">

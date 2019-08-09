@@ -8,4 +8,5 @@ urlpatterns = [
     path('ajaxdashboard', views.ajaxdashboard, name='ajaxdashboard'),
     path('ajaxcronometro', views.ajaxcronometro, name='ajaxcronometro'),
     path('ajaxstatus', views.ajaxstatus, name='ajaxstatus'),
+    path('ajaxsom', views.ajaxsom, name='ajaxsom'),
 ]

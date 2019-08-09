@@ -34,6 +34,13 @@ const dotlogica5 = document.querySelector('#status-logica5')
 const dotlogica7 = document.querySelector('#status-logica7')
 const dotlogica8 = document.querySelector('#status-logica8')
 
+// ---- SONS ----
+const audio1 = document.querySelector("#myAudio1");
+const btnAudio1 = document.querySelector('#btnAudio1')
+const audio2 = document.querySelector("#myAudio2");
+const btnAudio2 = document.querySelector('#btnAudio2')
+var fazerRequestSom = false
+
 // ---- VARIAVEIS ----
 var segundos = 0
 var intervalo = null
@@ -117,6 +124,10 @@ function getRequestStatus() {
         }
         if (resposta.logica7_status == true) {
             dotlogica7.className = "dot dotVerde"
+            if (fazerRequestSom == false) {
+                requestSom()
+                fazerRequestSom = true
+            }
         }
         if (resposta.logica8_status == true) {
             dotlogica8.className = "dot dotVerde"
@@ -210,3 +221,39 @@ btnGavetaMesa.addEventListener('click', function(){ requestForcaLogica('abrirgav
 
 btnCilindroEnergia.addEventListener('click', function(){ requestForcaLogica('liberarcilindroenergia') })
 btnTubo.addEventListener('click', function(){ requestForcaLogica('abrirtubo') })
+
+// ---- SONS ----
+
+function requestSom() {
+    var xhttp = new XMLHttpRequest()
+    var url = "ajaxsom"
+
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var resposta = JSON.parse(this.responseText)
+
+        console.log(resposta)
+
+        if (resposta.executarSom1 == true && audio1.paused == true) {
+            audio1.play()
+            console.log('executando som 1')
+        }
+        if (resposta.executarSom2 == true && audio2.paused == true) {
+            audio2.play()
+            console.log('executando som 2')
+        }
+
+        setTimeout(requestSom, 700)
+      }
+    }
+    xhttp.open("GET", url, true)
+    xhttp.send()
+}
+
+btnAudio1.addEventListener('click', function() {
+    audio1.play()
+})
+
+btnAudio2.addEventListener('click', function() {
+    audio2.play()
+})
