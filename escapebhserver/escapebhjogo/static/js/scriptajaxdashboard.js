@@ -232,7 +232,7 @@ function requestSom() {
       if (this.readyState == 4 && this.status == 200) {
         var resposta = JSON.parse(this.responseText)
 
-        console.log(resposta)
+        //console.log(resposta)
 
         if (resposta.executarSom1 == true && audio1.paused == true) {
             audio1.play()
