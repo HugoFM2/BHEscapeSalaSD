@@ -219,8 +219,14 @@ btnBau.addEventListener('click', function(){ requestForcaLogica('abrirbau') })
 
 btnGavetaMesa.addEventListener('click', function(){ requestForcaLogica('abrirgavetamesa') })
 
-btnCilindroEnergia.addEventListener('click', function(){ requestForcaLogica('liberarcilindroenergia') })
-btnTubo.addEventListener('click', function(){ requestForcaLogica('abrirtubo') })
+btnCilindroEnergia.addEventListener('click', function(){
+    requestForcaLogica('liberarcilindroenergia')
+    audio1.play()
+})
+btnTubo.addEventListener('click', function(){
+    requestForcaLogica('abrirtubo')
+    audio2.play()
+})
 
 // ---- SONS ----
 
