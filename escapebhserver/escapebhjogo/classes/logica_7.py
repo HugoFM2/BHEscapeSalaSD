@@ -15,7 +15,6 @@ letras) vai fazer com que uma gaveta na própria mesa abra.
 class Logica_7(Logica_geral):
 
     # GPIO's
-    gpio_peca1 = 23 # Primeira peça (raspberry)
     gpio_peca2 = 21 # Segunda peça (raspberry)
     gpio_peca3 = 19 # Terceira peça (raspberry)
     gpio_peca4 = 15 # Quarta peça (raspberry)
@@ -28,7 +27,6 @@ class Logica_7(Logica_geral):
         GPIO.setwarnings(False) # Desativa avisos
 
         # Configurado GPIO's do raspberry
-        GPIO.setup(cls.gpio_peca1, GPIO.IN)
         GPIO.setup(cls.gpio_peca2, GPIO.IN)
         GPIO.setup(cls.gpio_peca3, GPIO.IN)
         GPIO.setup(cls.gpio_peca4, GPIO.IN)
@@ -59,7 +57,7 @@ class Logica_7(Logica_geral):
             if Logica_5._concluida == True:
 
                 leitura = [None, None, None, None]
-                #leitura[0] = GPIO.input(cls.gpio_peca1)
+                #leitura[0] = primeiro sensor desativado
                 leitura[0] = 1 # Ignorando o primeiro sensor
                 leitura[1] = GPIO.input(cls.gpio_peca2)
                 leitura[2] = GPIO.input(cls.gpio_peca3)

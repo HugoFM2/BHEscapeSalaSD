@@ -22,6 +22,7 @@ class Logica_8(Logica_geral):
     # GPIO's
     gpio_lampada = 31 # Sensor da mesa que detecta o encaixe da lampada (raspberry)
     gpio_arma = 36 # Sensor que detecta o encaixe da arma (raspberry)
+    gpio_ldr = 23 # Ldr da lampada (raspberry)
     gp_travaCaixa = 7 # Rele da trava da caixa - GPB 7 (extensor 0x24)
     gp_travaTubo = 6 # Rele da trava do tubo - GPB 6 (extensor 0x24)
     gp_fitaLed = 4 # Rele da fita de led - GPA 4 (extensor 0x24)
@@ -37,6 +38,7 @@ class Logica_8(Logica_geral):
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_lampada, GPIO.IN)
         GPIO.setup(cls.gpio_arma, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        GPIO.setup(cls.gpio_ldr, GPIO.IN)
 
         # Configurando GPIO's do Extensor 0x24
         mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -100,7 +102,8 @@ class Logica_8(Logica_geral):
                     print('Caixa Aberta!')
 
                 leitura = GPIO.input(cls.gpio_lampada)
-                if (leitura == 1 and caixaAberta == True):
+                leituraLdr = GPIO.input(cls.gpio_ldr)
+                if (leitura == 1 and leituraLdr == 1 and caixaAberta == True):
 
                     cls.abrirTuboBrasao()
                     print('Tubo de energia Aberto')
