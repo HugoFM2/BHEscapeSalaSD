@@ -53,8 +53,8 @@ class Logica_8(Logica_geral):
     def abrirCaixa(cls):
         cls.executarSom1 = True # Sinal para executar o som
 
+        mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         for i in range(5):    
-            mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
             mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
             time.sleep(0.15)
             mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
@@ -82,6 +82,9 @@ class Logica_8(Logica_geral):
         mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
         cls.executarSom2 = False # Sinal para parar o som
+        # Desliga a fita de LED ao concluir a logica do tubo
+        mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
