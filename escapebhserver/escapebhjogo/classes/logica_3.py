@@ -95,6 +95,7 @@ class Logica_3(Logica_geral):
                     ordem_degrau = []
                     print('Ordem incorreta nos degrais') #DEBUG
                     time.sleep(1) # Pausa checagem por 1 segundos
+                    tempoAnterior = time.time()
 
                 # Timeout
                 tempoAtual = time.time()
