@@ -26,6 +26,7 @@ class Logica_8(Logica_geral):
     gp_travaCaixa = 7 # Rele da trava da caixa - GPB 7 (extensor 0x24)
     gp_travaTubo = 6 # Rele da trava do tubo - GPB 6 (extensor 0x24)
     gp_fitaLed = 4 # Rele da fita de led - GPA 4 (extensor 0x24)
+    gp_lampada127v = 3 # Rele da fita de led - GPB 3 (extensor 0x24)
     executarSom1 = False # Variavel que sera usada para sicronizar o som 1
     executarSom2 = False # Variavel que sera usada para sicronizar o som 2
 
@@ -44,11 +45,13 @@ class Logica_8(Logica_geral):
         mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(cls.gp_travaTubo, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.setup(cls.gp_lampada127v, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel alto (Rele desativado)
         mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
         mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
         mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        mcp.output(cls.gp_lampada127v, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
     # Metodo abrir a caixa que contem a lampada
     @classmethod
@@ -76,8 +79,17 @@ class Logica_8(Logica_geral):
         cls._concluida = True
 
         cls.executarSom2 = True # Sinal para executar o som
-        time.sleep(2)
 
+        # Pisca lampada 127v
+        mcp.setup(cls.gp_lampada127v, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        for i in range(5):
+            mcp.output(cls.gp_lampada127v, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+            time.sleep(0.15)
+            mcp.output(cls.gp_lampada127v, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+            time.sleep(0.15)
+        mcp.output(cls.gp_lampada127v, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+
+        # Abre o tubo
         mcp.setup(cls.gp_travaTubo, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
