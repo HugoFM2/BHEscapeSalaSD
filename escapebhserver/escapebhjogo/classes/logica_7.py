@@ -45,7 +45,7 @@ class Logica_7(Logica_geral):
         for i in range(3):
             mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(2)
+            time.sleep(0.050)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
             time.sleep(2)
 
