@@ -65,7 +65,7 @@ class Logica_3(Logica_geral):
     @classmethod
     def threadLogica(cls):
         # Ordem correta para pisar nos degraus
-        ORDEM_CORRETA = [4,3,2,1]
+        ORDEM_CORRETA = [2,4,3,4,1]
         ordem_degrau = []
         tempoAnterior = time.time() # Inicia o tempo de referencia
 
