@@ -59,7 +59,7 @@ class Logica_8(Logica_geral):
         cls.executarSom1 = True # Sinal para executar o som
 
         mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        for i in range(5):    
+        for i in range(5):
             mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
             time.sleep(0.15)
             mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
@@ -79,6 +79,8 @@ class Logica_8(Logica_geral):
         cls._concluida = True
 
         cls.executarSom2 = True # Sinal para executar o som
+
+        time.sleep(13) # Da um delay de 13 segundos para piscar a lampada e abrir o tubo
 
         # Pisca lampada 127v
         mcp.setup(cls.gp_lampada127v, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -123,7 +125,7 @@ class Logica_8(Logica_geral):
                 print('8ª Logica - Rodando (Arma/Lampada Energia) Lampada: ' + str(leitura))
 
             time.sleep(0.25)
-        
+
         else:
             print('8ª Logica - Finalizada')
 
