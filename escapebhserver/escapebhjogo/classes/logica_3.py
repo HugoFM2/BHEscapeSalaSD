@@ -65,7 +65,7 @@ class Logica_3(Logica_geral):
     @classmethod
     def threadLogica(cls):
         # Ordem correta para pisar nos degraus
-        ORDEM_CORRETA = [2,4,3,4,1]
+        ORDEM_CORRETA = [2,4,3,1]
         ordem_degrau = []
         tempoAnterior = time.time() # Inicia o tempo de referencia
 
@@ -105,14 +105,14 @@ class Logica_3(Logica_geral):
                 # Timeout
                 tempoAtual = time.time()
                 tempoDecorrido = tempoAtual - tempoAnterior
-                if tempoDecorrido > 10 and ordem_degrau != []: # Renova o tempo de referencia
+                if tempoDecorrido > 20 and ordem_degrau != []: # Renova o tempo de referencia
                     print('Timeout Logica 3 - ' + str(tempoDecorrido)) #DEBUG
                     ordem_degrau = [] # Zera a leitura
                     tempoAnterior = time.time()
                 elif ordem_degrau == []: # Se estiver vazio sempre zera tempo anterior
                     tempoAnterior = time.time()
 
-                time.sleep(0.25)
+                time.sleep(0.15)
         
         else:
             print('5ª Logica - Finalizada')

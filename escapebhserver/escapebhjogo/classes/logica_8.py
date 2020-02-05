@@ -80,7 +80,7 @@ class Logica_8(Logica_geral):
 
         cls.executarSom2 = True # Sinal para executar o som
 
-        time.sleep(15.3) # Da um delay de 13 segundos para piscar a lampada e abrir o tubo
+        time.sleep(14) # Da um delay de 13 segundos para piscar a lampada e abrir o tubo
 
         # Pisca lampada 127v
         mcp.setup(cls.gp_lampada127v, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
