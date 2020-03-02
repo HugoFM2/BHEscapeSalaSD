@@ -15,8 +15,10 @@ Direcionando o laser da forma correta para a gaveta na parte de baixo do palco v
 class Logica_1(Logica_geral):
 
     # GPA's e GPB's
-    gpio_botao = 32 # Botao mezanino (raspberry)
-    gpio_ldr = 33 # Sensor ldr (raspberry)
+    # gpio_botao = 32 # Botao mezanino (raspberry)
+    gpio_botao = 1 # Botao mezanino - GPB 1 (Extensor 0x22)
+    gpio_ldr = 32 # Sensor ldr (raspberry)
+    # gpio_ldr = 3 # Sensor ldr - GPB 3 (Extensor 0x22)
     gp_laser = 1 # Rele Laser - GPA 1 (Extensor 0x24)
     gp_gaveta = 2 # Rele Gaveta - GPA 2 (Extensor 0x24)
 
@@ -30,8 +32,12 @@ class Logica_1(Logica_geral):
         GPIO.setwarnings(False) # Desativa avisos
         
         # Configurado GPIO's do raspberry
-        GPIO.setup(cls.gpio_botao, GPIO.IN)
+        # GPIO.setup(cls.gpio_botao, GPIO.IN)
         GPIO.setup(cls.gpio_ldr, GPIO.IN)
+
+        #Configurando GPIO's do Extensor 0x22
+        mcp.setup(cls.gpio_botao, mcp.GPB, mcp.IN, mcp.ADDRESS1)
+        # mcp.setup(cls.gpio_ldr,  mcp.GPB, mcp.IN, mcp.ADDRESS1)
         
         # Desativar todos os reles
         Reles.desligarTodosReles()
@@ -53,7 +59,7 @@ class Logica_1(Logica_geral):
         mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         # Ativa a trava com 3 pulsos de 2s cada
         mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(2)
+        time.sleep(0.5)
         mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
 
     # Metodo para acionar o lasers
@@ -62,6 +68,7 @@ class Logica_1(Logica_geral):
         mcp.setup(cls.gp_laser, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_laser, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
         cls.laser_on = True
+        # mcp.setup(cls.gpio_ldr,  mcp.GPB, mcp.IN, mcp.ADDRESS1) # Refaz o setup do input LDR
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
@@ -69,7 +76,8 @@ class Logica_1(Logica_geral):
         
         while cls._concluida == False:
             # Se o botao for pressionado ativa o Laser
-            leitura_botao = GPIO.input(cls.gpio_botao)
+            # leitura_botao = GPIO.input(cls.gpio_botao)
+            leitura_botao = mcp.input(cls.gpio_botao, mcp.GPB, mcp.ADDRESS1)
 
             if leitura_botao == 1 and cls.laser_on == False:
                 cls.ligarLaser()
@@ -77,7 +85,7 @@ class Logica_1(Logica_geral):
 
             # Se o ldr detectar a luz do laser abre a gaveta
             leitura_ldr = GPIO.input(cls.gpio_ldr)
-
+            # leitura_ldr = mcp.input(cls.gpio_ldr, mcp.GPB, mcp.ADDRESS1)
             if leitura_ldr == 1 and cls.laser_on == True:
                 cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
                 print('A gaveta do chão foi aberta') #DEBUG
