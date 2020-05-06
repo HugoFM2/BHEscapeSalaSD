@@ -254,7 +254,7 @@ btnTubo.addEventListener('click', function(){
 
 function requestSom() {
     var xhttp = new XMLHttpRequest()
-    var url = "ajaxsom"
+    var url = "ajaxsomVirtual"
 
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -270,6 +270,41 @@ function requestSom() {
             audio2.play()
             console.log('executando som 2')
         }
+
+        // SONS VIRTUAIS
+        if (resposta.executarSomLogica1 == true && audioLogica1.paused == true) {
+            audioLogica1.play()
+            console.log('executando som Logica 1')
+        }
+        if (resposta.executarSomLogica2 == true && audioLogica2.paused == true) {
+            audioLogica2.play()
+            console.log('executando som Logica 2')
+        }
+        if (resposta.executarSomLogica3_1 == true && audioLogica3_1.paused == true) {
+            audioLogica3_1.play()
+            console.log('executando som Logica 3_1')
+        }
+        if (resposta.executarSomLogica3_2 == true && audioLogica3_2.paused == true) {
+            audioLogica3_2.play()
+            console.log('executando som Logica 3_2')
+        }
+        if (resposta.executarSomLogica4 == true && audioLogica4.paused == true) {
+            audioLogica4.play()
+            console.log('executando som Logica 4')
+        }
+        if (resposta.executarSomLogica5 == true && audioLogica5.paused == true) {
+            audioLogica5.play()
+            console.log('executando som Logica 5')
+        }
+        if (resposta.executarSomLogica6 == true && audioLogica6.paused == true) {
+            audioLogica6.play()
+            console.log('executando som Logica 6')
+        }
+        if (resposta.executarSomLogica7 == true && audioLogica7.paused == true) {
+            audioLogica7.play()
+            console.log('executando som Logica 7')
+        }
+
 
         setTimeout(requestSom, 700)
       }

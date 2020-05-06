@@ -15,19 +15,19 @@ dobradiça e o motor. Quando o motor descer essa peça do teto vai abrir como se
 pequena gaveta e a chave irá deslizar)
 """
 
-class Logica_6(Logica_geral):
+class Logica_6(Logica_geral): # Logica 4 no site
 
     # GPIO's
     gp_arduinoInvecoes = 7 # GPIO que recebe sinal sobre a leitura das 7 invecoes. (raspberry)
     gp_motorDescer = 2 # Rele Desce Motor - GPB 2 (extensor 0x24)
     gp_motorSubir = 5 # Rele Sobe Motor - GPB 5 (extensor 0x24)
-
+    executarSomLogica4 = False
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
         GPIO.setwarnings(False) # Desativa avisos
-        
+
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gp_arduinoInvecoes, GPIO.IN)
 
@@ -42,11 +42,15 @@ class Logica_6(Logica_geral):
     # Metodo para acionar o motor no sentindo de descer a "gaveta"
     @classmethod
     def descerMotor(cls):
+        cls.executarSomLogica4 = True
         cls._concluida = True
         mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(10)
         mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        cls.executarSomLogica4 = False
+
+
 
     # Metodo para acionar o motor no sentindo de subir a "gaveta"
     @classmethod
@@ -67,7 +71,7 @@ class Logica_6(Logica_geral):
                 print('4ª Logica - Rodando (Invenções/Teto 2ª Sala)')
 
             time.sleep(0.25)
-        
+
         else:
             print('4ª Logica - Finalizada')
 

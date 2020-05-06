@@ -12,14 +12,14 @@ Azul claro -> Colocando as quatro peças de madeira na ordem correta (similar ao
 letras) vai fazer com que uma gaveta na própria mesa abra.
 """
 
-class Logica_7(Logica_geral):
+class Logica_7(Logica_geral): # Logica 7 no site
 
     # GPIO's
     gpio_peca2 = 21 # Segunda peça (raspberry)
     gpio_peca3 = 19 # Terceira peça (raspberry)
     gpio_peca4 = 15 # Quarta peça (raspberry)
     gp_trava = 6 # Rele da trava da gaveta - GPA 6 (extensor 0x24)
-
+    executarSomLogica7 = False
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
@@ -41,6 +41,7 @@ class Logica_7(Logica_geral):
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
+        cls.executarSomLogica7 = True
         # Ativa a trava com 3 pulsos de 2s cada
         for i in range(3):
             mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
@@ -48,6 +49,7 @@ class Logica_7(Logica_geral):
             time.sleep(0.050)
             mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
             time.sleep(2)
+        cls.executarSomLogica7 = False
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
@@ -64,15 +66,15 @@ class Logica_7(Logica_geral):
                 leitura[3] = GPIO.input(cls.gpio_peca4)
 
                 if (leitura == [1,1,1,1]):
-                    
+
                     cls.abrirGaveta()
                     print('Gaveta 2ª Sala Aberta!')
-                
+
                 print('7ª Logica - Rodando (Puzzle 2ª Sala)')
                 print(leitura)
-                
+
             time.sleep(0.25)
-        
+
         else:
             print('7ª Logica - Finalizada')
 

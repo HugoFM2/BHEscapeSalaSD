@@ -16,5 +16,6 @@ urlpatterns = [
     path('reset',views.reset),
     path('descricao',views.descricao),
     #SONS_REMOTO
-    path('Sons', views.nova_dashboard_Sons, name='nova_dashboard_Sons'),
+    path('sdvirtual', views.nova_dashboard_Sons, name='nova_dashboard_Sons'),
+    path('ajaxsomVirtual', views.ajaxsomVirtual, name='ajaxsomVirtual'),
 ]

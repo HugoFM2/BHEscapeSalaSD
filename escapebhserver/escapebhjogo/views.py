@@ -223,6 +223,21 @@ def ajaxsom(request):
 def nova_dashboard_Sons(request):
     return render(request, 'escapebhhtml/nova_dashboard_Sons.html', {})
 
+def ajaxsomVirtual(request):
+    sinaisSom = {
+        'executarSom1': Logica_8.executarSom1,
+        'executarSom2': Logica_8.executarSom2,
+        'executarSomLogica1' : Logica_2.executarSomLogica1,
+        'executarSomLogica2' : Logica_1.executarSomLogica2,
+        'executarSomLogica3_1' : Logica_4.executarSomLogica3_1,
+        'executarSomLogica3_2' : Logica_4.executarSomLogica3_2,
+        'executarSomLogica4' : Logica_6.executarSomLogica4,
+        'executarSomLogica5' : Logica_3.executarSomLogica5,
+        'executarSomLogica6' : Logica_5.executarSomLogica6,
+        'executarSomLogica7' : Logica_7.executarSomLogica7,
+    }
+    return JsonResponse(sinaisSom)
+
 # ---=== FIM SONS REMOTOS ===---
 
 

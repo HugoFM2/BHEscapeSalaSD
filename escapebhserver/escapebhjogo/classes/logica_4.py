@@ -13,8 +13,8 @@ Laranja -> Virando as duas chaves no móvel que fica no mezanino vai fazer com q
 abra. Dentro do busto vai ter um botão. Apertando o botão no busto vai fazer com que a porta
 secreta abra.
 """
-class Logica_4(Logica_geral):
-    
+class Logica_4(Logica_geral): # Logica 3 no site
+
     # GPIO's
     gpio_chave1 = 26 # Primeira chave (Esquerda) (raspberry)
     gpio_chave2 = 22 # Segunda chave (Direita) (raspberry)
@@ -27,12 +27,14 @@ class Logica_4(Logica_geral):
     busto_girou = False
     pwmServo = None
 
+    executarSomLogica3_1 = False
+    executarSomLogica3_2 = False
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
         GPIO.setwarnings(False) # Desativa avisos
-        
+
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_chave1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_chave2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
@@ -57,20 +59,24 @@ class Logica_4(Logica_geral):
     # Metodo para destravar alcapao no chao
     @classmethod
     def abrirPorta(cls):
+        cls.executarSomLogica3_1 = True
         cls._concluida = True
         mcp.setup(cls.gp_porta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         cls.busto_girou = False
+        c;s.executarSomLogica3_1 = False
 
     @classmethod
     def abrirBusto(cls):
+        cls.executarSomLogica3_2 = True
         mcp.setup(cls.gp_trava_busto, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(0.5)
+        cls.executarSomLogica3_2 = False
 
         #cls.setup()
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
@@ -85,7 +91,7 @@ class Logica_4(Logica_geral):
 
         cls.pwmServo.ChangeDutyCycle(2.5) # Aberto
         time.sleep(1.5)
-        
+
         cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
         #cls.pwmServo.stop()
 
@@ -100,7 +106,7 @@ class Logica_4(Logica_geral):
             cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
             cls.pwmServo.start(0) # Inicio com DutyCycle em 0%
             time.sleep(0.5)
-        
+
         cls.pwmServo.ChangeDutyCycle(11.4) # Fechado
         time.sleep(1.5)
         cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
@@ -129,7 +135,7 @@ class Logica_4(Logica_geral):
                 time.sleep(0.25)
                 #print(leitura)
                 print('3ª Logica - Rodando (Busto/Porta)') #DEBUG
-        
+
         else:
             print('3ª Logica - Finalizada')
 

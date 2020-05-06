@@ -12,8 +12,8 @@ Esta classe faz todo o controle dos itens relacionados a Logica 3
 Marrom -> Pisando nos degraus no padrão certo vai soltar a tranca do alçapão (ou uma gaveta
 caso não tenha como abrir o alçapão).
 """
-class Logica_3(Logica_geral):
-    
+class Logica_3(Logica_geral): # Logica 5 no site
+
     # GPIO's
     # Degraus contados de baixo para cima
     gpio_degrau1 = 24 # Primeiro degrau (raspberry)
@@ -21,13 +21,14 @@ class Logica_3(Logica_geral):
     gpio_degrau3 = 29 # Terceiro degrau (raspberry)
     gpio_degrau4 = 16 # Quarto degrau (raspberry)
     gp_trava = 3 # Rele da trava do alçapão - GPA 3 (extensor 0x24)
+    executarSomLogica5 = False
 
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
         GPIO.setwarnings(False) # Desativa avisos
-        
+
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_degrau2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_degrau4, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
@@ -47,6 +48,7 @@ class Logica_3(Logica_geral):
     @classmethod
     def abrirAlcapao(cls):
         cls._concluida = True
+        cls.executarSomLogica5 = True
         mcp.setup(cls.gp_trava, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
         # Ativa a trava com 3 pulsos de 2s cada
         #for i in range(3):
@@ -56,10 +58,13 @@ class Logica_3(Logica_geral):
         #    time.sleep(2)
         # Trava magnetica
         mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        time.sleep(0.5)
+        cls.executarSomLogica5 = False
         time.sleep(12)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(0.250)
         print('Fim ativacao alcapao - Alçapão')
+
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
@@ -77,7 +82,7 @@ class Logica_3(Logica_geral):
                 leitura1 = GPIO.input(cls.gpio_degrau1)
                 if leitura1 == 1 and (1 in ordem_degrau) == False:
                     ordem_degrau.append(1)
-                
+
                 leitura2 = GPIO.input(cls.gpio_degrau2)
                 if leitura2 == GPIO.HIGH and (2 in ordem_degrau) == False:
                     ordem_degrau.append(2)
@@ -113,7 +118,7 @@ class Logica_3(Logica_geral):
                     tempoAnterior = time.time()
 
                 time.sleep(0.15)
-        
+
         else:
             print('5ª Logica - Finalizada')
 
