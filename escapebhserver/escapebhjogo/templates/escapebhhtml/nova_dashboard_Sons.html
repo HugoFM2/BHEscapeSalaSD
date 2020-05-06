@@ -1,0 +1,234 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'js/scriptMQTT.js' %}"></script>
+
+    <!-- Bootstrap CSS -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}">
+
+    <title>SD - BH Escape</title>
+    <link rel="icon" href="{% static 'imagens/favicon32x32.png' %}" sizes="32x32">
+    <link rel="stylesheet" href="{% static 'css/stylenovo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/table.css' %}" >
+  </head>
+  <body>
+    <!-- CABEÇALHO -->
+    <div id="cabecalho" class="container-fluid bg-dark">
+      <div class="row">
+        <div class="col-sm-6 text-white">
+          <h1 id="h1-titulo">Sala Santos Dumont</h1>
+        </div>
+        <div class="col">
+          <img id="logo-bhescape" src="{% static 'imagens/logo.png' %}" alt="BH Escape Logo" class="rounded">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+            <button id="btnIniciarJogo" type="button" class="btn btn-success">Iniciar Jogo</button>
+            <button id="btnReiniciarJogo" type="button" class="btn btn-danger">Reiniciar Jogo</button>
+            <button id="btnDesligarRaspberry" type="button" class="btn btn-warning">Desligar Raspberry</button>
+        </div>
+        <div class="col text-center font-weight-bold text-warning">
+          <p id="p-cronometro">00:00:00</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CORPO -->
+    <div id="corpo" class="container bg-light text-center">
+        <table id="TabelaLogicas" class="table table-hover">
+            <thead>
+              <tr>
+                <th class="w-30">Lógica</th>
+                <th class="w-10">Status</th>
+                <th class="w-50">Botões</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <!-- Logica 2 - Teto (Alcapao) -->
+                <td>Lógica 1</td>
+                <td><span id="status-logica2" class="dot dotCinza"></span></td>
+                <td>
+                  <button id="btnAlcapao" type="button" class="btn btn-primary">Cair o Alçapão</button>
+                  <button id="btnAudioLogica1" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 1 - Laser -->
+                <td>Lógica 2</td>
+                <td><span id="status-logica1" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnLaser" type="button" class="btn btn-info">Ativar Laser</button>
+                    <button id="btnGavetaLaser" type="button" class="btn btn-primary">Abrir Gaveta (chão)</button>
+                    <button id="btnAudioLogica2" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 4 - Busto -->
+                <td>Lógica 3</td>
+                <td><span id="status-logica4" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnAudioLogica3_1" type="button" class="btn btn-secondary">Som 1</button>
+                    <button id="btnGirarBusto" type="button" class="btn btn-info">Girar o Busto</button>
+                    <button id="btnVoltarBusto" type="button" class="btn btn-info">Voltar o Busto</button>
+                    <button id="btnPorta" type="button" class="btn btn-primary">Abrir Porta</button>
+                    <button id="btnAudioLogica3_2" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 6 - Invecoes -->
+                <td>Lógica 4</td>
+                <td><span id="status-logica6" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnSubirTeto" type="button" class="btn btn-info">Subir Teto</button>
+                    <button id="btnDescerTeto" type="button" class="btn btn-primary">Descer Teto</button>
+                    <button id="btnAudioLogica4" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 3 - Porão -->
+                <td>Lógica 5</td>
+                <td><span id="status-logica3" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnPorao" type="button" class="btn btn-primary">Abrir Porão</button>
+                    <button id="btnAudioLogica5" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 5 - Livros -->
+                <td>Lógica 6</td>
+                <td><span id="status-logica5" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnBau" type="button" class="btn btn-primary">Abrir Baú</button>
+                    <button id="btnAudioLogica6" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 7 - Puzzle -->
+                <td>Lógica 7</td>
+                <td><span id="status-logica7" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnGavetaMesa" type="button" class="btn btn-primary">Abrir Gaveta (mesa)</button>
+                    <button id="btnAudioLogica7" type="button" class="btn btn-secondary">Som 1</button>
+                </td>
+              </tr>
+              <tr>
+                <!-- Logica 8 - Lampada e Brasão -->
+                <td>Lógica 8</td>
+                <td><span id="status-logica8" class="dot dotCinza"></span></td>
+                <td>
+                    <button id="btnAudio1" type="button" class="btn btn-secondary">Som 1</button>
+                    <button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia</button>
+                    <button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
+                    <button id="btnTubo" type="button" class="btn btn-primary">Abrir Tubo</button>
+                </td>
+
+              </tr>
+              <script type="text/javascript">writeTable();</script>
+            </tbody>
+          </table>
+          <script >
+
+            checkConnStatus();
+            checkConclusionStatus();
+            setInterval(checkConnStatus,5000);
+            setInterval(checkConclusionStatus,1000);
+          </script>
+
+        </div>
+    </div>
+    <!-- Audio ao abrir a gaveta-->
+    <audio id="myAudio1">
+        <!-- <source src="horse.ogg" type="audio/ogg"> -->
+        <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <!-- Audio ao abrir o tubo-->
+    <audio id="myAudio2">
+        <!-- <source src="horse.ogg" type="audio/ogg"> -->
+        <source src="{% static 'sons/SomCompleto.mp3' %}" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Audio Logica1-->
+  <audio id="AudioLogica1">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica2-->
+  <audio id="AudioLogica2">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica3_1-->
+  <audio id="AudioLogica3_1">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+   <!-- Audio Logica3_2-->
+  <audio id="AudioLogica3_2">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica4-->
+  <audio id="AudioLogica4">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica5-->
+  <audio id="AudioLogica5">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica6-->
+  <audio id="AudioLogica6">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica7-->
+  <audio id="AudioLogica7">
+      <!-- <source src="horse.ogg" type="audio/ogg"> -->
+      <source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+      Your browser does not support the audio element.
+  </audio>
+
+    <!-- RODAPÉ -->
+    <div id="rodape" class="jumbotron text-center">
+      <p>BH Escape, 2019</p>
+    </div>
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="{% static 'bootstrap4/jquery-3.3.1.slim.min.js' %}"></script> -->
+<!--     <script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script> -->
+    <script src="{% static 'bootstrap4/popper.min.js' %}"></script>
+    <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+
+    <!-- Meus Scripts -->
+    <script src="{% static 'js/scriptajaxdashboardSons.js' %}"></script>
+
+  </body>
+</html>

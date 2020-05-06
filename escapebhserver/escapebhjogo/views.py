@@ -45,7 +45,7 @@ def pagina_inicial(request):
         # Checagem dos botoes de Ação
         if acao != None and acao == 'Iniciar Jogo':
             views.iniciar_jogo()
-            
+
         elif acao != None and acao == 'Reiniciar Jogo':
             views.reiniciar_jogo()
 
@@ -90,10 +90,10 @@ def pagina_inicial(request):
             Logica_8.abrirTuboBrasao()
         elif forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Lampada':
             Logica_8.abrirCaixa()
-    
+
     return render(request, 'escapebhhtml/pagina_inicial.html', dicionario_para_html )
 
-# url .../escapedebug 
+# url .../escapedebug
 def escape_debug(request): # VIEW DE DEBUG
     #debug.logica_debug()
     debug.cronometro_debug()
@@ -206,7 +206,7 @@ def ajaxdashboard(request):
             Logica_8.abrirTuboBrasao()
         elif acao != None and acao == 'liberarcilindroenergia':
             Logica_8.abrirCaixa()
-    
+
     texto = acao
     return HttpResponse(texto)
 
@@ -218,6 +218,15 @@ def ajaxsom(request):
     }
     return JsonResponse(sinaisSom)
 
+# ---=== SONS REMOTOS ===---
+
+def nova_dashboard_Sons(request):
+    return render(request, 'escapebhhtml/nova_dashboard_Sons.html', {})
+
+# ---=== FIM SONS REMOTOS ===---
+
+
+# ---=== AUTOMACOES MQTT ===---
 
 def pings(request):
     # return HttpResponse(MQTTAlive.Logica1.ConnectStatus())
@@ -241,4 +250,4 @@ def reset(request):
 
 
 def descricao(request):
-    return JsonResponse(MQTTAlive.Logica1.Descricao(),safe=False)    
+    return JsonResponse(MQTTAlive.Logica1.Descricao(),safe=False)
