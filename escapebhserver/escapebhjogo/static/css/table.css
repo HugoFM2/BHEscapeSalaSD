@@ -1,0 +1,42 @@
+.tabela {
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+	tr:nth-child(even) {
+	  background-color: #dddddd;
+}
+}
+
+
+
+
+.lbl{
+	width:25px;
+	height:25px;
+/*	margin:0;*/
+	border-radius:50%;
+	background-color:gray;
+    display:inline-block;
+    line-height:18px;
+    text-align:center;
+	}
+.lblOn{
+	background-color:#0B920B
+}
+.lblOff{
+	background-color:#DB1D21
+}
+.lblUnknown{
+	background-color:#383838
+}
+.lblDisconn{
+	background-color:gray
+}
+.lblForced{
+	background-color:#D9D61A
+}

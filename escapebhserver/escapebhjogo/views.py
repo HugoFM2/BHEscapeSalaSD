@@ -12,6 +12,7 @@ from escapebhjogo.classes.logica_8 import Logica_8 # Classe com metodos da logic
 from . import views # Importa os metodos existentes neste arquivo
 from django.http import HttpResponse
 from escapebhjogo.classes.cronometro import Cronometro
+from  escapebhjogo.classes import MQTTAlive
 
 # View da pagina inicial
 def pagina_inicial(request):
@@ -216,3 +217,28 @@ def ajaxsom(request):
         'executarSom2': Logica_8.executarSom2,
     }
     return JsonResponse(sinaisSom)
+
+
+def pings(request):
+    # return HttpResponse(MQTTAlive.Logica1.ConnectStatus())
+    # return JsonResponse(MQTTAlive.Logica1.ConnectStatus(),safe=False)
+    return JsonResponse(MQTTAlive.JSONConnStatus(),safe=False)
+    # return JsonResponse(ping.IsUp(),safe=False)
+    # return HttpResponse(ping.IsUp())
+
+def status(request):
+    return JsonResponse(MQTTAlive.JSONConcluidoStatus(),safe=False)
+
+def send(request, msg=None,topic=None):
+    msg = request.GET.get('msg')
+    topic = request.GET.get('topic')
+    MQTTAlive.Logica1.mqtt_publish(topic,msg)
+    return HttpResponse(msg)
+
+def reset(request):
+    MQTTAlive.ResetALLMQTT()
+    return HttpResponse("Dispositivos MQTT Resetados")
+
+
+def descricao(request):
+    return JsonResponse(MQTTAlive.Logica1.Descricao(),safe=False)    

@@ -183,12 +183,17 @@ pCronometro.addEventListener('click', getRequestCronometro)
 
 // Eventos ao aperta os botoes
 btnIniciarJogo.addEventListener('click', function(){
-    setTimeout(getRequestCronometro, 1500)
-    requestForcaLogica('iniciarjogo')
+    setTimeout(getRequestCronometro, 1500);
+    requestForcaLogica('iniciarjogo');
+    $.get("reset", function (data) { // Reinicia as Automacoes MQTT
+        console.log(data)
+    });
 })
 btnReiniciarJogo.addEventListener('click', function(){
     requestForcaLogica('reiniciarjogo')
-    
+    $.get("reset", function (data) { // Reinicia as Automacoes MQTT
+        console.log(data)
+    });
     setTimeout(function () {
         window.location.href = "http://10.0.0.51:8000/"
     },2000)

@@ -113,7 +113,7 @@ class Logica_4(Logica_geral):
         while cls._concluida == False:
             # Checa se a logica 3 já foi concluida
             if Logica_1._concluida == True:
-                
+                print('Chave 1: {}, Chave 2: {}',GPIO.input(cls.gpio_chave1),GPIO.input(cls.gpio_chave2)) #DEBUG
                 #leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)]
 
                 if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :

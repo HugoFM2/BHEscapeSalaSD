@@ -5,6 +5,8 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script>
+    <script src="{% static 'js/scriptMQTT.js' %}"></script>
 
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
@@ -13,6 +15,7 @@
     <title>SD - BH Escape</title>
     <link rel="icon" href="{% static 'imagens/favicon32x32.png' %}" sizes="32x32">
     <link rel="stylesheet" href="{% static 'css/stylenovo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/table.css' %}" >
   </head>
   <body>
     <!-- CABEÇALHO -->
@@ -39,12 +42,12 @@
 
     <!-- CORPO -->
     <div id="corpo" class="container bg-light text-center">
-        <table class="table table-hover">
+        <table id="TabelaLogicas" class="table table-hover">
             <thead>
               <tr>
-                <th>Lógica</th>
-                <th>Status</th>
-                <th>Botões</th>
+                <th class="w-30">Lógica</th>
+                <th class="w-10">Status</th>
+                <th class="w-50">Botões</th>
               </tr>
             </thead>
             <tbody>
@@ -118,9 +121,19 @@
                     <button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
                     <button id="btnTubo" type="button" class="btn btn-primary">Abrir Tubo</button>
                 </td>
+
               </tr>
+              <script type="text/javascript">writeTable();</script>
             </tbody>
           </table>
+          <script >
+            
+            checkConnStatus();
+            checkConclusionStatus();
+            setInterval(checkConnStatus,5000);
+            setInterval(checkConclusionStatus,1000);
+          </script>
+
         </div>
     </div>
     <!-- Audio ao abrir a gaveta-->
@@ -142,7 +155,8 @@
     </div>
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="{% static 'bootstrap4/jquery-3.3.1.slim.min.js' %}"></script>
+    <!-- <script src="{% static 'bootstrap4/jquery-3.3.1.slim.min.js' %}"></script> -->
+<!--     <script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script> --> 
     <script src="{% static 'bootstrap4/popper.min.js' %}"></script>
     <script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
     <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
@@ -151,5 +165,6 @@
 
     <!-- Meus Scripts -->
     <script src="{% static 'js/scriptajaxdashboard.js' %}"></script>
+    
   </body>
 </html>

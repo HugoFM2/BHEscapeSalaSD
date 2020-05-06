@@ -9,4 +9,10 @@ urlpatterns = [
     path('ajaxcronometro', views.ajaxcronometro, name='ajaxcronometro'),
     path('ajaxstatus', views.ajaxstatus, name='ajaxstatus'),
     path('ajaxsom', views.ajaxsom, name='ajaxsom'),
+    path('ping',views.pings),
+    path('status',views.status),
+    path('send',views.send),
+    path('reset',views.reset), 
+    path('descricao',views.descricao),
+
 ]
