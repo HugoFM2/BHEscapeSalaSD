@@ -58,6 +58,7 @@ const audioLogica6 = document.querySelector("#AudioLogica6");
 const btnAudioLogica6= document.querySelector('#btnAudioLogica6')
 const audioLogica7 = document.querySelector("#AudioLogica7");
 const btnAudioLogica7 = document.querySelector('#btnAudioLogica7')
+const btnConfirmarIdioma = document.getElementById("ConfirmarIdioma")
 // ---- VARIAVEIS ----
 var segundos = 0
 var intervalo = null
@@ -223,23 +224,53 @@ btnDesligarRaspberry.addEventListener('click', function(){
     },2000)
 })
 
-btnAlcapao.addEventListener('click', function(){ requestForcaLogica('cairalcapao') })
+btnAlcapao.addEventListener('click', function(){
+ requestForcaLogica('cairalcapao')
+ audioLogica1.play()
+  })
 
-btnLaser.addEventListener('click', function(){ requestForcaLogica('ativarlaser') })
-btnGavetaLaser.addEventListener('click', function(){ requestForcaLogica('abrirgavetalaser') })
+btnLaser.addEventListener('click', function(){ 
+    requestForcaLogica('ativarlaser') 
+})
+btnGavetaLaser.addEventListener('click', function(){ 
+    requestForcaLogica('abrirgavetalaser') 
+    audioLogica2.play()
+})
 
-btnGirarBusto.addEventListener('click', function(){ requestForcaLogica('girarbusto') })
-btnVoltarBusto.addEventListener('click', function(){ requestForcaLogica('voltarbusto') })
-btnPorta.addEventListener('click', function(){ requestForcaLogica('abrirporta') })
+btnGirarBusto.addEventListener('click', function(){ 
+    requestForcaLogica('girarbusto') 
+    audioLogica3_2.play()
+})
+btnVoltarBusto.addEventListener('click', function(){
+ requestForcaLogica('voltarbusto')
+  })
+btnPorta.addEventListener('click', function(){ 
+    requestForcaLogica('abrirporta') 
+    audioLogica3_1.play()
+})
 
-btnSubirTeto.addEventListener('click', function(){ requestForcaLogica('subirteto') })
-btnDescerTeto.addEventListener('click', function(){ requestForcaLogica('descerteto') })
+btnSubirTeto.addEventListener('click', function(){ 
+    requestForcaLogica('subirteto') 
+})
+btnDescerTeto.addEventListener('click', function(){ 
+    requestForcaLogica('descerteto') 
+    audioLogica4.play()
+})
 
-btnPorao.addEventListener('click', function(){ requestForcaLogica('abrirporao') })
+btnPorao.addEventListener('click', function(){ 
+    requestForcaLogica('abrirporao')
+    audioLogica5.play()
+ })
 
-btnBau.addEventListener('click', function(){ requestForcaLogica('abrirbau') })
+btnBau.addEventListener('click', function(){ 
+    requestForcaLogica('abrirbau') 
+    audioLogica6.play()
+})
 
-btnGavetaMesa.addEventListener('click', function(){ requestForcaLogica('abrirgavetamesa') })
+btnGavetaMesa.addEventListener('click', function(){ 
+    requestForcaLogica('abrirgavetamesa') 
+    audioLogica7.play()
+})
 
 btnCilindroEnergia.addEventListener('click', function(){
     requestForcaLogica('liberarcilindroenergia')
@@ -351,3 +382,25 @@ btnAudioLogica6.addEventListener('click', function() {
 btnAudioLogica7.addEventListener('click', function() {
     audioLogica7.play()
 })
+
+// ---===MUDAR IDIOMA ===---
+btnConfirmarIdioma.addEventListener('click', function(){
+
+
+    // console.log("Funcao Mudar idioma chamada!")
+    if (document.getElementById("IdiomaPortugues").checked){
+        document.getElementById("h1-titulo").innerHTML = "Sala Santos Dumont Português"
+        document.getElementById("sourceMyAudio2").src = "{% static 'sons/SomCompleto-Portugues.mp3' %}"
+    }
+    else if(document.getElementById("IdiomaIngles").checked){
+        // console.log("Selecionado Ingles")
+        document.getElementById("h1-titulo").innerHTML = "Sala Santos Dumont Inglês"
+        document.getElementById("sourceMyAudio2").src = "{% static 'sons/SomCompleto-Ingles.mp3' %}"
+    }
+    else if(document.getElementById("IdiomaEspanhol").checked){
+        // console.log("Selecionado Espanhol")
+        document.getElementById("h1-titulo").innerHTML = "Sala Santos Dumont Espanhol"
+        document.getElementById("sourceMyAudio2").src = "{% static 'sons/SomCompleto-Espanhol.mp3' %}"
+    }
+
+});
