@@ -37,7 +37,9 @@ const dotlogica8 = document.querySelector('#status-logica8')
 // ---- SONS ----
 const audio1 = document.querySelector("#myAudio1");
 const btnAudio1 = document.querySelector('#btnAudio1')
-const audio2 = document.querySelector("#myAudio2");
+const audio2 = document.querySelector("#myAudio2-BR");
+const audio2_ES = document.querySelector("#myAudio2-ES");
+const audio2_EN = document.querySelector("#myAudio2-EN");
 const btnAudio2 = document.querySelector('#btnAudio2')
 var fazerRequestSom = false
 
@@ -121,9 +123,14 @@ function getRequestStatus() {
       if (this.readyState == 4 && this.status == 200) {
         var resposta = JSON.parse(this.responseText)
         //console.log(JSON.parse(this.responseText))
+        if (fazerRequestSom == false) {
+            requestSom();
+            fazerRequestSom = true;
+            }
 
         if (resposta.logica1_status == true) {
             dotlogica1.className = "dot dotVerde"
+
         }
         if (resposta.logica2_status == true) {
             dotlogica2.className = "dot dotVerde"
@@ -142,10 +149,7 @@ function getRequestStatus() {
         }
         if (resposta.logica7_status == true) {
             dotlogica7.className = "dot dotVerde"
-            if (fazerRequestSom == false) {
-                requestSom()
-                fazerRequestSom = true
-            }
+
         }
         if (resposta.logica8_status == true) {
             dotlogica8.className = "dot dotVerde"
@@ -278,7 +282,8 @@ btnCilindroEnergia.addEventListener('click', function(){
 })
 btnTubo.addEventListener('click', function(){
     requestForcaLogica('abrirtubo')
-    audio2.play()
+    PlayNarracao();
+    // audio2.play()
 })
 
 // ---- SONS ----
@@ -291,18 +296,21 @@ function requestSom() {
       if (this.readyState == 4 && this.status == 200) {
         var resposta = JSON.parse(this.responseText)
 
-        //console.log(resposta)
+        // console.log(resposta)
 
         if (resposta.executarSom1 == true && audio1.paused == true) {
             audio1.play()
             console.log('executando som 1')
         }
+
         if (resposta.executarSom2 == true && audio2.paused == true) {
-            audio2.play()
+            // audio2.play()
+            PlayNarracao();
             console.log('executando som 2')
         }
 
         // SONS VIRTUAIS
+        // console.log(resposta.executarSomLogica1)
         if (resposta.executarSomLogica1 == true && audioLogica1.paused == true) {
             audioLogica1.play()
             console.log('executando som Logica 1')
@@ -349,7 +357,8 @@ btnAudio1.addEventListener('click', function() {
 })
 
 btnAudio2.addEventListener('click', function() {
-    audio2.play()
+    // audio2.play()
+    PlayNarracao();
 })
 
 // ---=== SONS REMOTOS
@@ -404,3 +413,15 @@ btnConfirmarIdioma.addEventListener('click', function(){
     }
 
 });
+
+function PlayNarracao(){
+    if (document.getElementById("IdiomaPortugues").checked){
+        audio2.play()
+    }
+    if (document.getElementById("IdiomaIngles").checked){
+        audio2_EN.play()
+    }
+    if (document.getElementById("IdiomaEspanhol").checked){
+        audio2_ES.play()
+    }
+}

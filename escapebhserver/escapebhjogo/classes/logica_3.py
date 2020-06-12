@@ -58,12 +58,14 @@ class Logica_3(Logica_geral): # Logica 5 no site
         #    time.sleep(2)
         # Trava magnetica
         mcp.output(cls.gp_trava, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
+        time.sleep(1)  # Delay Adicional para detectar o som
         cls.executarSomLogica5 = False
-        time.sleep(12)
+        time.sleep(11)
         mcp.output(cls.gp_trava, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        time.sleep(0.250)
+        time.sleep(0.250) 
         print('Fim ativacao alcapao - Alçapão')
+        
+        
 
 
     # Sobreescrevendo metodo threadLogicas() da classe pai

@@ -44,11 +44,13 @@ class Logica_6(Logica_geral): # Logica 4 no site
     def descerMotor(cls):
         cls.executarSomLogica4 = True
         cls._concluida = True
+        time.sleep(1) # Delay Adicional para detectar o som
+        cls.executarSomLogica4 = False
         mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(10)
         mcp.output(cls.gp_motorDescer, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
-        cls.executarSomLogica4 = False
+        
 
 
 

@@ -22,7 +22,7 @@
     <div id="cabecalho" class="container-fluid bg-dark">
       <div class="row">
         <div class="col-sm-6 text-white">
-          <h1 id="h1-titulo">Sala Santos Dumont</h1>
+          <h1 id="h1-titulo">Sala Santos Dumont Português</h1>
         </div>
         <div class="col">
           <img id="logo-bhescape" src="{% static 'imagens/logo.png' %}" alt="BH Escape Logo" class="rounded">
@@ -33,7 +33,44 @@
             <button id="btnIniciarJogo" type="button" class="btn btn-success">Iniciar Jogo</button>
             <button id="btnReiniciarJogo" type="button" class="btn btn-danger">Reiniciar Jogo</button>
             <button id="btnDesligarRaspberry" type="button" class="btn btn-warning">Desligar Raspberry</button>
+
+			<!-- SELECIONAR IDIOMA PARA AUDIO -->
+
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Escolher Idioma</button>
         </div>
+
+        		<!-- Modal Audio -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Selecione o idioma</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <div class="modal-body">
+				<div class="form-check form-check-inline pl-5">
+				  <input class="form-check-input " type="radio" name="OpcoesIdioma" id="IdiomaPortugues" value="option1" checked>
+				  <label class="form-check-label " for="IdiomaPortugues">Português</label>
+				</div>
+				<div class="form-check form-check-inline">
+				  <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaIngles" value="option2">
+				  <label class="form-check-label " for="IdiomaIngles">Inglês</label>
+				</div>
+				<div class="form-check form-check-inline">
+				  <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaEspanhol" value="option3">
+				  <label class="form-check-label " for="IdiomaEspanhol">Espanhol</label>
+				</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="ConfirmarIdioma" data-dismiss="modal">Confirmar</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+		
         <div class="col text-center font-weight-bold text-warning">
           <p id="p-cronometro">00:00:00</p>
         </div>
@@ -143,11 +180,21 @@
         Your browser does not support the audio element.
     </audio>
     <!-- Audio ao abrir o tubo-->
-    <audio id="myAudio2">
-        <!-- <source src="horse.ogg" type="audio/ogg"> -->
-        <source src="{% static 'sons/SomCompleto.mp3' %}" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+	<audio id="myAudio2-EN">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source id="sourceMyAudio2-EN" src="{% static 'sons/SomCompleto-Ingles.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<audio id="myAudio2-ES">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source id="sourceMyAudio2-ES" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<audio id="myAudio2-BR">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source id="sourceMyAudio2-BR" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
 
     <!-- RODAPÉ -->
     <div id="rodape" class="jumbotron text-center">

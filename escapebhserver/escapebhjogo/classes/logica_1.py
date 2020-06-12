@@ -63,6 +63,7 @@ class Logica_1(Logica_geral): # Logica 2 no site
         mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.5)
         mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
+        time.sleep(0.5) # Delay Adicional para detectar o som
         cls.executarSomLogica2 = False
 
     # Metodo para acionar o lasers

@@ -37,8 +37,11 @@ const dotlogica8 = document.querySelector('#status-logica8')
 // ---- SONS ----
 const audio1 = document.querySelector("#myAudio1");
 const btnAudio1 = document.querySelector('#btnAudio1')
-const audio2 = document.querySelector("#myAudio2");
+const audio2 = document.querySelector("#myAudio2-BR");
+const audio2_ES = document.querySelector("#myAudio2-ES");
+const audio2_EN = document.querySelector("#myAudio2-EN");
 const btnAudio2 = document.querySelector('#btnAudio2')
+const btnConfirmarIdioma = document.getElementById("ConfirmarIdioma");
 var fazerRequestSom = false
 
 // ---- VARIAVEIS ----
@@ -230,7 +233,8 @@ btnCilindroEnergia.addEventListener('click', function(){
 })
 btnTubo.addEventListener('click', function(){
     requestForcaLogica('abrirtubo')
-    audio2.play()
+    // audio2.play()
+    PlayNarracao();
 })
 
 // ---- SONS ----
@@ -250,7 +254,8 @@ function requestSom() {
             console.log('executando som 1')
         }
         if (resposta.executarSom2 == true && audio2.paused == true) {
-            audio2.play()
+            // audio2.play()
+            PlayNarracao();
             console.log('executando som 2')
         }
 
@@ -266,5 +271,43 @@ btnAudio1.addEventListener('click', function() {
 })
 
 btnAudio2.addEventListener('click', function() {
-    audio2.play()
+    // audio2.play()
+    PlayNarracao();
 })
+
+
+// ---===MUDAR IDIOMA ===---
+btnConfirmarIdioma.addEventListener('click', function(){
+
+
+    // console.log("Funcao Mudar idioma chamada!")
+    if (document.getElementById("IdiomaPortugues").checked){
+        document.getElementById("h1-titulo").innerHTML = "Sala Santos Dumont Português"
+        document.getElementById("sourceMyAudio2").src = "{% static 'sons/SomCompleto-Portugues.mp3' %}"
+    }
+    else if(document.getElementById("IdiomaIngles").checked){
+        // console.log("Selecionado Ingles")
+        document.getElementById("h1-titulo").innerHTML = "Sala Santos Dumont Inglês"
+        document.getElementById("sourceMyAudio2").src = "{% static 'sons/SomCompleto-Ingles.mp3' %}"
+    }
+    else if(document.getElementById("IdiomaEspanhol").checked){
+        // console.log("Selecionado Espanhol")
+        document.getElementById("h1-titulo").innerHTML = "Sala Santos Dumont Espanhol"
+        document.getElementById("sourceMyAudio2").src = "{% static 'sons/SomCompleto-Espanhol.mp3' %}"
+    }
+
+});
+
+
+
+function PlayNarracao(){
+    if (document.getElementById("IdiomaPortugues").checked){
+        audio2.play()
+    }
+    if (document.getElementById("IdiomaIngles").checked){
+        audio2_EN.play()
+    }
+    if (document.getElementById("IdiomaEspanhol").checked){
+        audio2_ES.play()
+    }
+}

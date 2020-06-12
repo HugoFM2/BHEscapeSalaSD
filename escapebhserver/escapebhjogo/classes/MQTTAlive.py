@@ -111,8 +111,8 @@ class MQTT_Th(Thread):
 
 
 Logica1 = MQTT_Th(5,"Automacao1",["Genius","Bicicleta"])
-Logica1.setDesc(["Automacao1/Genius","Automacao1/Bicicleta"],
-				[["Ligar LEDs", "Reiniciar Genius"],["Abrir Tranca","Reiniciar Bicicleta"]],
+Logica1.setDesc(["Automacao1/Bicicleta","Automacao1/Genius"],
+				[["Concluir Bicicleta","Reiniciar Bicicleta"],["Abrir Tranca", "Reiniciar Genius"]],
 				[["force","force"],["force","force"]],
 				[["1","0"],["1","0"]])
 Logica1.start() 

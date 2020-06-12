@@ -48,11 +48,14 @@ class Logica_2(Logica_geral): # Logica 1 no site
     @classmethod
     def cairTeto(cls):
         cls._concluida = True
+        print('Teto da 1ª Sala caiu') #DEBUG
         cls.executarSomLogica1 = True
         mcp.setup(cls.gp_trava, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
         mcp.output(cls.gp_trava, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
         mcp.output(cls.gp_trava, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+
+        time.sleep(0.75)  # Delay Adicional para detectar o som
         cls.executarSomLogica1 = False
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
@@ -68,7 +71,7 @@ class Logica_2(Logica_geral): # Logica 1 no site
             # Checa se as chaves estão na posição correta e se a logica 1 foi concluida
             if leituraSensor == [1,1,1,1]:
                 cls.cairTeto()
-                print('Teto da 1ª Sala caiu') #DEBUG
+                
 
             time.sleep(0.25)
             print('1ª Logica Rodando (Teto Cair)')

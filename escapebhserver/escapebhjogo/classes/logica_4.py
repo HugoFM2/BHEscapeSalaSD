@@ -66,7 +66,8 @@ class Logica_4(Logica_geral): # Logica 3 no site
         time.sleep(0.25)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         cls.busto_girou = False
-        c;s.executarSomLogica3_1 = False
+        time.sleep(0.75) # Delay Adicional para detectar o som
+        cls.executarSomLogica3_1 = False
 
     @classmethod
     def abrirBusto(cls):
@@ -76,7 +77,8 @@ class Logica_4(Logica_geral): # Logica 3 no site
         time.sleep(0.25)
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(0.5)
-        cls.executarSomLogica3_2 = False
+        cls.executarSomLogica3_2 = False #Delay Adicional para detectar som
+
 
         #cls.setup()
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
@@ -94,6 +96,7 @@ class Logica_4(Logica_geral): # Logica 3 no site
 
         cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
         #cls.pwmServo.stop()
+        
 
     @classmethod
     def voltarBusto(cls):

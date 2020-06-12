@@ -46,6 +46,7 @@ class Logica_5(Logica_geral): # Logica 6 no site
         mcp.output(cls.gp_bau, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
         time.sleep(0.25)
         mcp.output(cls.gp_bau, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        time.sleep(0.75) # Delay Adicional para detectar o som
         cls.executarSomLogica6 = False
 
     # Sobreescrevendo metodo threadLogicas() da classe pai
