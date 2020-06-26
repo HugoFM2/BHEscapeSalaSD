@@ -217,14 +217,14 @@ btnReiniciarJogo.addEventListener('click', function(){
         console.log(data)
     });
     setTimeout(function () {
-        window.location.href = "http://10.0.0.51:8000/"
+        window.location.href = "http://10.0.0.51:8000/sdvirtual"
     },2000)
 })
 btnDesligarRaspberry.addEventListener('click', function(){
     requestForcaLogica('desligarraspberry')
 
     setTimeout(function () {
-        window.location.href = "http://10.0.0.51:8000/"
+        window.location.href = "http://10.0.0.51:8000/sdvirtual"
     },2000)
 })
 
