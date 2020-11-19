@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script>
     <script src="{% static 'js/scriptMQTT.js' %}"></script>
+    <script src="{% static 'js/mqttws31.min.js' %}"></script>
+    <script src="{% static 'js/websocket.js' %}"></script>
 
     <!-- Bootstrap CSS -->
     <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
@@ -34,49 +36,50 @@
             <button id="btnReiniciarJogo" type="button" class="btn btn-danger">Reiniciar Jogo</button>
             <button id="btnDesligarRaspberry" type="button" class="btn btn-warning">Desligar Raspberry</button>
 
-			<!-- SELECIONAR IDIOMA PARA AUDIO -->
+      <!-- SELECIONAR IDIOMA PARA AUDIO -->
 
-			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Escolher Idioma</button>
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Escolher Idioma</button>
         </div>
 
-        		<!-- Modal Audio -->
-		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		  <div class="modal-dialog" role="document">
-			<div class="modal-content">
-			  <div class="modal-header">
-				<h5 class="modal-title" id="exampleModalLabel">Selecione o idioma</h5>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				  <span aria-hidden="true">&times;</span>
-				</button>
-			  </div>
-			  <div class="modal-body">
-				<div class="form-check form-check-inline pl-5">
-				  <input class="form-check-input " type="radio" name="OpcoesIdioma" id="IdiomaPortugues" value="option1" checked>
-				  <label class="form-check-label " for="IdiomaPortugues">Português</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaIngles" value="option2">
-				  <label class="form-check-label " for="IdiomaIngles">Inglês</label>
-				</div>
-				<div class="form-check form-check-inline">
-				  <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaEspanhol" value="option3">
-				  <label class="form-check-label " for="IdiomaEspanhol">Espanhol</label>
-				</div>
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-				<button type="button" class="btn btn-primary" id="ConfirmarIdioma" data-dismiss="modal">Confirmar</button>
-			  </div>
-			</div>
-		  </div>
-		</div>
-		
+            <!-- Modal Audio -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Selecione o idioma</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+        <div class="form-check form-check-inline pl-5">
+          <input class="form-check-input " type="radio" name="OpcoesIdioma" id="IdiomaPortugues" value="option1" checked>
+          <label class="form-check-label " for="IdiomaPortugues">Português</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaIngles" value="option2">
+          <label class="form-check-label " for="IdiomaIngles">Inglês</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaEspanhol" value="option3">
+          <label class="form-check-label " for="IdiomaEspanhol">Espanhol</label>
+        </div>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="ConfirmarIdioma" data-dismiss="modal">Confirmar</button>
+        </div>
+      </div>
+      </div>
+    </div>
+    
         <div class="col text-center font-weight-bold text-warning">
           <p id="p-cronometro">00:00:00</p>
         </div>
       </div>
     </div>
-
+    
+    <script>MQTTconnect();</script>
     <!-- CORPO -->
     <div id="corpo" class="container bg-light text-center">
         <table id="TabelaLogicas" class="table table-hover">
@@ -160,16 +163,33 @@
                 </td>
 
               </tr>
-              <script type="text/javascript">writeTable();</script>
+              </tr>
+                <tr id="Linha-Bicicleta">
+                <td width="1%">Bicicleta <img id="statusConn-ESP32-1" class="statusConn-ESP32-1" style="height:12%" src="static/imagens/icon-fail.svg"> </th>
+                <td class="text-center"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </th>
+                <td width="30%">
+                  <button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
+                  <!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+                </td>
+              </tr>
+          <tr id="Linha-Genius">
+          <td width="1%">Genius <img id="statusConn-ESP32-1" class="statusConn-ESP32-1" style="height:12%" src="static/imagens/icon-fail.svg"> </th>
+          <td class="text-center"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </th>
+          <td width="30%">
+            <button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
+            <!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+          </td>
+        </tr>
+              <!-- <script type="text/javascript">writeTable();</script> -->
             </tbody>
           </table>
-          <script >
+<!--           <script >
             
             checkConnStatus();
             checkConclusionStatus();
             setInterval(checkConnStatus,5000);
             setInterval(checkConclusionStatus,1000);
-          </script>
+          </script> -->
 
         </div>
     </div>
@@ -180,26 +200,24 @@
         Your browser does not support the audio element.
     </audio>
     <!-- Audio ao abrir o tubo-->
-	<audio id="myAudio2-EN">
-		<!-- <source src="horse.ogg" type="audio/ogg"> -->
-		<source id="sourceMyAudio2-EN" src="{% static 'sons/SomCompleto-Ingles.mp3' %}" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-	<audio id="myAudio2-ES">
-		<!-- <source src="horse.ogg" type="audio/ogg"> -->
-		<source id="sourceMyAudio2-ES" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
-	<audio id="myAudio2-BR">
-		<!-- <source src="horse.ogg" type="audio/ogg"> -->
-		<source id="sourceMyAudio2-BR" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
-		Your browser does not support the audio element.
-	</audio>
+  <audio id="myAudio2-EN">
+    <!-- <source src="horse.ogg" type="audio/ogg"> -->
+    <source id="sourceMyAudio2-EN" src="{% static 'sons/SomCompleto-Ingles.mp3' %}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="myAudio2-ES">
+    <!-- <source src="horse.ogg" type="audio/ogg"> -->
+    <source id="sourceMyAudio2-ES" src="{% static 'sons/SomCompleto-Espanhol.mp3' %}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <audio id="myAudio2-BR">
+    <!-- <source src="horse.ogg" type="audio/ogg"> -->
+    <source id="sourceMyAudio2-BR" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
-    <!-- RODAPÉ -->
-    <div id="rodape" class="jumbotron text-center">
-      <p>BH Escape, 2019</p>
-    </div>
+    
+
 
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <!-- <script src="{% static 'bootstrap4/jquery-3.3.1.slim.min.js' %}"></script> -->
@@ -214,4 +232,11 @@
     <script src="{% static 'js/scriptajaxdashboard.js' %}"></script>
     
   </body>
+  <!-- RODAPÉ -->
+  <footer>
+    <div id ="Alertas"></div>
+    <div id="rodape" class="jumbotron text-center">
+      <p>BH Escape, 2019</p>
+    </div>
+  </footer>
 </html>

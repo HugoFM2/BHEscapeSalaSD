@@ -117,6 +117,7 @@ def iniciar_jogo():
 def reiniciar_jogo():
     import os
     print('Reiniciando Jogo...')
+    MQTTAlive.ResetALLMQTT()
     # Matar o server da porta 8000 e 4 segundos depois inicia um novo server
     os.system('sudo fuser -k 8000/tcp && sleep 4 && . /home/pi/escapebh/escapeiniciar')
 
@@ -243,26 +244,26 @@ def ajaxsomVirtual(request):
 
 # ---=== AUTOMACOES MQTT ===---
 
-def pings(request):
-    # return HttpResponse(MQTTAlive.Logica1.ConnectStatus())
-    # return JsonResponse(MQTTAlive.Logica1.ConnectStatus(),safe=False)
-    return JsonResponse(MQTTAlive.JSONConnStatus(),safe=False)
-    # return JsonResponse(ping.IsUp(),safe=False)
-    # return HttpResponse(ping.IsUp())
+# def pings(request):
+#     # return HttpResponse(MQTTAlive.Logica1.ConnectStatus())
+#     # return JsonResponse(MQTTAlive.Logica1.ConnectStatus(),safe=False)
+#     return JsonResponse(MQTTAlive.JSONConnStatus(),safe=False)
+#     # return JsonResponse(ping.IsUp(),safe=False)
+#     # return HttpResponse(ping.IsUp())
 
-def status(request):
-    return JsonResponse(MQTTAlive.JSONConcluidoStatus(),safe=False)
+# def status(request):
+#     return JsonResponse(MQTTAlive.JSONConcluidoStatus(),safe=False)
 
-def send(request, msg=None,topic=None):
-    msg = request.GET.get('msg')
-    topic = request.GET.get('topic')
-    MQTTAlive.Logica1.mqtt_publish(topic,msg)
-    return HttpResponse(msg)
+# def send(request, msg=None,topic=None):
+#     msg = request.GET.get('msg')
+#     topic = request.GET.get('topic')
+#     MQTTAlive.Logica1.mqtt_publish(topic,msg)
+#     return HttpResponse(msg)
 
-def reset(request):
+def resetMQTT(request):
     MQTTAlive.ResetALLMQTT()
     return HttpResponse("Dispositivos MQTT Resetados")
 
 
-def descricao(request):
-    return JsonResponse(MQTTAlive.Logica1.Descricao(),safe=False)
+# def descricao(request):
+#     return JsonResponse(MQTTAlive.Logica1.Descricao(),safe=False)

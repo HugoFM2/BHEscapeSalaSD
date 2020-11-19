@@ -7,6 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script>
 	<script src="{% static 'js/scriptMQTT.js' %}"></script>
+	<script src="{% static 'js/mqttws31.min.js' %}"></script>
+	<script src="{% static 'js/websocket.js' %}"></script>
 
 	<!-- Bootstrap CSS -->
 	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
@@ -78,6 +80,7 @@
 	  </div>
 	</div>
 
+	<script>MQTTconnect();</script>
 	<!-- CORPO -->
 	<div id="corpo" class="container bg-light text-center">
 		<table id="TabelaLogicas" class="table table-hover">
@@ -170,16 +173,34 @@
 				</td>
 
 			  </tr>
-			  <script type="text/javascript">writeTable();</script>
+	  			<tr id="Linha-Bicicleta">
+					<td width="1%">Bicicleta <img id="statusConn-ESP32-1" class="statusConn-ESP32-1" style="height:12%" src="static/imagens/icon-fail.svg"> </th>
+					<!-- <td width="20%"><a>Automacao1</a></th> -->
+					<td class="text-center"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </th>
+					<td width="30%">
+			 			<button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
+						<!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+					</td>
+				</tr>
+	  			<tr id="Linha-Genius">
+					<td width="1%">Genius <img id="statusConn-ESP32-1" class="statusConn-ESP32-1" style="height:12%" src="static/imagens/icon-fail.svg"> </th>
+					<!-- <td width="20%"><a>Automacao1</a></th> -->
+					<td class="text-center"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </th>
+					<td width="30%">
+			 			<button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
+						<!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+					</td>
+				</tr>
+			  <!-- <script type="text/javascript">writeTable();</script> -->
 			</tbody>
 		  </table>
-		  <script >
+<!-- 		  <script >
 
 			checkConnStatus();
 			checkConclusionStatus();
 			setInterval(checkConnStatus,5000);
 			setInterval(checkConclusionStatus,1000);
-		  </script>
+		  </script> -->
 
 		</div>
 	</div>
@@ -197,7 +218,7 @@
 	</audio>
 	<audio id="myAudio2-ES">
 		<!-- <source src="horse.ogg" type="audio/ogg"> -->
-		<source id="sourceMyAudio2-ES" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
+		<source id="sourceMyAudio2-ES" src="{% static 'sons/SomCompleto-Espanhol.mp3' %}" type="audio/mpeg">
 		Your browser does not support the audio element.
 	</audio>
 	<audio id="myAudio2-BR">
@@ -262,10 +283,6 @@
 	  Your browser does not support the audio element.
   </audio>
 
-	<!-- RODAPÉ -->
-	<div id="rodape" class="jumbotron text-center">
-	  <p>BH Escape, 2019</p>
-	</div>
 
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<!-- <script src="{% static 'bootstrap4/jquery-3.3.1.slim.min.js' %}"></script> -->
@@ -280,4 +297,11 @@
 	<script src="{% static 'js/scriptajaxdashboardSons.js' %}"></script>
 
   </body>
+  <!-- RODAPÉ -->
+  <footer>
+    <div id ="Alertas"></div>
+    <div id="rodape" class="jumbotron text-center">
+      <p>BH Escape, 2019</p>
+    </div>
+  </footer>
 </html>
