@@ -35,12 +35,12 @@ function MQTTconnect() {
 function onFailure(message) {
 	console.log("Connection Attempt to Host "+host+" Failed");
 	setTimeout(MQTTconnect, reconnectTimeout);
-	FixedAlert("DANGER","Conexao MQTT Perdida, reinicializar raspberry","lost-Connection");
+	FixedAlert("DANGER","Conexao MQTT Perdida, Atualizar pagina, caso a mensagem permaneça reinicializar raspberry","lost-Connection");
 }
 
 function onConnectionLost(){
 	console.log("connection lost");
-	FixedAlert("DANGER","Conexao MQTT Perdida, reinicializar raspberry","lost-Connection");
+	FixedAlert("DANGER","Conexao MQTT Perdida, Atualizar pagina, caso a mensagem permaneça reinicializar raspberry","lost-Connection");
 	
 }
 function onMessageArrived(msg){
