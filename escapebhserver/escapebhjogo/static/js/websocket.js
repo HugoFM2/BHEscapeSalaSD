@@ -1,6 +1,6 @@
 var mqtt;
 var reconnectTimeout = 2000;
-var host="192.168.100.1"; //change this
+var host="10.0.0.51"; //change this
 var port=9001;
 
 
@@ -120,6 +120,12 @@ function concluir_Bicicleta(){
 
 function concluir_Genius(){
 	message = new Paho.MQTT.Message("GeniusForce");
+	message.destinationName = "ESP32-1/cmnd";
+	mqtt.send(message);
+}
+
+function ReiniciarESP321(){
+	message = new Paho.MQTT.Message("reset");
 	message.destinationName = "ESP32-1/cmnd";
 	mqtt.send(message);
 }

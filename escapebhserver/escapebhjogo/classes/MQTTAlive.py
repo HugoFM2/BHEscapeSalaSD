@@ -97,6 +97,7 @@ class MQTT_Th(Thread):
 	# 	return self.x
 
 	def Reset(self):
+		print("MQTT RESETADO")
 		self.mqtt_publish("ESP32-1/cmnd","reset")
 
 	# def Descricao(self):
@@ -143,7 +144,8 @@ MQTTServer = MQTT_Th(3)
 # 	return LogicaConcluida
 
 def ResetALLMQTT():
-		MQTTServer.Reset()
+	
+	MQTTServer.Reset()
 
 # def merge_two_dicts(x, y):
 #     """Given two dicts, merge them into a new dict as a shallow copy."""

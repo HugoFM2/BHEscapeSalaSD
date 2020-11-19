@@ -3,8 +3,7 @@ echo "Para este script executar corretamente certifique-se que digitou ->  . esc
 . /home/pi/escapebh/escapebhvenv/bin/activate
 
 
-
-#echo "Iniciando o servidor escape: 10.0.0.51:8000"
-# python /home/pi/escapebh/escapebhserver/manage.py runserver 10.0.0.51:8000
-echo "Iniciando o servidor escape: 192.168.100.1:8000"
-python /home/pi/escapebh/escapebhserver/manage.py runserver 192.168.100.1:8000
+echo "Iniciando o servidor escape: 10.0.0.51:8000"
+python /home/pi/escapebh/escapebhserver/manage.py runserver 10.0.0.51:8000
+#echo "Iniciando o servidor escape: 192.168.100.1:8000"
+#python /home/pi/escapebh/escapebhserver/manage.py runserver 192.168.100.1:8000
