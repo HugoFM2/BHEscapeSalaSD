@@ -62,6 +62,12 @@ class Logica_6(Logica_geral): # Logica 4 no site
 		time.sleep(10.5)
 		mcp.output(cls.gp_motorSubir, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
+	@classmethod
+	def descerSubirMotor(cls):# Utilizado durante a automação para descer o motor e subir apos X segundos
+		cls.descerMotor()
+		time.sleep(15)
+		cls.subirMotor()
+
 	# Sobreescrevendo metodo threadLogica() da classe pai
 	@classmethod
 	def threadLogica(cls):
@@ -70,8 +76,9 @@ class Logica_6(Logica_geral): # Logica 4 no site
 			if Logica_4._concluida == True:
 				print("Logica Arduino RFID rodando")
 				if GPIO.input(cls.gp_arduinoInvecoes) == GPIO.HIGH:
-					cls.descerMotor()
-					print("MotorDescendo")
+					# cls.descerMotor()
+					cls.descerSubirMotor()
+					print("MotorDescendo e subindo apos x segundos")
 				print('4ª Logica - Rodando (Invenções/Teto 2ª Sala)')
 
 			time.sleep(0.25)
