@@ -78,24 +78,25 @@ class Logica_4(Logica_geral): # Logica 3 no site
         mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
         time.sleep(0.5)
         cls.executarSomLogica3_2 = False #Delay Adicional para detectar som
+        print("ABRINDO BUSTO")
 
+        #DESATIVA MOTOR
+        # #cls.setup()
+        # GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
+        # GPIO.setwarnings(False) # Desativa avisos
+        # GPIO.setup(cls.gpio_servo, GPIO.OUT)
 
-        #cls.setup()
-        GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
-        GPIO.setwarnings(False) # Desativa avisos
-        GPIO.setup(cls.gpio_servo, GPIO.OUT)
+        # #Servo MG90: Pulse Cycle -> 20ms (50Hz), Pulse Width: 0.4ms a 2.4ms (2% a 12%)
+        # if cls.pwmServo == None:
+        #     cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
+        #     cls.pwmServo.start(0) # Inicio com DutyCycle em 0%
+        #     time.sleep(0.5)
 
-        #Servo MG90: Pulse Cycle -> 20ms (50Hz), Pulse Width: 0.4ms a 2.4ms (2% a 12%)
-        if cls.pwmServo == None:
-            cls.pwmServo = GPIO.PWM(cls.gpio_servo, 50) # GPIO inicia PWM de 50HZ, periodo 20ms, no pino do servo
-            cls.pwmServo.start(0) # Inicio com DutyCycle em 0%
-            time.sleep(0.5)
+        # cls.pwmServo.ChangeDutyCycle(2.5) # Aberto
+        # time.sleep(1.5)
 
-        cls.pwmServo.ChangeDutyCycle(2.5) # Aberto
-        time.sleep(1.5)
-
-        cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
-        #cls.pwmServo.stop()
+        # cls.pwmServo.ChangeDutyCycle(0) # Caso o servo fique tremendo
+        # #cls.pwmServo.stop()
         
 
     @classmethod
@@ -129,7 +130,7 @@ class Logica_4(Logica_geral): # Logica 3 no site
 
 
                 if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :
-                    # cls.abrirBusto() # DESATIVADO POR MANUTENCAO 07.01
+                    cls.abrirBusto() 
                     cls.busto_girou = True
                     print('Girando Busto e liberando botão.') #DEBUG
 

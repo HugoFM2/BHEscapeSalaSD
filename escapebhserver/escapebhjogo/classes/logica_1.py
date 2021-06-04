@@ -55,15 +55,20 @@ class Logica_1(Logica_geral): # Logica 2 no site
     @classmethod
     def abrirGaveta(cls):
         cls.executarSomLogica2 = True
-        cls._concluida = True
+        
         mcp.output(cls.gp_laser, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele laser
         cls.laser_on = False
         mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        # Ativa a trava com 3 pulsos de 2s cada
-        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.5)
-        mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
+
+        for i in range(3):
+            mcp.output(cls.gp_gaveta, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+            time.sleep(0.5)
+            mcp.output(cls.gp_gaveta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele gaveta
+            time.sleep(1.5)
+
+
         time.sleep(0.5) # Delay Adicional para detectar o som
+        cls._concluida = True
         cls.executarSomLogica2 = False
 
     # Metodo para acionar o lasers

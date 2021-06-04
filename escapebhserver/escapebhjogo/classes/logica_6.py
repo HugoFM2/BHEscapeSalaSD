@@ -65,7 +65,7 @@ class Logica_6(Logica_geral): # Logica 4 no site
 	@classmethod
 	def descerSubirMotor(cls):# Utilizado durante a automação para descer o motor e subir apos X segundos
 		cls.descerMotor()
-		time.sleep(15)
+		time.sleep(5)
 		cls.subirMotor()
 
 	# Sobreescrevendo metodo threadLogica() da classe pai

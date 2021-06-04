@@ -84,18 +84,22 @@ class Logica_3(Logica_geral): # Logica 5 no site
                 leitura1 = GPIO.input(cls.gpio_degrau1)
                 if leitura1 == 1 and (1 in ordem_degrau) == False:
                     ordem_degrau.append(1)
+                    tempoAnterior = time.time()
 
                 leitura2 = GPIO.input(cls.gpio_degrau2)
                 if leitura2 == GPIO.HIGH and (2 in ordem_degrau) == False:
                     ordem_degrau.append(2)
+                    tempoAnterior = time.time()
 
                 leitura3 = GPIO.input(cls.gpio_degrau3)
                 if leitura3 == 1 and (3 in ordem_degrau) == False:
                     ordem_degrau.append(3)
+                    tempoAnterior = time.time()
 
                 leitura4 = GPIO.input(cls.gpio_degrau4)
                 if leitura4 == GPIO.HIGH and (4 in ordem_degrau) == False:
                     ordem_degrau.append(4)
+                    tempoAnterior = time.time()
 
                 print('5ª Logica - Rodando (Degraus/Porão)' + str(ordem_degrau) ) #DEBUG
 
@@ -112,7 +116,7 @@ class Logica_3(Logica_geral): # Logica 5 no site
                 # Timeout
                 tempoAtual = time.time()
                 tempoDecorrido = tempoAtual - tempoAnterior
-                if tempoDecorrido > 20 and ordem_degrau != []: # Renova o tempo de referencia
+                if tempoDecorrido > 5 and ordem_degrau != []: # Renova o tempo de referencia
                     print('Timeout Logica 3 - ' + str(tempoDecorrido)) #DEBUG
                     ordem_degrau = [] # Zera a leitura
                     tempoAnterior = time.time()
