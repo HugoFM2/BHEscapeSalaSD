@@ -18,6 +18,10 @@ python3 -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+### Iniciando script no shell
+Encerrar execucao com `sudo fuser -k 8000/tcp `
+executar `. /home/pi/escapebh/escapeiniciar`
+
 **Pacotes no requirements.txt :**
 - Django~=2.0.6
 - smbus
