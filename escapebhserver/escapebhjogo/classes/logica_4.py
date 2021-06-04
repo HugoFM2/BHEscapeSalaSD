@@ -122,11 +122,14 @@ class Logica_4(Logica_geral): # Logica 3 no site
         while cls._concluida == False:
             # Checa se a logica 3 já foi concluida
             if Logica_1._concluida == True:
-                print('Chave 1: {}, Chave 2: {}',GPIO.input(cls.gpio_chave1),GPIO.input(cls.gpio_chave2)) #DEBUG
-                #leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)]
+                #print('Chave 1: {}, Chave 2: {}',GPIO.input(cls.gpio_chave1),GPIO.input(cls.gpio_chave2)) #DEBUG
+                leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)] #DEBUG
+                print("Chave1: ", leitura[0],"Chave2: ",leitura[1]) #DEBUG
+                print('3ª Logica - Rodando (Busto/Porta)') #DEBUG
+
 
                 if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :
-                    cls.abrirBusto()
+                    # cls.abrirBusto() # DESATIVADO POR MANUTENCAO 07.01
                     cls.busto_girou = True
                     print('Girando Busto e liberando botão.') #DEBUG
 
@@ -136,8 +139,6 @@ class Logica_4(Logica_geral): # Logica 3 no site
                     print('Abrindo a Porta secreta') #DEBUG
 
                 time.sleep(0.25)
-                #print(leitura)
-                print('3ª Logica - Rodando (Busto/Porta)') #DEBUG
 
         else:
             print('3ª Logica - Finalizada')

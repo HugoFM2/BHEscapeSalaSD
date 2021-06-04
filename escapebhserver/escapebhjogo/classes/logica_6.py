@@ -18,7 +18,7 @@ pequena gaveta e a chave irá deslizar)
 class Logica_6(Logica_geral): # Logica 4 no site
 
 	# GPIO's
-	gp_arduinoInvecoes = 7 # GPIO que recebe sinal sobre a leitura das 7 invecoes. (raspberry)
+	gp_arduinoInvecoes = 31 # GPIO que recebe sinal sobre a leitura das 7 invecoes. (raspberry)
 	gp_motorDescer = 2 # Rele Desce Motor - GPB 2 (extensor 0x24)
 	gp_motorSubir = 5 # Rele Sobe Motor - GPB 5 (extensor 0x24)
 	executarSomLogica4 = False
