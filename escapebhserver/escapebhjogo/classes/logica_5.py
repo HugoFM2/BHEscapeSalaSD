@@ -29,7 +29,7 @@ class Logica_5(Logica_geral): # Logica 6 no site
         # Configurado GPIO's do raspberry
         GPIO.setup(cls.gpio_livro1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_livro2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_livro3, GPIO.IN)
+        GPIO.setup(cls.gpio_livro3, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
 
         # Configurando GPIO's do Extensor
         mcp.setup(cls.gp_bau, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
@@ -49,17 +49,18 @@ class Logica_5(Logica_geral): # Logica 6 no site
         time.sleep(0.75) # Delay Adicional para detectar o som
         cls.executarSomLogica6 = False
 
-    # Sobreescrevendo metodo threadLogicas() da classe pai
+    # Sobreescrevendo metodo threadLogicas() da classea pai
     @classmethod
     def threadLogica(cls):
         while cls._concluida == False:
             # Checa se a logica da porta já foi concluida
             if Logica_4._concluida == True:
 
-                # leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), GPIO.input(cls.gpio_livro3)]
-                leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), 0] # Solucao tampao, para rodar os livros no manual
+                leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), GPIO.input(cls.gpio_livro3)]
+                # leitura = [GPIO.input(cls.gpio_livro1), GPIO.input(cls.gpio_livro2), 0] # Solucao tampao, para rodar os livros no manual
                 print(leitura)
-                if ( leitura[0] == GPIO.HIGH and leitura[1] == GPIO.HIGH and leitura[2] == 1 ) :
+                # if ( leitura[0] == GPIO.HIGH and leitura[1] == GPIO.HIGH and leitura[2] == 1 ) :
+                if ( leitura[0] == GPIO.HIGH and leitura[1] == GPIO.HIGH and leitura[2] == GPIO.HIGH ) :
 
                     cls.abrirBau()
 

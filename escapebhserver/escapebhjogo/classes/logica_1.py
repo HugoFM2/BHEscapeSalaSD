@@ -82,13 +82,13 @@ class Logica_1(Logica_geral): # Logica 2 no site
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
-
+        leitura_botao_inicial = mcp.input(cls.gpio_botao, mcp.GPB, mcp.ADDRESS1) # Faz a primeira leitura do botao, agora de instancia
         while cls._concluida == False:
             # Se o botao for pressionado ativa o Laser
             # leitura_botao = GPIO.input(cls.gpio_botao)
             leitura_botao = mcp.input(cls.gpio_botao, mcp.GPB, mcp.ADDRESS1)
-
-            if leitura_botao == 1 and cls.laser_on == False:
+            if (leitura_botao != leitura_botao_inicial) and (cls.laser_on == False):
+            # if leitura_botao == 1 and cls.laser_on == False:
                 cls.ligarLaser()
                 print('O laser foi acionado') #DEBUG
 
