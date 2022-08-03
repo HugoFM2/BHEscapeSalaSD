@@ -32,3 +32,10 @@ executar `. /home/pi/escapebh/escapeiniciar`
 **RFID MFRC522 (RFID-RC522)**
 - https://github.com/mxgxw/MFRC522-python
 - https://github.com/pimylifeup/MFRC522-python
+
+
+## Fazendo Commit
+- Verificar se a branch trava-magnetica está selecionada `git branch'
+- Adicionar todas as mudanças/arquivos com `git add *`
+- Comitar mudancas com comentario `git commit -m 'COMENTARIO'`
+- Enviar alteracoes com `git push origin trava-magnetica`
