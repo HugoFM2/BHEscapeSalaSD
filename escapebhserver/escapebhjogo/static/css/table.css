@@ -9,8 +9,14 @@
 	}
 	tr:nth-child(even) {
 	  background-color: #dddddd;
+	}
+	tr {
+   min-height: 70px;
+   max-height: 70px;
+	}
 }
-}
+
+
 
 
 

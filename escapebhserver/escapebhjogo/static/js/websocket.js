@@ -129,3 +129,17 @@ function ReiniciarESP321(){
 	message.destinationName = "ESP32-1/cmnd";
 	mqtt.send(message);
 }
+
+function ReiniciarESP32_Caixa(){
+	message = new Paho.MQTT.Message("reset");
+	message.destinationName = "SalaSD/CaixaArma/cmnd";
+	mqtt.send(message);
+	console.log("Comando de reiniciar EspCaixa enviado!");
+}
+
+function ReiniciarESP32_Tubo(){
+	message = new Paho.MQTT.Message("reset");
+	message.destinationName = "SalaSD/ESP_TUBO/cmnd";
+	mqtt.send(message);
+	console.log("Comando de reiniciar EspTubo enviado!");
+}

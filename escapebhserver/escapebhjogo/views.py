@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from  escapebhjogo.classes import MQTTAlive
 from escapebhjogo.classes.logica_1 import Logica_1 # Classe com metodos da logica 1
 from escapebhjogo.classes.logica_2 import Logica_2 # Classe com metodos da logica 2
 from escapebhjogo.classes.logica_3 import Logica_3 # Classe com metodos da logica 3
@@ -12,7 +13,7 @@ from escapebhjogo.classes.logica_8 import Logica_8 # Classe com metodos da logic
 from . import views # Importa os metodos existentes neste arquivo
 from django.http import HttpResponse
 from escapebhjogo.classes.cronometro import Cronometro
-from  escapebhjogo.classes import MQTTAlive
+
 
 # View da pagina inicial
 def pagina_inicial(request):

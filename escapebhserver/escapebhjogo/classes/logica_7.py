@@ -4,6 +4,7 @@ import threading # Modulo para trabalhar com treads
 from escapebhjogo.classes.mcp23017 import MCP23017 as mcp # Classe para trabalhar com o MCP23017, referenciada como mcp
 from .logica_geral import Logica_geral
 from escapebhjogo.classes.logica_5 import Logica_5 # Classe com metodos da logica 5
+from  escapebhjogo.classes import MQTTAlive
 
 """ CLASSE LOGICA 7
 Esta classe faz todo o controle dos itens relacionados a Logica 7
@@ -23,6 +24,7 @@ class Logica_7(Logica_geral): # Logica 7 no site
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
+        MQTTAlive.PublishMQTT("SalaSD/Rpi/Gaveta/Status","false")
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
         GPIO.setwarnings(False) # Desativa avisos
 
@@ -41,6 +43,7 @@ class Logica_7(Logica_geral): # Logica 7 no site
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
+        MQTTAlive.PublishMQTT("SalaSD/Rpi/Gaveta/Status","true")
         cls.executarSomLogica7 = True
         # Ativa a trava com 3 pulsos de 2s cada
         for i in range(3):

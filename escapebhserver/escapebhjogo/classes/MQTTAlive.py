@@ -17,6 +17,7 @@ class MQTT_Th(Thread):
 		self.PortaBroker = 1883
 		self.KeepAliveBroker = 60 
 		self.client.on_connect = self.on_connect
+		self.client.on_disconnect = self.on_disconnect
 		self.client.on_message = self.on_message
 		self.client.connect(self.Broker, self.PortaBroker)
 
@@ -25,9 +26,9 @@ class MQTT_Th(Thread):
 
 	def run(self):
 
-		print("Hello ")
-		print(self.num)	
-		self.client.loop_start()
+		print(f"Thread MQTT Iniciada: {self.num}")
+		# self.client.loop_start()
+		self.client.loop_forever(retry_first_connection=False)
 
 
 	def on_connect(self, client, userdata,flags, rc):
@@ -35,6 +36,10 @@ class MQTT_Th(Thread):
 		# self.client.subscribe(self.textTopic + "/") #subscribe to self.textTopic
 		# self.SendMsgCheck()
 
+	def on_disconnect(self, client, userdata, rc):
+		print("MQTT DISCONNECT")
+		# self.client.subscribe(self.textTopic + "/") #subscribe to self.textTopic
+		# self.SendMsgCheck()
 
 	def mqtt_publish(self,topic,msg):
 		self.client.publish(topic,msg)
@@ -99,12 +104,14 @@ class MQTT_Th(Thread):
 	def Reset(self):
 		print("MQTT RESETADO")
 		self.mqtt_publish("ESP32-1/cmnd","reset")
+		self.mqtt_publish("SalaSD/CaixaArma/cmnd","reset")
 
 	# def Descricao(self):
 	# 	return self.desc
 
 
 MQTTServer = MQTT_Th(3)
+MQTTServer.start()
 # Logica1 = MQTT_Th(5,"Automacao1",["Genius","Bicicleta"])
 # Logica1.setDesc(["Automacao1/Bicicleta","Automacao1/Genius"],
 # 				[["Concluir Bicicleta","Reiniciar Bicicleta"],["Abrir Tranca", "Reiniciar Genius"]],
@@ -146,6 +153,11 @@ MQTTServer = MQTT_Th(3)
 def ResetALLMQTT():
 	
 	MQTTServer.Reset()
+
+
+def PublishMQTT(topic,msg):
+	print(f"Mensagem MQTT {msg} Publicada no tópico {topic}")
+	MQTTServer.mqtt_publish(topic,msg)
 
 # def merge_two_dicts(x, y):
 #     """Given two dicts, merge them into a new dict as a shallow copy."""
