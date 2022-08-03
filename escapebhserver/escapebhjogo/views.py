@@ -86,11 +86,11 @@ def pagina_inicial(request):
         if forcar_logica7 != None and forcar_logica7 == 'Forcar Destravar Gaveta':
             Logica_7.abrirGaveta()
 
-        # Checagem dos botoes da logica 8
-        if forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Brasao':
-            Logica_8.abrirTuboBrasao()
-        elif forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Lampada':
-            Logica_8.abrirCaixa()
+        # Checagem dos botoes da logica 8 OBSOLETA - AUTOMACOES EXTERNAS
+        # if forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Brasao':
+        #     Logica_8.abrirTuboBrasao()
+        # elif forcar_logica8 != None and forcar_logica8 == 'Forcar Liberar Lampada':
+        #     Logica_8.abrirCaixa()
 
     return render(request, 'escapebhhtml/pagina_inicial.html', dicionario_para_html )
 
@@ -203,11 +203,11 @@ def ajaxdashboard(request):
         elif acao != None and acao == 'abrirgavetamesa':
             Logica_7.abrirGaveta()
 
-        # Checagem dos botoes da logica 8
-        elif acao != None and acao == 'abrirtubo':
-            Logica_8.abrirTuboBrasao()
-        elif acao != None and acao == 'liberarcilindroenergia':
-            Logica_8.abrirCaixa()
+        # Checagem dos botoes da logica 8 (OBSOLETO - AUTOMACOES EXTERNAS)
+        # elif acao != None and acao == 'abrirtubo':
+        #     Logica_8.abrirTuboBrasao()
+        # elif acao != None and acao == 'liberarcilindroenergia':
+        #     Logica_8.abrirCaixa()
 
     texto = acao
     return HttpResponse(texto)

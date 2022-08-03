@@ -132,9 +132,9 @@ function getRequestStatus() {
                 fazerRequestSom = true
             }
         }
-        if (resposta.logica8_status == true) {
-            dotlogica8.className = "dot dotVerde"
-        }
+        // if (resposta.logica8_status == true) {
+        //     dotlogica8.className = "dot dotVerde"
+        // }
         
         setTimeout(getRequestStatus, 5000)
       }
@@ -228,11 +228,11 @@ btnBau.addEventListener('click', function(){ requestForcaLogica('abrirbau') })
 btnGavetaMesa.addEventListener('click', function(){ requestForcaLogica('abrirgavetamesa') })
 
 btnCilindroEnergia.addEventListener('click', function(){
-    requestForcaLogica('liberarcilindroenergia')
+    // requestForcaLogica('liberarcilindroenergia')
     audio1.play()
 })
 btnTubo.addEventListener('click', function(){
-    requestForcaLogica('abrirtubo')
+    // requestForcaLogica('abrirtubo')
     // audio2.play()
     PlayNarracao();
 })
@@ -247,7 +247,7 @@ function requestSom() {
       if (this.readyState == 4 && this.status == 200) {
         var resposta = JSON.parse(this.responseText)
 
-        //console.log(resposta)
+        // console.log(resposta)
 
         if (resposta.executarSom1 == true && audio1.paused == true) {
             audio1.play()

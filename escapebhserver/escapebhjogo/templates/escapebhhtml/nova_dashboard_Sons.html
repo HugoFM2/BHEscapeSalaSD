@@ -83,118 +83,147 @@
 	<script>MQTTconnect();</script>
 	<!-- CORPO -->
 	<div id="corpo" class="container bg-light text-center">
-		<table id="TabelaLogicas" class="table table-hover">
-			<thead>
-			  <tr>
-				<th class="w-30">Lógica</th>
-				<th class="w-10">Status</th>
-				<th class="w-50">Botões</th>
-			  </tr>
-			</thead>
-			<tbody>
-			  <tr>
-				<!-- Logica 2 - Teto (Alcapao) -->
-				<td>Lógica 1</td>
-				<td><span id="status-logica2" class="dot dotCinza"></span></td>
-				<td>
-				  <button id="btnAlcapao" type="button" class="btn btn-primary">Cair o Alçapão</button>
-				  <button id="btnAudioLogica1" type="button" class="btn btn-secondary">Som Alçapão</button>
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 1 - Laser -->
-				<td>Lógica 2</td>
-				<td><span id="status-logica1" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnLaser" type="button" class="btn btn-info">Ativar Laser</button>
-					<button id="btnGavetaLaser" type="button" class="btn btn-primary">Abrir Gaveta (chão)</button>
-					<button id="btnAudioLogica2" type="button" class="btn btn-secondary">Som Gaveta</button>
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 4 - Busto -->
-				<td>Lógica 3</td>
-				<td><span id="status-logica4" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnAudioLogica3_2" type="button" class="btn btn-secondary">Som Busto</button>
-					<button id="btnGirarBusto" type="button" class="btn btn-info">Girar o Busto</button>
-					<button id="btnVoltarBusto" type="button" class="btn btn-info">Voltar o Busto</button>
-					<button id="btnPorta" type="button" class="btn btn-primary">Abrir Porta</button>
-					<button id="btnAudioLogica3_1" type="button" class="btn btn-secondary">Som Porta</button>
+        <table id="TabelaLogicas" class="table table-hover">
+            <thead>
+              <!-- <tr> -->
+              <tr class="d-flex">
+                <th class="col-md-2">Conexão</th> 
+                <th class="col-md-4">Lógica</th>
+                <th class="col-md-2">Status</th>
+                <th class="col-md-4">Botões</th>
+<!--                 <th class="w-50">Lógica</th>
+                <th class="w-10">Status</th>
+                <th class="w-50">Botões</th> -->
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="d-flex">
+                <!-- Logica 2 - Teto (Alcapao) -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 1</td>
+                <td class="col-2"><span id="status-logica2" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                  <button id="btnAlcapao" type="button" class="btn btn-primary">Cair o Alçapão</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 1 - Laser -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 2</td>
+                <td class="col-2"><span id="status-logica1" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnLaser" type="button" class="btn btn-info">Ativar Laser</button>
+                    <button id="btnGavetaLaser" type="button" class="btn btn-primary">Abrir Gaveta (chão)</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 4 - Busto -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 3</td>
+                <td class="col-2"><span id="status-logica4" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnGirarBusto" type="button" class="btn btn-info">Girar o Busto</button>
+                    <button id="btnVoltarBusto" type="button" class="btn btn-info">Voltar o Busto</button>
+                    <button id="btnPorta" type="button" class="btn btn-primary">Abrir Porta</button>
+                </td>
+              </tr>
+              
+              <tr id="Linha-Bicicleta" class="d-flex">
+                <td class="col-2" >
+                  <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4">Bicicleta </td>
+                <td class="col-2"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
+                  <button id="botao-reiniciar-esp32" class="btn btn-danger" onclick="ReiniciarESP321()">Reiniciar Genius</button>
+                </td>
+              </tr>
 
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 6 - Invecoes -->
-				<td>Lógica 4</td>
-				<td><span id="status-logica6" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnSubirTeto" type="button" class="btn btn-info">Subir Teto</button>
-					<button id="btnDescerTeto" type="button" class="btn btn-primary">Descer Teto</button>
-					<button id="btnAudioLogica4" type="button" class="btn btn-secondary">Som Teto</button>
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 3 - Porão -->
-				<td>Lógica 5</td>
-				<td><span id="status-logica3" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnPorao" type="button" class="btn btn-primary">Abrir Porão</button>
-					<button id="btnAudioLogica5" type="button" class="btn btn-secondary">Som Porão</button>
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 5 - Livros -->
-				<td>Lógica 6</td>
-				<td><span id="status-logica5" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnBau" type="button" class="btn btn-primary">Abrir Baú</button>
-					<button id="btnAudioLogica6" type="button" class="btn btn-secondary">Som Baú</button>
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 7 - Puzzle -->
-				<td>Lógica 7</td>
-				<td><span id="status-logica7" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnGavetaMesa" type="button" class="btn btn-primary">Abrir Gaveta (mesa)</button>
-					<button id="btnAudioLogica7" type="button" class="btn btn-secondary">Som Gaveta</button>
-				</td>
-			  </tr>
-			  <tr>
-				<!-- Logica 8 - Lampada e Brasão -->
-				<td>Lógica 8</td>
-				<td><span id="status-logica8" class="dot dotCinza"></span></td>
-				<td>
-					<button id="btnAudio1" type="button" class="btn btn-secondary">Som 1</button>
-					<button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia</button>
-					<button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
-					<button id="btnTubo" type="button" class="btn btn-primary">Abrir Tubo</button>
-				</td>
+          <tr id="Linha-Genius" class="d-flex">
+            <td class="col-2" >
+              <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"   src="static/imagens/icon-fail.svg">
+            </td> <!-- Conexao RPI, vazio -->
+          <td class="col-4">Genius </td>
+          <td class="col-2"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </td>
+          <td class="col-4">
+            <button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
+            <!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+          </td>
+        </tr>
+              <tr class="d-flex">
+                <!-- Logica 6 - Invecoes -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 4</td>
+                <td class="col-2"><span id="status-logica6" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnSubirTeto" type="button" class="btn btn-info">Subir Teto</button>
+                    <button id="btnDescerTeto" type="button" class="btn btn-primary">Descer Teto</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 3 - Porão -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 5</td>
+                <td class="col-2"><span id="status-logica3" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnPorao" type="button" class="btn btn-primary">Abrir Porão</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 5 - Livros -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 6</td>
+                <td class="col-2"><span id="status-logica5" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnBau" type="button" class="btn btn-primary">Abrir Baú</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 7 - Puzzle -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 7</td>
+                <td class="col-2"><span id="status-logica7" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnGavetaMesa" type="button" class="btn btn-primary">Abrir Gaveta (mesa)</button>
+                </td>
+              </tr>
 
-			  </tr>
-	  			<tr id="Linha-Bicicleta">
-					<td width="1%">Bicicleta <img id="statusConn-ESP32-1" class="statusConn-ESP32-1" style="height:12%" src="static/imagens/icon-fail.svg"> </th>
-					<!-- <td width="20%"><a>Automacao1</a></th> -->
-					<td class="text-center"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </th>
-					<td width="30%">
-			 			<button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
-			 			<button id="botao-reiniciar-esp32" class="btn btn-danger" onclick="ReiniciarESP321()">Reiniciar Genius</button>
-						<!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
-					</td>
-				</tr>
-	  			<tr id="Linha-Genius">
-					<td width="1%">Genius <img id="statusConn-ESP32-1" class="statusConn-ESP32-1" style="height:12%" src="static/imagens/icon-fail.svg"> </th>
-					<!-- <td width="20%"><a>Automacao1</a></th> -->
-					<td class="text-center"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </th>
-					<td width="30%">
-			 			<button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
-						<!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
-					</td>
-				</tr>
-			  <!-- <script type="text/javascript">writeTable();</script> -->
-			</tbody>
-		  </table>
+
+
+              <tr id="Linha-Caixa" class="d-flex">
+                <!-- Logica 8 - Caixa Arma (Cilindro de energia) -->
+                <td class="col-2" >
+                  <img id="statusConn-ESP32Caixa" class="statusConn-ESP32Caixa img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4">Lógica 8 </td>
+                <td class="col-2"> <div id="status-Conclusao-Caixa" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="btnAudio1" type="button" class="btn btn-secondary">Som 1</button>
+<!--                   <button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia2</button> -->
+                  <button id="btnCilindroEnergia" onclick="ForcarESP32_Caixa_Cilindro()"  class="btn btn-info">Liberar Cilindro de Energia</button>        
+                  <button id="botao-reiniciar-Caixa" class="btn btn-danger" onclick="ReiniciarESP32_Caixa()">Reiniciar Cilindro</button>
+                </td>
+              </tr>
+
+              <tr id="Linha-Tubo" class="d-flex">
+                <!-- Logica 9 - Tubo -->
+                <td class="col-2" >
+                  <img id="statusConn-ESP32Tubo" class="statusConn-ESP32Tubo img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4">Lógica 9 </td>
+                <td class="col-2"> <div id="status-Conclusao-Tubo" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
+                  <button id="btnTubo" onclick="ForcarESP32_Tubo()" type="button" class="btn btn-primary">Abrir Tubo</button>
+                  <button id="botao-reiniciar-Tubo" class="btn btn-danger" onclick="ReiniciarESP32_Tubo()">Reiniciar Tubo</button>
+                </td>
+              </tr>
+
+
+              <!-- <script type="text/javascript">writeTable();</script> -->
+            </tbody>
+          </table>
 <!-- 		  <script >
 
 			checkConnStatus();

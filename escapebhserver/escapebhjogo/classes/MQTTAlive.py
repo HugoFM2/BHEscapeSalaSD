@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 import json
 from threading import Thread, Timer
 import time
+from escapebhjogo.classes.logica_8 import Logica_8 
 
 class MQTT_Th(Thread):
 	
@@ -33,6 +34,8 @@ class MQTT_Th(Thread):
 
 	def on_connect(self, client, userdata,flags, rc):
 		print("MQTT Conectado")
+		self.client.subscribe("SalaSD/CaixaArma/Arma/#")
+		self.client.subscribe("SalaSD/ESP_TUBO/Tubo/#")
 		# self.client.subscribe(self.textTopic + "/") #subscribe to self.textTopic
 		# self.SendMsgCheck()
 
@@ -41,13 +44,23 @@ class MQTT_Th(Thread):
 		# self.client.subscribe(self.textTopic + "/") #subscribe to self.textTopic
 		# self.SendMsgCheck()
 
-	def mqtt_publish(self,topic,msg):
-		self.client.publish(topic,msg)
-		print("Mensagem enviada!")
+	def mqtt_publish(self,topic,msg,retain=False):
+		self.client.publish(topic,msg,retain=retain)
+		print(f"Mensagem enviada com retain {retain}")
 		return "OK"
 
 	def on_message(self, client, userdata, msg):
 		print("---=== MENSAGEM MQTT RECEBIDA ===---")
+		print(f"Mensagem: {msg.payload.decode()} -> Topico {msg.topic}\n")
+		if (msg.topic == "SalaSD/CaixaArma/Arma/Status"):
+			if msg.payload.decode() == 'true':
+				print("Enviando comando de abrir caixa(ligar som)")
+				Logica_8.abrirCaixa()
+
+		if (msg.topic == "SalaSD/ESP_TUBO/Tubo/Status"):
+			if msg.payload.decode() == 'true':
+				print("Enviando comando de abrir Tubo(ligar som)")
+				Logica_8.abrirTuboBrasao()				
 		# if(msg.topic == self.textTopic + "/statusConn"):
 		# 	self._lastConn = msg.payload.decode()
 		# for i in range(len(self.automacoes)):
@@ -105,6 +118,8 @@ class MQTT_Th(Thread):
 		print("MQTT RESETADO")
 		self.mqtt_publish("ESP32-1/cmnd","reset")
 		self.mqtt_publish("SalaSD/CaixaArma/cmnd","reset")
+		self.mqtt_publish("SalaSD/ESP_TUBO/cmnd","reset")
+		self.mqtt_publish("SalaSD/Rpi/Gaveta/Status","false",retain=True)
 
 	# def Descricao(self):
 	# 	return self.desc
@@ -155,9 +170,9 @@ def ResetALLMQTT():
 	MQTTServer.Reset()
 
 
-def PublishMQTT(topic,msg):
+def PublishMQTT(topic,msg,retain=False):
 	print(f"Mensagem MQTT {msg} Publicada no tópico {topic}")
-	MQTTServer.mqtt_publish(topic,msg)
+	MQTTServer.mqtt_publish(topic,msg,retain)
 
 # def merge_two_dicts(x, y):
 #     """Given two dicts, merge them into a new dict as a shallow copy."""

@@ -60,22 +60,26 @@ class Logica_8(Logica_geral):
     # Metodo abrir a caixa que contem a lampada
     @classmethod
     def abrirCaixa(cls):
+        print("Abrindo Caixa(tocando apenas o som)")
         cls.executarSom1 = True # Sinal para executar o som
+        print(f"Executar SOM1 {cls.executarSom1}")
+        time.sleep(1.5)
 
-        mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        for i in range(5):
-            mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
-            time.sleep(0.15)
-            mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-            time.sleep(0.15)
-        mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        # mcp.setup(cls.gp_fitaLed, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        # for i in range(5):
+        #     mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
+        #     time.sleep(0.15)
+        #     mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        #     time.sleep(0.15)
+        # mcp.output(cls.gp_fitaLed, mcp.GPA, mcp.LOW, mcp.ADDRESS2)
 
-        mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.25)
-        mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        # mcp.setup(cls.gp_travaCaixa, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        # mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        # time.sleep(0.25)
+        # mcp.output(cls.gp_travaCaixa, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
         cls.executarSom1 = False # Sinal para parar o som
+        print(f"Executar SOM1 {cls.executarSom1}")
 
     # Metodo abrir o tubo que contem o brasão
     @classmethod
@@ -95,11 +99,11 @@ class Logica_8(Logica_geral):
             time.sleep(0.15)
         mcp.output(cls.gp_lampada127v, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
-        # Abre o tubo
-        mcp.setup(cls.gp_travaTubo, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
-        mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
-        time.sleep(0.25)
-        mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
+        # Abre o tubo (Feito externamente)
+        # mcp.setup(cls.gp_travaTubo, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
+        # mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.LOW, mcp.ADDRESS2)
+        # time.sleep(0.25)
+        # mcp.output(cls.gp_travaTubo, mcp.GPB, mcp.HIGH, mcp.ADDRESS2)
 
         cls.executarSom2 = False # Sinal para parar o som
         # Desliga a fita de LED ao concluir a logica do tubo

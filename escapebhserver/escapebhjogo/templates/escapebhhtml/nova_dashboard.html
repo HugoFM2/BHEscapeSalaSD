@@ -126,6 +126,30 @@
                     <button id="btnPorta" type="button" class="btn btn-primary">Abrir Porta</button>
                 </td>
               </tr>
+              
+              <tr id="Linha-Bicicleta" class="d-flex">
+                <td class="col-2" >
+                  <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4">Bicicleta </td>
+                <td class="col-2"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
+                  <button id="botao-reiniciar-esp32" class="btn btn-danger" onclick="ReiniciarESP321()">Reiniciar Genius</button>
+                </td>
+              </tr>
+
+          <tr id="Linha-Genius" class="d-flex">
+            <td class="col-2" >
+              <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"   src="static/imagens/icon-fail.svg">
+            </td> <!-- Conexao RPI, vazio -->
+          <td class="col-4">Genius </td>
+          <td class="col-2"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </td>
+          <td class="col-4">
+            <button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
+            <!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+          </td>
+        </tr>
               <tr class="d-flex">
                 <!-- Logica 6 - Invecoes -->
                 <td class="col-2"></td> <!-- Conexao RPI, vazio -->
@@ -175,7 +199,8 @@
                 <td class="col-2"> <div id="status-Conclusao-Caixa" class="dot dotCinza"></div> </td>
                 <td class="col-4">
                   <button id="btnAudio1" type="button" class="btn btn-secondary">Som 1</button>
-                  <button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia</button>
+<!--                   <button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia2</button> -->
+                  <button id="btnCilindroEnergia" onclick="ForcarESP32_Caixa_Cilindro()"  class="btn btn-info">Liberar Cilindro de Energia</button>        
                   <button id="botao-reiniciar-Caixa" class="btn btn-danger" onclick="ReiniciarESP32_Caixa()">Reiniciar Cilindro</button>
                 </td>
               </tr>
@@ -189,34 +214,12 @@
                 <td class="col-2"> <div id="status-Conclusao-Tubo" class="dot dotCinza"></div> </td>
                 <td class="col-4">
                   <button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
-                  <button id="btnTubo" type="button" class="btn btn-primary">Abrir Tubo</button>
+                  <button id="btnTubo" onclick="ForcarESP32_Tubo()" type="button" class="btn btn-primary">Abrir Tubo</button>
                   <button id="botao-reiniciar-Tubo" class="btn btn-danger" onclick="ReiniciarESP32_Tubo()">Reiniciar Tubo</button>
                 </td>
               </tr>
 
-              <tr id="Linha-Bicicleta" class="d-flex">
-                <td class="col-2" >
-                  <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"  src="static/imagens/icon-fail.svg"> 
-                </td> 
-                <td class="col-4">Bicicleta </td>
-                <td class="col-2"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </td>
-                <td class="col-4">
-                  <button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
-                  <button id="botao-reiniciar-esp32" class="btn btn-danger" onclick="ReiniciarESP321()">Reiniciar Genius</button>
-                </td>
-              </tr>
 
-          <tr id="Linha-Genius" class="d-flex">
-            <td class="col-2" >
-              <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"   src="static/imagens/icon-fail.svg">
-            </td> <!-- Conexao RPI, vazio -->
-          <td class="col-4">Genius </td>
-          <td class="col-2"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </td>
-          <td class="col-4">
-            <button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
-            <!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
-          </td>
-        </tr>
               <!-- <script type="text/javascript">writeTable();</script> -->
             </tbody>
           </table>

@@ -24,7 +24,7 @@ class Logica_7(Logica_geral): # Logica 7 no site
     # Sobreescrevendo metodo setup() da classe pai
     @classmethod
     def setup(cls):
-        MQTTAlive.PublishMQTT("SalaSD/Rpi/Gaveta/Status","false")
+        
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
         GPIO.setwarnings(False) # Desativa avisos
 
@@ -43,7 +43,7 @@ class Logica_7(Logica_geral): # Logica 7 no site
     @classmethod
     def abrirGaveta(cls):
         cls._concluida = True
-        MQTTAlive.PublishMQTT("SalaSD/Rpi/Gaveta/Status","true")
+        MQTTAlive.PublishMQTT("SalaSD/Rpi/Gaveta/Status","true",retain=True)
         cls.executarSomLogica7 = True
         # Ativa a trava com 3 pulsos de 2s cada
         for i in range(3):
