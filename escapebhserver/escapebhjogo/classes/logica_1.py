@@ -56,7 +56,11 @@ class Logica_1(Logica_geral): # Logica 2 no site
     def abrirGaveta(cls):
         cls.executarSomLogica2 = True
         
-        mcp.output(cls.gp_laser, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) # Desativa rele laser
+        # Desativa rele laser
+        mcp.setup(cls.gp_laser, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        mcp.output(cls.gp_laser, mcp.GPA, mcp.HIGH, mcp.ADDRESS2) 
+
+        
         cls.laser_on = False
         mcp.setup(cls.gp_gaveta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
