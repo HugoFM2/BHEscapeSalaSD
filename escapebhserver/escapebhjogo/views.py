@@ -118,7 +118,7 @@ def iniciar_jogo():
 def reiniciar_jogo():
     import os
     print('Reiniciando Jogo...')
-    MQTTAlive.ResetALLMQTT()
+    # MQTTAlive.ResetALLMQTT()
     # Matar o server da porta 8000 e 4 segundos depois inicia um novo server
     os.system('sudo fuser -k 8000/tcp && sleep 4 && . /home/pi/escapebh/escapeiniciar')
 

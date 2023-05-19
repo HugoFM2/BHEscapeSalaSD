@@ -209,3 +209,11 @@ function ReiniciarESP32_Tubo(){
 	mqtt.send(message);
 	console.log("Comando de reiniciar EspTubo enviado!");
 }
+
+
+function ReiniciarModulos(){
+	console.log("Reiniciando Automações Módulo")
+	ReiniciarESP321();
+	ReiniciarESP32_Caixa();
+	ReiniciarESP32_Tubo();
+}

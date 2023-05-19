@@ -193,10 +193,14 @@ btnIniciarJogo.addEventListener('click', function(){
     });
 })
 btnReiniciarJogo.addEventListener('click', function(){
-    requestForcaLogica('reiniciarjogo')
-    $.get("reset", function (data) { // Reinicia as Automacoes MQTT
-        console.log(data)
-    });
+    setTimeout(function() {
+        console.log("Reiniciando automações RPI")
+        requestForcaLogica('reiniciarjogo');
+        $.get("reset", function (data) { // Reinicia as Automacoes MQTT
+            console.log(data)
+        });
+    },500)
+
     setTimeout(function () {
         window.location.href = "http://10.0.0.51:8000/"
     },2000)

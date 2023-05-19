@@ -67,6 +67,10 @@ form {
     background-color: springgreen;
 }
 
+.dotAmarelo {
+    background-color: #FFA500;
+}
+
 /*Botoes*/
 .button {
     background-color: #008CBA; /* Azul */
