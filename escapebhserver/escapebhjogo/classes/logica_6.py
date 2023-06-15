@@ -29,7 +29,7 @@ class Logica_6(Logica_geral): # Logica 4 no site
 		GPIO.setwarnings(False) # Desativa avisos
 
 		# Configurado GPIO's do raspberry
-		GPIO.setup(cls.gp_arduinoInvecoes, GPIO.IN)
+		# GPIO.setup(cls.gp_arduinoInvecoes, GPIO.IN) # DESABILITADO - AGORA É UMA AUTOMACAO INDEPENDENTE, POR MQTT
 
 		# Configurando GPIO's do Extensor
 		mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -42,8 +42,9 @@ class Logica_6(Logica_geral): # Logica 4 no site
 	# Metodo para acionar o motor no sentindo de descer a "gaveta"
 	@classmethod
 	def descerMotor(cls):
+		print("Descendo motor teto")
 		cls.executarSomLogica4 = True
-		cls._concluida = True
+		# cls._concluida = True
 		time.sleep(1) # Delay Adicional para detectar o som
 		cls.executarSomLogica4 = False
 		mcp.setup(cls.gp_motorDescer, mcp.GPB, mcp.OUT, mcp.ADDRESS2)
@@ -72,13 +73,13 @@ class Logica_6(Logica_geral): # Logica 4 no site
 	@classmethod
 	def threadLogica(cls):
 		while cls._concluida == False:
-			# Checa se a logica 4 já foi concluida
+			# Checa se a logica 4 já foi concluida - AUTOMACAO INDEPENDENTE, POR MQTT
 			if Logica_4._concluida == True:
-				print("Logica Arduino RFID rodando")
-				if GPIO.input(cls.gp_arduinoInvecoes) == GPIO.HIGH:
-					# cls.descerMotor()
-					cls.descerSubirMotor()
-					print("MotorDescendo e subindo apos x segundos")
+			# 	print("Logica Arduino RFID rodando")
+			# 	if GPIO.input(cls.gp_arduinoInvecoes) == GPIO.HIGH:
+			# 		# cls.descerMotor()
+			# 		cls.descerSubirMotor()
+			# 		print("MotorDescendo e subindo apos x segundos")
 				print('4ª Logica - Rodando (Invenções/Teto 2ª Sala)')
 
 			time.sleep(0.25)

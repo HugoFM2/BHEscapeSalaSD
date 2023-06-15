@@ -3,6 +3,8 @@ import json
 from threading import Thread, Timer
 import time
 from escapebhjogo.classes.logica_8 import Logica_8 
+from escapebhjogo.classes.logica_6 import Logica_6 
+from escapebhjogo.classes.logica_4 import Logica_4
 
 class MQTT_Th(Thread):
 	
@@ -36,6 +38,7 @@ class MQTT_Th(Thread):
 		print("MQTT Conectado")
 		self.client.subscribe("SalaSD/CaixaArma/Arma/#")
 		self.client.subscribe("SalaSD/ESP_TUBO/Tubo/#")
+		self.client.subscribe("SalaSD/ESP_Invencoes/#")
 		# self.client.subscribe(self.textTopic + "/") #subscribe to self.textTopic
 		# self.SendMsgCheck()
 
@@ -60,10 +63,18 @@ class MQTT_Th(Thread):
 		if (msg.topic == "SalaSD/ESP_TUBO/Tubo/Status"):
 			if msg.payload.decode() == 'true':
 				print("Enviando comando de abrir Tubo(ligar som)")
-				Logica_8.abrirTuboBrasao()				
+				Logica_8.abrirTuboBrasao()		
+
+		if (msg.topic == "SalaSD/ESP_Invencoes/Invencoes/Status"):
+			if msg.payload.decode() == 'true':
+				print("Enviando comando de descer chave do teto")
+				if Logica_4._concluida == True and Logica_6._concluida == False:
+				# Só desce o motor caso a dependencia esteja rodando e a logica ainda não for concluida
+					Logica_6.descerSubirMotor()
+					Logica_6._concluida = True
 		# if(msg.topic == self.textTopic + "/statusConn"):
 		# 	self._lastConn = msg.payload.decode()
-		# for i in range(len(self.automacoes)):
+		# for i in range(len(self.automacoes)): #
 		# 	# print(self.textTopic + "/" + self.automacoes[i] + "/concluida")
 		# 	if(msg.topic == self.textTopic + "/" + self.automacoes[i] + "/concluida"):
 		# 		self._concluida[i] = bool(int(msg.payload.decode()))
@@ -119,6 +130,7 @@ class MQTT_Th(Thread):
 		self.mqtt_publish("ESP32-1/cmnd","reset")
 		self.mqtt_publish("SalaSD/CaixaArma/cmnd","reset")
 		self.mqtt_publish("SalaSD/ESP_TUBO/cmnd","reset")
+		self.mqtt_publish("SalaSD/ESP_Invencoes/cmnd","reset")
 		self.mqtt_publish("SalaSD/Rpi/Gaveta/Status","false",retain=True)
 
 	# def Descricao(self):

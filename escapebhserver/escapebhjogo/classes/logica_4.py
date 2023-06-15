@@ -16,11 +16,11 @@ secreta abra.
 class Logica_4(Logica_geral): # Logica 3 no site
 
     # GPIO's
-    gpio_chave1 = 26 # Primeira chave (Esquerda) (raspberry)
+    # gpio_chave1 = 26 # Primeira chave (Esquerda) (raspberry)
     gpio_chave2 = 22 # Segunda chave (Direita) (raspberry)
-    gpio_botao = 11 # Botao no busto (raspberry)
-    gpio_servo = 8 # Servo motor do busto (raspberry)
-    gp_trava_busto = 7 # Trava do busto - GPA 7 (Extensor 0x24)
+    # gpio_botao = 11 # Botao no busto (raspberry)
+    # gpio_servo = 8 # Servo motor do busto (raspberry)
+    # gp_trava_busto = 7 # Trava do busto - GPA 7 (Extensor 0x24)
     gp_porta = 0 # Rele da trava da porta - GPA 0(extensor 0x24)
 
     # Variaveis
@@ -30,29 +30,34 @@ class Logica_4(Logica_geral): # Logica 3 no site
     executarSomLogica3_1 = False
     executarSomLogica3_2 = False
     # Sobreescrevendo metodo setup() da classe pai
+
+    #Variaveis extras do callback
+    enable_buttonpress_chave2 = False # Habilita ao apertar o botao da chave 2 libera a porta
+
+
     @classmethod
     def setup(cls):
         GPIO.setmode(GPIO.BOARD) # Contagem de (0 a 40)
         GPIO.setwarnings(False) # Desativa avisos
 
         # Configurado GPIO's do raspberry
-        GPIO.setup(cls.gpio_chave1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
+        # GPIO.setup(cls.gpio_chave1, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
         GPIO.setup(cls.gpio_chave2, GPIO.IN, pull_up_down = GPIO.PUD_DOWN)
-        GPIO.setup(cls.gpio_botao, GPIO.IN)
-        GPIO.setup(cls.gpio_servo, GPIO.OUT)
+        # GPIO.setup(cls.gpio_botao, GPIO.IN)
+        # GPIO.setup(cls.gpio_servo, GPIO.OUT)
 
         # Desativar todos os reles
         Reles.desligarTodosReles()
 
         # Configurando GPIO's do Extensor
         mcp.setup(cls.gp_porta, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
-        mcp.setup(cls.gp_trava_busto, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
+        # mcp.setup(cls.gp_trava_busto, mcp.GPA, mcp.OUT, mcp.ADDRESS2)
 
         # Inicialmente em nivel baixo
-        GPIO.output(cls.gpio_servo, GPIO.LOW)
+        # GPIO.output(cls.gpio_servo, GPIO.LOW)
         # Rele em nivel alto (Para iniciar desativado)
         mcp.output(cls.gp_porta, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
-        mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
+        # mcp.output(cls.gp_trava_busto, mcp.GPA, mcp.HIGH, mcp.ADDRESS2)
 
         cls.busto_girou = False
 
@@ -117,29 +122,43 @@ class Logica_4(Logica_geral): # Logica 3 no site
         #cls.pwmServo.stop()
         cls.busto_girou = False
 
+
     # Sobreescrevendo metodo threadLogicas() da classe pai
     @classmethod
     def threadLogica(cls):
         while cls._concluida == False:
             # Checa se a logica 3 já foi concluida
             if Logica_1._concluida == True:
-                #print('Chave 1: {}, Chave 2: {}',GPIO.input(cls.gpio_chave1),GPIO.input(cls.gpio_chave2)) #DEBUG
-                leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)] #DEBUG
-                print("Chave1: ", leitura[0],"Chave2: ",leitura[1]) #DEBUG
-                print('3ª Logica - Rodando (Busto/Porta)') #DEBUG
+                if GPIO.input(cls.gpio_chave2) == False: 
+                    print("Chave girada, aguardando apertar seu botao")
+                    cls.enable_buttonpress_chave2 = True
+                    time.sleep(0.1)
+                    continue
+
+                if cls.enable_buttonpress_chave2:
+
+                    if GPIO.input(cls.gpio_chave2):
+                        cls.abrirPorta()
+                        print('Abrindo a Porta secreta')
 
 
-                if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :
-                    cls.abrirBusto() 
-                    cls.busto_girou = True
-                    print('Girando Busto e liberando botão.') #DEBUG
+                # #print('Chave 1: {}, Chave 2: {}',GPIO.input(cls.gpio_chave1),GPIO.input(cls.gpio_chave2)) #DEBUG
+                # leitura = [GPIO.input(cls.gpio_chave1), GPIO.input(cls.gpio_chave2)] #DEBUG
+                # print("Chave1: ", leitura[0],"Chave2: ",leitura[1]) #DEBUG
+                # print('3ª Logica - Rodando (Busto/Porta)') #DEBUG
 
-                leituraBotao = GPIO.input(cls.gpio_botao)
-                if leituraBotao == 1 :
-                    cls.abrirPorta()
-                    print('Abrindo a Porta secreta') #DEBUG
 
-                time.sleep(0.25)
+                # if GPIO.input(cls.gpio_chave1) == GPIO.HIGH and GPIO.input(cls.gpio_chave2) == GPIO.HIGH and cls.busto_girou == False :
+                #     cls.abrirBusto() 
+                #     cls.busto_girou = True
+                #     print('Girando Busto e liberando botão.') #DEBUG
+
+                # leituraBotao = GPIO.input(cls.gpio_botao)
+                # if leituraBotao == 1 :
+                #     cls.abrirPorta()
+                #     print('Abrindo a Porta secreta') #DEBUG
+                print("3a Logica rodando")
+                time.sleep(0.1)
 
         else:
             print('3ª Logica - Finalizada')

@@ -18,6 +18,9 @@ function onConnect() {
 	mqtt.subscribe("SalaSD/ESP_TUBO/Tubo/#");
 	mqtt.subscribe("SalaSD/ESP_TUBO/Connected");
 
+	mqtt.subscribe("SalaSD/ESP_Invencoes/Invencoes/#");
+	mqtt.subscribe("SalaSD/ESP_Invencoes/Connected");	
+
 	getAllStatus();
 	// message = new Paho.MQTT.Message("Hello World");
 	// message.destinationName = "sensor1";
@@ -86,6 +89,8 @@ function onMessageArrived(msg){
 	    toggleStatusOFF("Genius");
 	  }
 	}
+
+	//CAIXA_ARMA
 	else if(msg.destinationName == "SalaSD/CaixaArma/Arma/Status"){
 		if(msg.payloadString.toLowerCase() === 'true'){
 			toggleStatusON("Caixa");
@@ -117,6 +122,22 @@ function onMessageArrived(msg){
 		}
 	}	
 
+	// INVENCOES
+	else if(msg.destinationName == "SalaSD/ESP_Invencoes/Invencoes/Status"){
+		if(msg.payloadString.toLowerCase() === 'true'){
+			toggleStatusON("Invencoes");
+		} else {
+			toggleStatusOFF("Invencoes");
+		}
+	}
+	else if(msg.destinationName == "SalaSD/ESP_Invencoes/Connected"){
+		if(msg.payloadString.toLowerCase() === 'true'){
+			toggleConnStatusON("ESP32-INVENCOES");
+		} else {
+			toggleConnStatusOFF("ESP32-INVENCOES");
+		}
+	}
+
 }
 
 function getAllStatus(){
@@ -129,6 +150,11 @@ function getAllStatus(){
 	// ESP TUBO
 	message = new Paho.MQTT.Message("getAllStatus");
 	message.destinationName = "SalaSD/ESP_TUBO/cmnd";
+	mqtt.send(message);	
+
+	// INVENCOES
+	message = new Paho.MQTT.Message("getAllStatus");
+	message.destinationName = "SalaSD/ESP_Invencoes/cmnd";
 	mqtt.send(message);	
 
 }
@@ -176,6 +202,12 @@ function concluir_Genius(){
 	mqtt.send(message);
 }
 
+function concluir_Invencoes(){
+	message = new Paho.MQTT.Message("force");
+	message.destinationName = "SalaSD/ESP_Invencoes/Invencoes/cmnd";
+	mqtt.send(message);
+}
+
 function ForcarESP32_Caixa_Cilindro(){
 	message = new Paho.MQTT.Message("force");
 	message.destinationName = "SalaSD/CaixaArma/Arma/cmnd";
@@ -189,6 +221,12 @@ function ForcarESP32_Tubo(){
 	mqtt.send(message);
 	console.log("[MQTT] Comando de Forcar tubo enviado!");
 }
+
+
+
+
+
+
 
 function ReiniciarESP321(){
 	message = new Paho.MQTT.Message("reset");
@@ -210,10 +248,18 @@ function ReiniciarESP32_Tubo(){
 	console.log("Comando de reiniciar EspTubo enviado!");
 }
 
+function ReiniciarESP32_Invencoes(){
+	message = new Paho.MQTT.Message("reset");
+	message.destinationName = "SalaSD/ESP_Invencoes/cmnd";
+	mqtt.send(message);
+	console.log("Comando de reiniciar Invencoes enviado!");
+}
+
 
 function ReiniciarModulos(){
 	console.log("Reiniciando Automações Módulo")
 	ReiniciarESP321();
 	ReiniciarESP32_Caixa();
 	ReiniciarESP32_Tubo();
+	ReiniciarESP32_Invencoes();
 }

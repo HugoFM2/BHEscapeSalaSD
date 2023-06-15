@@ -198,6 +198,8 @@ def ajaxdashboard(request):
             Logica_6.descerMotor()
         elif acao != None and acao == 'subirteto':
             Logica_6.subirMotor()
+        elif acao != None and acao == 'descersubirteto':
+            Logica_6.descerSubirMotor()
 
         # Checagem dos botoes da logica 7
         elif acao != None and acao == 'abrirgavetamesa':

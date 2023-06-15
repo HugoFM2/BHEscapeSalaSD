@@ -15,6 +15,7 @@ const btnPorta = document.querySelector('#btnPorta')
 
 const btnSubirTeto = document.querySelector('#btnSubirTeto')
 const btnDescerTeto = document.querySelector('#btnDescerTeto')
+const btnDescerSubirTeto = document.querySelector('#btnDescerSubirTeto')
 
 const btnPorao = document.querySelector('#btnPorao')
 
@@ -224,6 +225,7 @@ btnPorta.addEventListener('click', function(){ requestForcaLogica('abrirporta') 
 
 btnSubirTeto.addEventListener('click', function(){ requestForcaLogica('subirteto') })
 btnDescerTeto.addEventListener('click', function(){ requestForcaLogica('descerteto') })
+btnDescerSubirTeto.addEventListener('click', function(){ requestForcaLogica('descersubirteto') })
 
 btnPorao.addEventListener('click', function(){ requestForcaLogica('abrirporao') })
 
