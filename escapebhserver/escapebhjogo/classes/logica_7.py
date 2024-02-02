@@ -70,7 +70,7 @@ class Logica_7(Logica_geral): # Logica 7 no site
 
                 if (leitura == [1,1,1,1]):
 
-                    # cls.abrirGaveta() # DESATIVAR CONCLUIR AUTOMATICO -> 
+                    cls.abrirGaveta() # DESATIVAR CONCLUIR AUTOMATICO -> 
                     print('Gaveta 2ª Sala Aberta!')
 
                 print('7ª Logica - Rodando (Puzzle 2ª Sala)')

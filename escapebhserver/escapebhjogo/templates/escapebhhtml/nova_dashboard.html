@@ -18,6 +18,13 @@
     <link rel="icon" href="{% static 'imagens/favicon32x32.png' %}" sizes="32x32">
     <link rel="stylesheet" href="{% static 'css/stylenovo.css' %}">
     <link rel="stylesheet" href="{% static 'css/table.css' %}" >
+
+  <style>
+    .reduced-svg {
+        width: 40vw;
+        height: auto; /* This ensures the aspect ratio is maintained */
+    }
+</style>
   </head>
   <body>
     <!-- CABEÇALHO -->
@@ -129,7 +136,7 @@
               
               <tr id="Linha-Bicicleta" class="d-flex">
                 <td class="col-2" >
-                  <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"  src="static/imagens/icon-fail.svg"> 
+                  <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid reduced-svg"  src="static/imagens/icon-fail.svg"> 
                 </td> 
                 <td class="col-4">Bicicleta </td>
                 <td class="col-2"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </td>
@@ -141,7 +148,7 @@
 
           <tr id="Linha-Genius" class="d-flex">
             <td class="col-2" >
-              <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"   src="static/imagens/icon-fail.svg">
+              <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid reduced-svg"   src="static/imagens/icon-fail.svg">
             </td> 
           <td class="col-4">Genius</td>
           <td class="col-2"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </td>
@@ -153,7 +160,7 @@
               <tr class="d-flex">
                 <!-- Logica 6 - Invecoes -->
                 <td class="col-2">
-                  <img id="statusConn-ESP32-INVENCOES" class="statusConn-ESP32-INVENCOES img-fluid"   src="static/imagens/icon-fail.svg">
+                  <img id="statusConn-ESP32-INVENCOES" class="statusConn-ESP32-INVENCOES img-fluid reduced-svg"   src="static/imagens/icon-fail.svg">
                 </td> 
                 <td class="col-4">Invenções</td>
                 <td class="col-2"><span id="status-Conclusao-Invencoes" class="dot dotCinza"></span></td>
@@ -198,7 +205,7 @@
               <tr id="Linha-Caixa" class="d-flex">
                 <!-- Logica 8 - Caixa Arma (Cilindro de energia) -->
                 <td class="col-2" >
-                  <img id="statusConn-ESP32Caixa" class="statusConn-ESP32Caixa img-fluid"  src="static/imagens/icon-fail.svg"> 
+                  <img id="statusConn-ESP32Caixa" class="statusConn-ESP32Caixa img-fluid reduced-svg"  src="static/imagens/icon-fail.svg"> 
                 </td> 
                 <td class="col-4">Lógica 8 </td>
                 <td class="col-2"> <div id="status-Conclusao-Caixa" class="dot dotCinza"></div> </td>
@@ -213,7 +220,7 @@
               <tr id="Linha-Tubo" class="d-flex">
                 <!-- Logica 9 - Tubo -->
                 <td class="col-2" >
-                  <img id="statusConn-ESP32Tubo" class="statusConn-ESP32Tubo img-fluid"  src="static/imagens/icon-fail.svg"> 
+                  <img id="statusConn-ESP32Tubo" class="statusConn-ESP32Tubo img-fluid reduced-svg"  src="static/imagens/icon-fail.svg"> 
                 </td> 
                 <td class="col-4">Lógica 9 </td>
                 <td class="col-2"> <div id="status-Conclusao-Tubo" class="dot dotCinza"></div> </td>

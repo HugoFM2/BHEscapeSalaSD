@@ -68,6 +68,7 @@ class Logica_2(Logica_geral): # Logica 1 no site
             leituraSensor.append( GPIO.input(cls.gpio_chave3) )
             leituraSensor.append( GPIO.input(cls.gpio_chave4) )
 
+            print(f'Leitura Sensores Alavanca: {leituraSensor}')
             # Checa se as chaves estão na posição correta e se a logica 1 foi concluida
             if leituraSensor == [1,1,1,1]:
                 cls.cairTeto()

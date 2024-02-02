@@ -25,6 +25,9 @@ class MQTT_Th(Thread):
 		self.client.connect(self.Broker, self.PortaBroker)
 
 
+		self.statusLogicaInvencoes = False;
+
+
 
 
 	def run(self):
@@ -64,6 +67,8 @@ class MQTT_Th(Thread):
 			if msg.payload.decode() == 'true':
 				print("Enviando comando de abrir Tubo(ligar som)")
 				Logica_8.abrirTuboBrasao()		
+		if (msg.topic == "SalaSD/ESP_Invencoes/Connected"):
+				self.statusLogicaInvencoes = (msg.payload.decode() == 'true')
 
 		if (msg.topic == "SalaSD/ESP_Invencoes/Invencoes/Status"):
 			if msg.payload.decode() == 'true':
@@ -72,6 +77,13 @@ class MQTT_Th(Thread):
 				# Só desce o motor caso a dependencia esteja rodando e a logica ainda não for concluida
 					Logica_6.descerSubirMotor()
 					Logica_6._concluida = True
+
+		if (msg.topic == "SalaSD/ESP_Invencoes/Invencoes/cmnd"):
+			if msg.payload.decode() == 'force' and self.statusLogicaInvencoes == False:
+				Logica_6._concluida = True
+				Logica_6.descerSubirMotor()
+				self.mqtt_publish("SalaSD/ESP_Invencoes/Invencoes/Status","true")
+
 		# if(msg.topic == self.textTopic + "/statusConn"):
 		# 	self._lastConn = msg.payload.decode()
 		# for i in range(len(self.automacoes)): #

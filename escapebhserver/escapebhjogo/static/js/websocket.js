@@ -11,12 +11,15 @@ function randomInt(min, max) { // Retorna um cliente random, para nao haver conf
 function onConnect() {		
 	// Once a connection has been made, make a subscription and send a message.
 	console.log("Conectado! ");
-	mqtt.subscribe("ESP32-1/#");
+	mqtt.subscribe("SalaSD/Genius/Genius/#");
+	mqtt.subscribe("SalaSD/Genius/Bicicleta/#");
+	mqtt.subscribe("SalaSD/Genius/Connected");
+
 	mqtt.subscribe("SalaSD/CaixaArma/Arma/#");
 	mqtt.subscribe("SalaSD/CaixaArma/Connected");
 
-	mqtt.subscribe("SalaSD/ESP_TUBO/Tubo/#");
-	mqtt.subscribe("SalaSD/ESP_TUBO/Connected");
+	mqtt.subscribe("SalaSD/Tubo/Tubo/#");
+	mqtt.subscribe("SalaSD/Tubo/Connected");
 
 	mqtt.subscribe("SalaSD/ESP_Invencoes/Invencoes/#");
 	mqtt.subscribe("SalaSD/ESP_Invencoes/Connected");	
@@ -57,7 +60,7 @@ function onMessageArrived(msg){
 	out_msg="Message received "+msg.payloadString;
 	out_msg=out_msg+"Message received Topic "+msg.destinationName;
 	console.log(out_msg);
-    if(msg.destinationName == "ESP32-1/LWT"){
+    if(msg.destinationName == "SalaSD/Genius/Connected"){
       var statusbuff = (msg.payloadString === 'true');
       if(statusbuff){
         toggleConnStatusON("ESP32-1");
@@ -67,10 +70,10 @@ function onMessageArrived(msg){
         // FixedAlert("DANGER","ESP32-1 Desconectada!","ESP32-1");
       }
     }
-    else if(msg.destinationName == "ESP32-1/Bicicleta/concluida"){
+    else if(msg.destinationName == "SalaSD/Genius/Bicicleta/Status"){
 	  console.log(msg.payloadString);
-	  var statusbuff = (msg.payloadString === 'true');
-	  if(statusbuff){
+	  // var statusbuff = (msg.payloadString === 'true');
+	  if(msg.payloadString.toLowerCase() === 'true'){
 	    toggleStatusON("Bicicleta");
 	    // $('#Linha-Automacao1').removeClass("table-success");
 	  }
@@ -78,10 +81,9 @@ function onMessageArrived(msg){
 	    toggleStatusOFF("Bicicleta");
 	  }
 	}
-    else if(msg.destinationName == "ESP32-1/Genius/concluida"){
+    else if(msg.destinationName == "SalaSD/Genius/Genius/Status"){
 	  console.log(msg.payloadString);
-	  var statusbuff = (msg.payloadString === 'true');
-	  if(statusbuff){
+	  if(msg.payloadString.toLowerCase() === 'true'){
 	    toggleStatusON("Genius");
 	    // $('#Linha-Automacao1').removeClass("table-success");
 	  }
@@ -107,14 +109,14 @@ function onMessageArrived(msg){
 	}	
 
 	// ESP TUBO
-	else if(msg.destinationName == "SalaSD/ESP_TUBO/Tubo/Status"){
+	else if(msg.destinationName == "SalaSD/Tubo/Tubo/Status"){
 		if(msg.payloadString.toLowerCase() === 'true'){
 			toggleStatusON("Tubo");
 		} else {
 			toggleStatusOFF("Tubo");
 		}
 	}
-	else if(msg.destinationName == "SalaSD/ESP_TUBO/Connected"){
+	else if(msg.destinationName == "SalaSD/Tubo/Connected"){
 		if(msg.payloadString.toLowerCase() === 'true'){
 			toggleConnStatusON("ESP32Tubo");
 		} else {
@@ -149,7 +151,7 @@ function getAllStatus(){
 
 	// ESP TUBO
 	message = new Paho.MQTT.Message("getAllStatus");
-	message.destinationName = "SalaSD/ESP_TUBO/cmnd";
+	message.destinationName = "SalaSD/Tubo/cmnd";
 	mqtt.send(message);	
 
 	// INVENCOES
@@ -191,14 +193,14 @@ function DeleteAlert(id){
 }
 
 function concluir_Bicicleta(){
-	message = new Paho.MQTT.Message("BicicletaForce");
-	message.destinationName = "ESP32-1/cmnd";
+	message = new Paho.MQTT.Message("force");
+	message.destinationName = "SalaSD/Genius/Bicicleta/cmnd";
 	mqtt.send(message);
 }
 
 function concluir_Genius(){
-	message = new Paho.MQTT.Message("GeniusForce");
-	message.destinationName = "ESP32-1/cmnd";
+	message = new Paho.MQTT.Message("force");
+	message.destinationName = "SalaSD/Genius/Genius/cmnd";
 	mqtt.send(message);
 }
 
@@ -217,7 +219,7 @@ function ForcarESP32_Caixa_Cilindro(){
 
 function ForcarESP32_Tubo(){
 	message = new Paho.MQTT.Message("force");
-	message.destinationName = "SalaSD/ESP_TUBO/Tubo/cmnd";
+	message.destinationName = "SalaSD/Tubo/Tubo/cmnd";
 	mqtt.send(message);
 	console.log("[MQTT] Comando de Forcar tubo enviado!");
 }
@@ -230,7 +232,7 @@ function ForcarESP32_Tubo(){
 
 function ReiniciarESP321(){
 	message = new Paho.MQTT.Message("reset");
-	message.destinationName = "ESP32-1/cmnd";
+	message.destinationName = "SalaSD/Genius/cmnd";
 	mqtt.send(message);
 }
 
@@ -243,7 +245,7 @@ function ReiniciarESP32_Caixa(){
 
 function ReiniciarESP32_Tubo(){
 	message = new Paho.MQTT.Message("reset");
-	message.destinationName = "SalaSD/ESP_TUBO/cmnd";
+	message.destinationName = "SalaSD/Tubo/cmnd";
 	mqtt.send(message);
 	console.log("Comando de reiniciar EspTubo enviado!");
 }

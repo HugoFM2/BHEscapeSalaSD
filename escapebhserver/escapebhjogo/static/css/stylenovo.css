@@ -1,5 +1,20 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  width: 100%;
+  max-width: 100%;
+/*  overflow-x: hidden; /* This prevents horizontal scroll if there are elements wider than the viewport */*/
+}
+
 #cabecalho {
     margin-bottom: 32px;
+/*    width: 100vw;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;*/
 }
 
 #h1-titulo {
