@@ -4,6 +4,12 @@ var host="10.0.0.51"; //change this
 var port=9001;
 
 
+const btnTubo = document.querySelector('#btnTubo');
+const audio2 = document.querySelector("#myAudio2-BR");
+const audio2_ES = document.querySelector("#myAudio2-ES");
+const audio2_EN = document.querySelector("#myAudio2-EN");
+
+
 function randomInt(min, max) { // Retorna um cliente random, para nao haver conflito
 	return min + Math.floor((max - min) * Math.random());
 }
@@ -112,6 +118,10 @@ function onMessageArrived(msg){
 	else if(msg.destinationName == "SalaSD/Tubo/Tubo/Status"){
 		if(msg.payloadString.toLowerCase() === 'true'){
 			toggleStatusON("Tubo");
+			if (audio1.paused == true) {
+        PlayNarracao();
+        console.log('executando som Narração')
+			}
 		} else {
 			toggleStatusOFF("Tubo");
 		}
@@ -264,4 +274,22 @@ function ReiniciarModulos(){
 	ReiniciarESP32_Caixa();
 	ReiniciarESP32_Tubo();
 	ReiniciarESP32_Invencoes();
+}
+
+// Botoes 
+
+btnTubo.addEventListener('click', function(){
+    PlayNarracao();
+})
+
+function PlayNarracao(){
+    if (document.getElementById("IdiomaPortugues").checked){
+        audio2.play()
+    }
+    if (document.getElementById("IdiomaIngles").checked){
+        audio2_EN.play()
+    }
+    if (document.getElementById("IdiomaEspanhol").checked){
+        audio2_ES.play()
+    }
 }

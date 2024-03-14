@@ -117,7 +117,7 @@ class Logica_3(Logica_geral): # Logica 5 no site
                 tempoAtual = time.time()
                 tempoDecorrido = tempoAtual - tempoAnterior
                 if tempoDecorrido > 5 and ordem_degrau != []: # Renova o tempo de referencia
-                    print('Timeout Logica 3 - ' + str(tempoDecorrido)) #DEBUG
+                    print('Timeout Logica 5 - ' + str(tempoDecorrido)) #DEBUG
                     ordem_degrau = [] # Zera a leitura
                     tempoAnterior = time.time()
                 elif ordem_degrau == []: # Se estiver vazio sempre zera tempo anterior

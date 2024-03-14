@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  width: 100%;
+  max-width: 100%;
+/*  overflow-x: hidden; /* This prevents horizontal scroll if there are elements wider than the viewport */*/
+}
+
+#cabecalho {
+    margin-bottom: 32px;
+/*    width: 100vw;
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;*/
+}
+
+#h1-titulo {
+    font-size: 24pt;
+}
+
+#logo-bhescape {
+    height: 80px;
+    position: absolute;
+    width: 55px;
+    margin-top: 4.5px;
+}
+
+#p-cronometro {
+    font-size: 24pt;
+    margin-bottom: 0px;
+}
+
+#rodape {
+    margin-bottom: 0px;
+}
+
+.btn {
+    margin-top: 0.5px;
+    margin-bottom: 0.5px;
+}
+
+/* Circulos de indicacao de Logica Concluida ou Nao */
+.dot {
+    height: 20px;
+    width: 20px;
+    background-color: #000;
+    border-radius: 50%;
+    display: inline-block;
+}
+.dotCinza {
+    background-color: silver;
+}
+.dotVerde {
+    background-color: springgreen;
+}
+.dotVermelho {
+    background-color: red;
+}
+
+
+  html, body {
+    height: 100%;
+    margin: 0;
+  }
+
+  .page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+  .content-wrap {
+    flex: 1;
+  }
+footer {
+    width: 100%;
+    background-color: #6cf; /* Sua cor */
+    color: white; /* Sua cor */
+    text-align: center;
+    height: 60px; /* Sua altura */
+    line-height: 60px; /* Centraliza o texto verticalmente */
+}
+
+.lbl{
+    width:25px;
+    height:25px;
+    border-radius:50%;
+    background-color:gray;
+    margin-left: 25%;
+    margin-top: 15%;
+    }
+.lblOn{
+    background-color:#0B920B
+}
+.lblOff{
+    background-color:#DB1D21
+}
+.lblInProgress{
+    background-color:#FFA500
+}
+.lblPaused{
+    background-color:#FFA500
+}
+.lblUnknown{
+    background-color:#383838
+}
+.lblDisconn{
+    background-color:gray
+}
+.lblForced{
+    background-color:#D9D61A
+}
+
+.table-bordered > tbody > tr > td, .table-bordered > tbody > tr > th, .table-bordered > tfoot > tr > td, .table-bordered > tfoot > tr > th, .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
+    border: 1px solid  rgba(255,255,255, 0.2); //your desired color
+}
+
+
+@media (max-width: 768px) {
+    header > div:first-child {
+        justify-content: center;
+    }
+    header #TimerCounter {
+        order: -1;
+        flex: 0 0 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    header a.btn {
+        order: 2;
+        flex: 0 0 100%;
+        text-align: center;
+        margin-top: 10px;
+    }
+    header > div:last-child {
+        flex-direction: column;
+        align-items: center;
+    }
+    .table-responsive {
+        width: 800%;
+        margin: 0;
+        padding: 0;
+    }
+}

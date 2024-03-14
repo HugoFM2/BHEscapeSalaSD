@@ -100,9 +100,9 @@ class Logica_1(Logica_geral): # Logica 2 no site
             leitura_ldr = GPIO.input(cls.gpio_ldr)
             # leitura_ldr = mcp.input(cls.gpio_ldr, mcp.GPB, mcp.ADDRESS1)
             print(f'Leitura Laser: {leitura_ldr}')
-            if leitura_ldr == 1 and cls.laser_on == True:
-                cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
-                print('A gaveta do chão foi aberta') #DEBUG
+            # if leitura_ldr == 1 and cls.laser_on == True:
+            #     cls.abrirGaveta() # Abre a gaveta e marca a logica como concluida
+            #     print('A gaveta do chão foi aberta') #DEBUG
 
             time.sleep(0.25) # Delay de 250ms segundo entre checagens
             print('2ª Logica Rodando (Laser)') #DEBUG

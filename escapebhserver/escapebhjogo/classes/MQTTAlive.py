@@ -40,7 +40,7 @@ class MQTT_Th(Thread):
 	def on_connect(self, client, userdata,flags, rc):
 		print("MQTT Conectado")
 		self.client.subscribe("SalaSD/CaixaArma/Arma/#")
-		self.client.subscribe("SalaSD/ESP_TUBO/Tubo/#")
+		self.client.subscribe("SalaSD/Tubo/Tubo/#")
 		self.client.subscribe("SalaSD/ESP_Invencoes/#")
 		# self.client.subscribe(self.textTopic + "/") #subscribe to self.textTopic
 		# self.SendMsgCheck()
@@ -63,10 +63,11 @@ class MQTT_Th(Thread):
 				print("Enviando comando de abrir caixa(ligar som)")
 				Logica_8.abrirCaixa()
 
-		if (msg.topic == "SalaSD/ESP_TUBO/Tubo/Status"):
+		if (msg.topic == "SalaSD/Tubo/Tubo/Status"):
 			if msg.payload.decode() == 'true':
 				print("Enviando comando de abrir Tubo(ligar som)")
 				Logica_8.abrirTuboBrasao()		
+				
 		if (msg.topic == "SalaSD/ESP_Invencoes/Connected"):
 				self.statusLogicaInvencoes = (msg.payload.decode() == 'true')
 

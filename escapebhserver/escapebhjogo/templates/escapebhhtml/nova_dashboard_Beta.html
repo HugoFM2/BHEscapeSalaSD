@@ -1,0 +1,343 @@
+{% load static %}
+<!doctype html>
+<html lang="pt-br">
+  <head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script>
+	<script src="{% static 'js/scriptMQTT.js' %}"></script>
+	<script src="{% static 'js/mqttws31.min.js' %}"></script>
+	<script src="{% static 'js/websocket.js' %}"></script>
+
+	<!-- Bootstrap CSS -->
+	<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
+	<link rel="stylesheet" href="{% static 'bootstrap4/css/bootstrap.min.css' %}">
+
+	<title>SD - BH Escape</title>
+	<link rel="icon" href="{% static 'imagens/favicon32x32.png' %}" sizes="32x32">
+	<!-- <link rel="stylesheet" href="{% static 'css/stylenovo.css' %}"> -->
+	<link rel="stylesheet" href="{% static 'css/stylebeta.css' %}">
+	<link rel="stylesheet" href="{% static 'css/table.css' %}" >
+  </head>
+  <body style="background-color: rgba(18,18,18, 1)">
+	<!-- CABEÇALHO -->
+	<div id="cabecalho" class="container-fluid bg-dark">
+	  <div class="row">
+		<div class="col-sm-6 text-white">
+		  <h1 id="h1-titulo">Sala Santos Dumont Português</h1>
+		</div>
+		<div class="col">
+		  <img id="logo-bhescape" src="{% static 'imagens/logo.png' %}" alt="BH Escape Logo" class="rounded">
+		</div>
+	  </div>
+	  <div class="row">
+		<div class="col">
+			<button id="btnIniciarJogo" type="button" class="btn btn-success">Iniciar Jogo</button>
+			<button id="btnReiniciarJogo" type="button" class="btn btn-danger">Reiniciar Jogo</button>
+			<button id="btnDesligarRaspberry" type="button" class="btn btn-warning">Desligar Raspberry</button>
+
+			<!-- SELECIONAR IDIOMA PARA AUDIO -->
+
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">Escolher Idioma</button>
+		</div>
+
+		<!-- Modal Audio -->
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog" role="document">
+			<div class="modal-content">
+			  <div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Selecione o idioma</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				  <span aria-hidden="true">&times;</span>
+				</button>
+			  </div>
+			  <div class="modal-body">
+				<div class="form-check form-check-inline pl-5">
+				  <input class="form-check-input " type="radio" name="OpcoesIdioma" id="IdiomaPortugues" value="option1" checked>
+				  <label class="form-check-label " for="IdiomaPortugues">Português</label>
+				</div>
+				<div class="form-check form-check-inline">
+				  <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaIngles" value="option2">
+				  <label class="form-check-label " for="IdiomaIngles">Inglês</label>
+				</div>
+				<div class="form-check form-check-inline">
+				  <input class="form-check-input" type="radio" name="OpcoesIdioma" id="IdiomaEspanhol" value="option3">
+				  <label class="form-check-label " for="IdiomaEspanhol">Espanhol</label>
+				</div>
+			  </div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary" id="ConfirmarIdioma" data-dismiss="modal">Confirmar</button>
+			  </div>
+			</div>
+		  </div>
+		</div>
+
+		<div class="col text-center font-weight-bold text-warning">
+		  <p id="p-cronometro">00:00:00</p>
+		</div>
+		
+	  </div>
+	</div>
+
+	<script>MQTTconnect();</script>
+	<!-- CORPO -->
+	<div id="corpo">
+        <table id="TabelaLogicas" class="table table-bordered" style="width:80%;" align="center">
+            <thead class="thead-dark">
+              <!-- <tr> -->
+              <tr class="d-flex">
+                <th class="col-md-2">Conexão</th> 
+                <th class="col-md-4">Lógica</th>
+                <th class="col-md-2">Status</th>
+                <th class="col-md-4">Botões</th>
+<!--                 <th class="w-50">Lógica</th>
+                <th class="w-10">Status</th>
+                <th class="w-50">Botões</th> -->
+              </tr>
+            </thead>
+            <tbody style="color: rgba(255,255,255, 0.87)">
+              <tr class="d-flex">
+                <!-- Logica 2 - Teto (Alcapao) -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4"><a data-toggle="popover" data-trigger="hover" title="Dependências" data-content="Sem dependências">Lógica 1 - Alavancas</a></td>
+                <td class="col-2"><span id="status-logica2" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                  <button id="btnAlcapao" type="button" class="btn btn-primary">Cair o Alçapão</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 1 - Laser -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4"><a data-toggle="popover" data-trigger="hover" title="Dependências" data-content="Sem dependências">Lógica 2 - Laser</a></td></td>
+                <td class="col-2"><span id="status-logica1" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnLaser" type="button" class="btn btn-info">Ativar Laser</button>
+                    <button id="btnGavetaLaser" type="button" class="btn btn-primary">Abrir Gaveta (chão)</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 4 - Busto -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4"><a data-toggle="popover" data-trigger="hover" title="Dependências" data-content="Lógica 2 - Laser">Lógica 3 - Botão Porta</a></td>
+                <td class="col-2"><span id="status-logica4" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnGirarBusto" type="button" class="btn btn-info">Girar o Busto</button>
+                    <button id="btnVoltarBusto" type="button" class="btn btn-info">Voltar o Busto</button>
+                    <button id="btnPorta" type="button" class="btn btn-primary">Abrir Porta</button>
+                </td>
+              </tr>
+              
+              <tr id="Linha-Bicicleta" class="d-flex">
+                <td class="col-2" >
+                  <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4"><a data-toggle="popover" data-trigger="hover" title="Dependências" data-content="Sem dependências">Lógica 4 - Bicicleta</a></td>
+                <td class="col-2"> <div id="status-Conclusao-Bicicleta" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="botao-forcar-Bicicleta" class="btn btn-primary" onclick="concluir_Bicicleta()">Concluir Bicicleta</button>
+                  <button id="botao-reiniciar-esp32" class="btn btn-danger" onclick="ReiniciarESP321()">Reiniciar Genius</button>
+                </td>
+              </tr>
+
+          <tr id="Linha-Genius" class="d-flex">
+            <td class="col-2" >
+              <img id="statusConn-ESP32-1" class="statusConn-ESP32-1 img-fluid"   src="static/imagens/icon-fail.svg">
+            </td> <!-- Conexao RPI, vazio -->
+          <td class="col-4"><a data-toggle="popover" data-trigger="hover" title="Dependências" data-content="Lógica 4 - Bicicleta">Lógica 5 - Genius</a></td>
+          <td class="col-2"> <div id="status-Conclusao-Genius" class="dot dotCinza"></div> </td>
+          <td class="col-4">
+            <button id="botao-forcar-Genius" class="btn btn-primary" onclick="concluir_Genius()">Concluir Genius</button>
+            <!-- <button id="botao-forcar-Alavanca Aleatoria-1" class="btn btn-warning btn-sm" onclick="ForceLogic(this.id , 'force' , '0' )">Desligar LEDs</button>  -->
+          </td>
+        </tr>
+              <tr class="d-flex">
+                <!-- Logica 6 - Invecoes -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 4</td>
+                <td class="col-2"><span id="status-logica6" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnSubirTeto" type="button" class="btn btn-info">Subir Teto</button>
+                    <button id="btnDescerTeto" type="button" class="btn btn-primary">Descer Teto</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 3 - Porão -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 5</td>
+                <td class="col-2"><span id="status-logica3" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnPorao" type="button" class="btn btn-primary">Abrir Porão</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 5 - Livros -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 6</td>
+                <td class="col-2"><span id="status-logica5" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnBau" type="button" class="btn btn-primary">Abrir Baú</button>
+                </td>
+              </tr>
+              <tr class="d-flex">
+                <!-- Logica 7 - Puzzle -->
+                <td class="col-2"></td> <!-- Conexao RPI, vazio -->
+                <td class="col-4">Lógica 7</td>
+                <td class="col-2"><span id="status-logica7" class="dot dotCinza"></span></td>
+                <td class="col-4">
+                    <button id="btnGavetaMesa" type="button" class="btn btn-primary">Abrir Gaveta (mesa)</button>
+                </td>
+              </tr>
+
+
+
+              <tr id="Linha-Caixa" class="d-flex">
+                <!-- Logica 8 - Caixa Arma (Cilindro de energia) -->
+                <td class="col-2" >
+                  <img id="statusConn-ESP32Caixa" class="statusConn-ESP32Caixa img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4">Lógica 8 </td>
+                <td class="col-2"> <div id="status-Conclusao-Caixa" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="btnAudio1" type="button" class="btn btn-secondary">Som 1</button>
+<!--                   <button id="btnCilindroEnergia" type="button" class="btn btn-info">Liberar Cilindro de Energia2</button> -->
+                  <button id="btnCilindroEnergia" onclick="ForcarESP32_Caixa_Cilindro()"  class="btn btn-info">Liberar Cilindro de Energia</button>        
+                  <button id="botao-reiniciar-Caixa" class="btn btn-danger" onclick="ReiniciarESP32_Caixa()">Reiniciar Cilindro</button>
+                </td>
+              </tr>
+
+              <tr id="Linha-Tubo" class="d-flex">
+                <!-- Logica 9 - Tubo -->
+                <td class="col-2" >
+                  <img id="statusConn-ESP32Tubo" class="statusConn-ESP32Tubo img-fluid"  src="static/imagens/icon-fail.svg"> 
+                </td> 
+                <td class="col-4">Lógica 9 </td>
+                <td class="col-2"> <div id="status-Conclusao-Tubo" class="dot dotCinza"></div> </td>
+                <td class="col-4">
+                  <button id="btnAudio2" type="button" class="btn btn-secondary">Som 2</button>
+                  <button id="btnTubo" onclick="ForcarESP32_Tubo()" type="button" class="btn btn-primary">Abrir Tubo</button>
+                  <button id="botao-reiniciar-Tubo" class="btn btn-danger" onclick="ReiniciarESP32_Tubo()">Reiniciar Tubo</button>
+                </td>
+              </tr>
+
+
+              <!-- <script type="text/javascript">writeTable();</script> -->
+            </tbody>
+          </table>
+<!-- 		  <script >
+
+			checkConnStatus();
+			checkConclusionStatus();
+			setInterval(checkConnStatus,5000);
+			setInterval(checkConclusionStatus,1000);
+		  </script> -->
+
+		</div>
+	</div>
+	<!-- Audio ao abrir a gaveta-->
+	<audio id="myAudio1">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source src="{% static 'sons/som1.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<!-- Audio ao abrir o tubo-->
+	<audio id="myAudio2-EN">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source id="sourceMyAudio2-EN" src="{% static 'sons/SomCompleto-Ingles.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<audio id="myAudio2-ES">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source id="sourceMyAudio2-ES" src="{% static 'sons/SomCompleto-Espanhol.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+	<audio id="myAudio2-BR">
+		<!-- <source src="horse.ogg" type="audio/ogg"> -->
+		<source id="sourceMyAudio2-BR" src="{% static 'sons/SomCompleto-Portugues.mp3' %}" type="audio/mpeg">
+		Your browser does not support the audio element.
+	</audio>
+
+	<!-- Audio Logica1-->
+  <audio id="AudioLogica1">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica2-->
+  <audio id="AudioLogica2">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica3_1-->
+  <audio id="AudioLogica3_1">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+   <!-- Audio Logica3_2-->
+  <audio id="AudioLogica3_2">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica4-->
+  <audio id="AudioLogica4">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica5-->
+  <audio id="AudioLogica5">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica6-->
+  <audio id="AudioLogica6">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+  <!-- Audio Logica7-->
+  <audio id="AudioLogica7">
+	  <!-- <source src="horse.ogg" type="audio/ogg"> -->
+	  <source src="{% static 'sons/UnlockSound.mp3' %}" type="audio/mpeg">
+	  Your browser does not support the audio element.
+  </audio>
+
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<!-- <script src="{% static 'bootstrap4/jquery-3.3.1.slim.min.js' %}"></script> -->
+<!--     <script type="text/javascript" src="{% static 'js/jQuery/jquery-3.4.1.js' %}"></script> -->
+	<script src="{% static 'bootstrap4/popper.min.js' %}"></script>
+	<script src="{% static 'bootstrap4/js/bootstrap.min.js' %}"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> -->
+	<!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
+
+	<!-- Meus Scripts -->
+	<script src="{% static 'js/scriptajaxdashboardSons.js' %}"></script>
+	<script>
+		$(document).ready(function(){
+			$('[data-toggle="popover"]').popover();   
+		});
+	</script>
+
+  </body>
+  <!-- RODAPÉ -->
+  <footer>
+    <div id ="Alertas"></div>
+    <div id="rodape" class="jumbotron text-center">
+      <p>BH Escape, 2019</p>
+    </div>
+  </footer>
+</html>

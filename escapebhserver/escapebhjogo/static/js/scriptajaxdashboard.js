@@ -24,7 +24,7 @@ const btnBau = document.querySelector('#btnBau')
 const btnGavetaMesa = document.querySelector('#btnGavetaMesa')
 
 const btnCilindroEnergia = document.querySelector('#btnCilindroEnergia')
-const btnTubo = document.querySelector('#btnTubo')
+// const btnTubo = document.querySelector('#btnTubo')
 
 const dotlogica2 = document.querySelector('#status-logica2')
 const dotlogica1 = document.querySelector('#status-logica1')
@@ -38,9 +38,9 @@ const dotlogica8 = document.querySelector('#status-logica8')
 // ---- SONS ----
 const audio1 = document.querySelector("#myAudio1");
 const btnAudio1 = document.querySelector('#btnAudio1')
-const audio2 = document.querySelector("#myAudio2-BR");
-const audio2_ES = document.querySelector("#myAudio2-ES");
-const audio2_EN = document.querySelector("#myAudio2-EN");
+// const audio2 = document.querySelector("#myAudio2-BR");
+// const audio2_ES = document.querySelector("#myAudio2-ES");
+// const audio2_EN = document.querySelector("#myAudio2-EN");
 const btnAudio2 = document.querySelector('#btnAudio2')
 const btnConfirmarIdioma = document.getElementById("ConfirmarIdioma");
 var fazerRequestSom = false
@@ -237,11 +237,11 @@ btnCilindroEnergia.addEventListener('click', function(){
     // requestForcaLogica('liberarcilindroenergia')
     audio1.play()
 })
-btnTubo.addEventListener('click', function(){
-    // requestForcaLogica('abrirtubo')
-    // audio2.play()
-    PlayNarracao();
-})
+// btnTubo.addEventListener('click', function(){
+//     // requestForcaLogica('abrirtubo')
+//     // audio2.play()
+//     PlayNarracao();
+// })
 
 // ---- SONS ----
 
@@ -259,11 +259,11 @@ function requestSom() {
             audio1.play()
             console.log('executando som 1')
         }
-        if (resposta.executarSom2 == true && audio2.paused == true) {
-            // audio2.play()
-            PlayNarracao();
-            console.log('executando som 2')
-        }
+        // if (resposta.executarSom2 == true && audio2.paused == true) {
+        //     // audio2.play()
+        //     // PlayNarracao();
+        //     console.log('executando som 2')
+        // }
 
         setTimeout(requestSom, 700)
       }
@@ -306,14 +306,14 @@ btnConfirmarIdioma.addEventListener('click', function(){
 
 
 
-function PlayNarracao(){
-    if (document.getElementById("IdiomaPortugues").checked){
-        audio2.play()
-    }
-    if (document.getElementById("IdiomaIngles").checked){
-        audio2_EN.play()
-    }
-    if (document.getElementById("IdiomaEspanhol").checked){
-        audio2_ES.play()
-    }
-}
+// function PlayNarracao(){
+//     if (document.getElementById("IdiomaPortugues").checked){
+//         audio2.play()
+//     }
+//     if (document.getElementById("IdiomaIngles").checked){
+//         audio2_EN.play()
+//     }
+//     if (document.getElementById("IdiomaEspanhol").checked){
+//         audio2_ES.play()
+//     }
+// }

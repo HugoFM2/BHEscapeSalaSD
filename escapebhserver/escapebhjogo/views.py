@@ -270,3 +270,7 @@ def resetMQTT(request):
 
 # def descricao(request):
 #     return JsonResponse(MQTTAlive.Logica1.Descricao(),safe=False)
+
+
+def nova_dashboard_Beta(request):
+    return render(request, 'escapebhhtml/nova_dashboard_Beta.html', {})
